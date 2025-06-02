@@ -9,17 +9,24 @@
         crossorigin="anonymous">
 </head>
 <body>
-<header th:fragment="header" class="d-flex text-center bodrder border-success border-bottom">
-  <a>Vitruvian</a>
-  <form method="get">
-    <textarea style="width:30%;"></textarea>
-    <button type="submit">Search</button>
+<header th:fragment="header" class="d-flex text-center align-items-end" style="border-bottom:2px solid #2bdb9d;margin-bottom:1rem;">
+  <a href="#" class="text-light text-start d-flex align-items-end"
+     style="text-decoration:none;text-color:#2bdb9d;font-size:25px;background: #2BDB9D;
+     background: linear-gradient(230deg,rgba(43, 219, 157, 1) 0%, rgba(20, 163, 154, 1) 50%, rgba(5, 66, 97, 1) 100%);
+     width:10rem;padding-top:0.7rem;border-radius: 0px 10px 10px 0px;padding-left:0.25rem;">
+      Vitruvian
+  </a>
+  <form method="get" class="d-flex" style="width:50%;">
+      <label for="tagsearch" style="display:none;">Search tags here</label>
+      <input id="tagsearch" type="text" class="form-control form-control-lg" style="font-size:20px;">
+      <button type="submit" class="btn btn-lg text-dark mx-2" style="background-color:#2bdb9d;font-size:20px;">Search</button>
   </form>
-  <a>Upload</a>
-  <a>Messages</a>
-  <a>Profile</a>
-  <a>Login</a>
-  <a>Register</a>
+  <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Upload</a>
+  <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Messages</a>
+  <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Profile</a>
+    <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Support</a>
+  <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Login</a>
+  <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Register</a>
 </header>
 </body>
 </html>
