@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+  <header th:replace="~{fragments/layout.html :: header}">
+  </header>
+  <form class="row" method="post" th:action="@{/upload}">
+    <label class="col-1" for="title">Title:</label>
+    <input class="col-5 form-control form-control-lg" id="title" type="text">
+    <label class="col-1" for="path">Path:</label>
+    <input class="col-5 form-control form-control-lg" id="path" type="url">
+  </form>
+</body>
+</html>

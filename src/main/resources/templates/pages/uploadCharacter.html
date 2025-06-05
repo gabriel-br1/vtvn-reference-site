@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+  <header th:replace="~{fragments/layout.html :: header}">
+  </header>
+  <form class="d-flex flex-wrap" method="post" th:action="@{/uploadCharacter}">
+    <label class="text-light" for="title">Title:</label>
+    <input class="form-control form-control-lg" id="title" type="text">
+    <label class="text-light" for="path">Path:</label>
+    <input class="form-control form-control-lg" id="path" type="url">
+    <label class="text-light" for="tags">Tags:</label>
+    <input class="form-control form-control-lg" id="tags" type="text" list="datalist" onkeyup="predict(this.value)">
+    <datalist id="datalist">
+<!--      <option value="Character:Single "></option>-->
+<!--      <option value="Character:Multiple "></option>-->
+<!--      <option value="Shape:Masculine "></option>-->
+<!--      <option value="Shape:Feminine "></option>-->
+<!--      <option value="Shape:Androgynous "></option>-->
+<!--      <option value="Type:Large "></option>-->
+<!--      <option value="Type:Average "></option>-->
+<!--      <option value="Type:Thin "></option>-->
+<!--      <option value="Pose:Sitting "></option>-->
+<!--      <option value="Pose:Kneeling "></option>-->
+<!--      <option value="Pose:Squatting "></option>-->
+<!--      <option value="Pose:Standing "></option>-->
+<!--      <option value="Pose:Lying "></option>-->
+<!--      <option value="Pose:Walking "></option>-->
+<!--      <option value="Pose:Running "></option>-->
+<!--      <option value="Pose:Jumping "></option>-->
+<!--      <option value="Clothing:Formal "></option>-->
+<!--      <option value="Clothing:Casual "></option>-->
+<!--      <option value="Clothing:Period "></option>-->
+<!--      <option value="Clothing:Futuristic "></option>-->
+<!--      <option value="Color:Warm "></option>-->
+<!--      <option value="Color:Cold "></option>-->
+<!--      <option value="Saturation:Pastel "></option>-->
+<!--      <option value="Saturation:Neon "></option>-->
+    </datalist>
+  </form>
+<script src="script.js"></script>
+</body>
+</html>
