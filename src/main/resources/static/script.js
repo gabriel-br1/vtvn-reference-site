@@ -25,10 +25,8 @@ let tags = ["Character:Single ",
 
   let n = tags.length;
 
-  function predict(value){
+  function predictCharacter(value){
     document.getElementById('datalist').innerHTML = '';
-
-    l = value.length;
 
     for(let i = 0; i < n; i++){
         const tagSplit = tags[i].split(":");
@@ -43,4 +41,61 @@ let tags = ["Character:Single ",
             .appendChild(node);
         }
     }
+  }
+
+    function addTag(){
+
+    const charElement = document.getElementById("Character");
+    const shapeElement = document.getElementById("Shape");
+    const typeElement = document.getElementById("Type");
+    const poseElement = document.getElementById("Pose");
+    const clothElement = document.getElementById("Clothing");
+    const colorElement = document.getElementById("Color");
+    const saturElement = document.getElementById("Saturation");
+    const inputElement = document.getElementById("tags");
+    const tagList = document.getElementById("taglist");
+
+    const tagElement = document.createElement("p");
+    tagElement.setAttribute("class", "mx-2 my-3 text-light text-center");
+    console.log(inputElement.value);
+
+    if(inputElement.value.startsWith("Character")){
+      charElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    } else if (inputElement.value.startsWith("Shape")){
+      shapeElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#db982b;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    } else if (inputElement.value.startsWith("Type")){
+      typeElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    } else if (inputElement.value.startsWith("Pose")){
+      poseElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#2bdb9d;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    } else if (inputElement.value.startsWith("Clothing")){
+      clothElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#2b9ddb;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    } else if (inputElement.value.startsWith("Color")){
+      colorElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    } else if (inputElement.value.startsWith("Saturation")){
+      saturElement.innerHTML = inputElement.value;
+      tagElement.innerHTML = inputElement.value;
+      tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;");
+      tagList.appendChild(tagElement);
+    }
+
+    inputElement.innerHTML = '';
+
   }
