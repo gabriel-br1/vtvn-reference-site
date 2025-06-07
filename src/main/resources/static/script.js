@@ -1,27 +1,27 @@
-let tags = ["Character:Single ",
-  "Character:Multiple ",
-  "Shape:Masculine ",
-  "Shape:Feminine ",
-  "Shape:Androgynous ",
-  "Type:Large ",
-  "Type:Average ",
-  "Type:Thin ",
-  "Pose:Sitting ",
-  "Pose:Kneeling ",
-  "Pose:Squatting ",
-  "Pose:Standing ",
-  "Pose:Lying ",
-  "Pose:Walking ",
-  "Pose:Running ",
-  "Pose:Jumping ",
-  "Clothing:Formal ",
-  "Clothing:Casual ",
-  "Clothing:Period ",
-  "Clothing:Futuristic ",
-  "Color:Warm ",
-  "Color:Cold ",
-  "Saturation:Pastel ",
-  "Saturation:Neon "];
+let tags = ["Character:Single",
+  "Character:Multiple",
+  "Shape:Masculine",
+  "Shape:Feminine",
+  "Shape:Androgynous",
+  "Type:Large",
+  "Type:Average",
+  "Type:Thin",
+  "Pose:Sitting",
+  "Pose:Kneeling",
+  "Pose:Squatting",
+  "Pose:Standing",
+  "Pose:Lying",
+  "Pose:Walking",
+  "Pose:Running",
+  "Pose:Jumping",
+  "Clothing:Formal",
+  "Clothing:Casual",
+  "Clothing:Period",
+  "Clothing:Futuristic",
+  "Color:Warm",
+  "Color:Cold",
+  "Saturation:Pastel",
+  "Saturation:Neon"];
 
   let n = tags.length;
 
@@ -56,46 +56,46 @@ let tags = ["Character:Single ",
     const tagList = document.getElementById("taglist");
 
     const tagElement = document.createElement("p");
-    tagElement.setAttribute("class", "mx-2 my-3 text-light text-center");
+    tagElement.setAttribute("class", "mx-2 my-3 text-light d-flex align-items-center justify-content-center");
     console.log(inputElement.value);
 
-    if(inputElement.value.startsWith("Character")){
-      charElement.innerHTML = inputElement.value;
+    if(inputElement.value.startsWith("Character") && !charElement.value.startsWith("Character")){
+      charElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
-    } else if (inputElement.value.startsWith("Shape")){
-      shapeElement.innerHTML = inputElement.value;
+    } else if (inputElement.value.startsWith("Shape") && !shapeElement.value.startsWith("Shape")){
+      shapeElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#db982b;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#db982b;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
-    } else if (inputElement.value.startsWith("Type")){
-      typeElement.innerHTML = inputElement.value;
+    } else if (inputElement.value.startsWith("Type") && !typeElement.value.startsWith("Type")){
+      typeElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
-    } else if (inputElement.value.startsWith("Pose")){
-      poseElement.innerHTML = inputElement.value;
+    } else if (inputElement.value.startsWith("Pose") && !poseElement.value.startsWith("Pose")){
+      poseElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#2bdb9d;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#2bdb9d;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
-    } else if (inputElement.value.startsWith("Clothing")){
-      clothElement.innerHTML = inputElement.value;
+    } else if (inputElement.value.startsWith("Clothing") && !clothElement.value.startsWith("Clothing")){
+      clothElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#2b9ddb;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#2b9ddb;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
-    } else if (inputElement.value.startsWith("Color")){
-      colorElement.innerHTML = inputElement.value;
+    } else if (inputElement.value.startsWith("Color") && !colorElement.value.startsWith("Color")){
+      colorElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
-    } else if (inputElement.value.startsWith("Saturation")){
-      saturElement.innerHTML = inputElement.value;
+    } else if (inputElement.value.startsWith("Saturation") && !saturElement.value.startsWith("Saturation")){
+      saturElement.value = inputElement.value;
       tagElement.innerHTML = inputElement.value;
-      tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;");
+      tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     }
 
-    inputElement.innerHTML = '';
+    inputElement.value = '';
 
   }
