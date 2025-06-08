@@ -1,54 +1,62 @@
-package com.emerald.vitruvian.models;
+package com.emerald.vitruvian.Entities;
 
 import com.emerald.vitruvian.enums.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.springframework.stereotype.Component;
+import com.emerald.vitruvian.models.TagDTO;
+import jakarta.persistence.*;
 
-@Component
-public class ImageEntryDTO {
+@Entity
+@Table(name = "Image entries")
+public class ImageEntryEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imageId;
 
-    @NotBlank(message = "Fill in the title")
-    @Size(max = 50, message = "Title is too long")
+    @Column(nullable = false)
     private String title;
 
-    @NotBlank(message = "Fill in the path")
+    @Column(nullable = false)
     private String path;
 
     private TagDTO tagDTO;
 
     //tag section
 
+    @Column(nullable = false)
     private TagImageType tagImageType;
 
     //character specific tags
 
+    @Column(name = "Character number")
     private TagCharacterNumber tagCharacterNumber;
 
+    @Column(name = "Character pose")
     private TagCharacterPose tagCharacterPose;
 
+    @Column(name = "Character type")
     private TagCharacterType tagCharacterType;
 
+    @Column(name = "Character shape")
     private TagCharacterShape tagCharacterShape;
 
+    @Column(name = "Character clothing")
     private TagCharacterClothing tagCharacterClothing;
 
     //scenery specific tags
 
+    @Column(name = "Scenery nature")
     private TagSceneryNature tagSceneryNature;
 
+    @Column(name = "Scenery structure")
     private TagSceneryStructure tagSceneryStructure;
 
     //neutral tags
 
+    @Column(name = "Neutral color")
     private TagNeutralColor tagNeutralColor;
 
+    @Column(name = "Neutral saturation")
     private TagNeutralSaturation tagNeutralSaturation;
-
-
-
 
     public long getImageId() {
         return imageId;
@@ -164,7 +172,7 @@ public class ImageEntryDTO {
 
     @Override
     public String toString() {
-        return "ImageEntryDTO{" +
+        return "ImageEntryEntity{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
                 ", path='" + path + '\'' +

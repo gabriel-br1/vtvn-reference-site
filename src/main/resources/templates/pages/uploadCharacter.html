@@ -7,23 +7,23 @@
   </header>
   <div class="d-flex justify-content-center">
     <div class="col-5">
-      <form method="post" th:action="@{/createCharacter}">
+      <form method="post" th:action="@{/createCharacter}" th:object="${ImageEntryDTO}">
         <div class="col-12 mx-2 my-3">
           <label class="text-light" for="title">Title:</label>
-          <input class="form-control form-control-lg" id="title" type="text">
+          <input class="form-control form-control-lg" id="title" type="text" th:field="*{title}">
         </div>
         <div class="col-12 mx-2 my-3">
           <label class="text-light" for="path">Path:</label>
-          <input class="form-control form-control-lg" id="path" type="url">
+          <input class="form-control form-control-lg" id="path" type="url" th:field="*{path}">
         </div>
         <div class="invisible" style="height:0px;">
-          <input type="text" id="Character">
-          <input type="text" id="Shape">>
-          <input type="text" id="Type">>
-          <input type="text" id="Pose">>
-          <input type="text" id="Clothing">>
-          <input type="text" id="Color">>
-          <input type="text" id="Saturation">>
+          <input type="text" id="Character" th:field="*{TagDTO.tagCharacterNumber}">
+          <input type="text" id="Shape" th:field="*{TagDTO.tagCharacterShape}">
+          <input type="text" id="Type" th:field="*{TagDTO.tagCharacterType}">
+          <input type="text" id="Pose" th:field="*{TagDTO.tagCharacterPose}">
+          <input type="text" id="Clothing" th:field="*{TagDTO.tagCharacterClothing}">
+          <input type="text" id="Color" th:field="*{TagDTO.tagNeutralColor}">
+          <input type="text" id="Saturation" th:field="*{TagDTO.tagNeutralSaturation}">
         </div>
         <button type="submit" class="btn btn-lg col-10" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;">Create</button>
       </form>

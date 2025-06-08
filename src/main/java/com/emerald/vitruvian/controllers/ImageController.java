@@ -1,7 +1,9 @@
 package com.emerald.vitruvian.controllers;
 
 import com.emerald.vitruvian.models.ImageEntryDTO;
+import com.emerald.vitruvian.services.TagService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,15 +15,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ImageController {
 
     @GetMapping("/uploadCharacter")
-    public String renderImageUpload(){
+    public String renderImageUpload(Model model){
+        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
         return "pages/uploadCharacter";
     }
 
-//    @PostMapping("/createCharacter")
-//    public String createCharacter(@Valid @ModelAttribute ImageEntryDTO,
-//                              BindingResult result,
-//                              Model model){
-//
-//    }
+    @PostMapping("/createCharacter")
+    public String createCharacter(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+                              BindingResult result,
+                              Model model){
+
+        if(result.hasErrors()){
+            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            return "pages/uploadCharacter";
+        }
+
+        return "pages/index";
+
+    }
 
 }
