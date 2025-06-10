@@ -5,10 +5,10 @@
 <body class="bg-dark">
     <header th:replace="~{fragments/layout.html :: header}">
     </header>
-    <div class="mx-3 my-2">
+    <div class="mx-3 my-2" th:each="imageEntry: ${imageEntries}">
         <a href="#" class="card" style="width:16rem;">
-            <img class="card-img-top" src="https://i.pinimg.com/736x/8d/21/bd/8d21bdf6419cf10bef38852bf210d547.jpg">
-            <p class="card-title h6 text-dark mx-2" style="text-decoration:none;">Placeholder</p>
+            <img class="card-img-top" th:src="${imageEntries.path}">
+            <p class="card-title h6 text-dark mx-2" th:text="${imageEntries.title}" style="text-decoration:none;"></p>
         </a>
     </div>
 </body>

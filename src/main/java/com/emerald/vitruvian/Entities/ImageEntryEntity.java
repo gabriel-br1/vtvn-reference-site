@@ -3,6 +3,8 @@ package com.emerald.vitruvian.Entities;
 import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.models.TagDTO;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "Image entries")
@@ -18,44 +20,56 @@ public class ImageEntryEntity {
     @Column(nullable = false)
     private String path;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Transient
     private TagDTO tagDTO;
 
     //tag section
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TagImageType tagImageType;
 
     //character specific tags
 
     @Column(name = "Character number")
+    @Enumerated(EnumType.STRING)
     private TagCharacterNumber tagCharacterNumber;
 
     @Column(name = "Character pose")
+    @Enumerated(EnumType.STRING)
     private TagCharacterPose tagCharacterPose;
 
     @Column(name = "Character type")
+    @Enumerated(EnumType.STRING)
     private TagCharacterType tagCharacterType;
 
     @Column(name = "Character shape")
+    @Enumerated(EnumType.STRING)
     private TagCharacterShape tagCharacterShape;
 
     @Column(name = "Character clothing")
+    @Enumerated(EnumType.STRING)
     private TagCharacterClothing tagCharacterClothing;
 
     //scenery specific tags
 
     @Column(name = "Scenery nature")
+    @Enumerated(EnumType.STRING)
     private TagSceneryNature tagSceneryNature;
 
     @Column(name = "Scenery structure")
+    @Enumerated(EnumType.STRING)
     private TagSceneryStructure tagSceneryStructure;
 
     //neutral tags
 
     @Column(name = "Neutral color")
+    @Enumerated(EnumType.STRING)
     private TagNeutralColor tagNeutralColor;
 
     @Column(name = "Neutral saturation")
+    @Enumerated(EnumType.STRING)
     private TagNeutralSaturation tagNeutralSaturation;
 
     public long getImageId() {

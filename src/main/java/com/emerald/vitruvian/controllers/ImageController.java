@@ -1,7 +1,7 @@
 package com.emerald.vitruvian.controllers;
 
 import com.emerald.vitruvian.models.ImageEntryDTO;
-import com.emerald.vitruvian.services.TagService;
+import com.emerald.vitruvian.services.ImageEntryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class ImageController {
+
+    @Autowired
+    private ImageEntryService imageEntryService;
 
     @GetMapping("/uploadCharacter")
     public String renderImageUpload(Model model){
@@ -30,6 +33,8 @@ public class ImageController {
             return "pages/uploadCharacter";
         }
 
+        imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
+        imageEntryService.add(imageEntryDTO);
         return "pages/index";
 
     }
