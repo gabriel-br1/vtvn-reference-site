@@ -51,7 +51,7 @@ public class TagService {
     }
 
     public TagSceneryStructure convertEnumStructure(String sceneryStructure){
-        String specificTag = sceneryStructure.substring(11).toUpperCase();
+        String specificTag = sceneryStructure.substring(10).toUpperCase();
         return TagSceneryStructure.valueOf(specificTag);
     }
 

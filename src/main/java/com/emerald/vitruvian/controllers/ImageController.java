@@ -18,9 +18,15 @@ public class ImageController {
     private ImageEntryService imageEntryService;
 
     @GetMapping("/uploadCharacter")
-    public String renderImageUpload(Model model){
+    public String renderCharacterUpload(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
         return "pages/uploadCharacter";
+    }
+
+    @GetMapping("/uploadScenery")
+    public String renderSceneryUpload(Model model){
+        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+        return "pages/uploadScenery";
     }
 
     @PostMapping("/createCharacter")
@@ -35,7 +41,23 @@ public class ImageController {
 
         imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
         imageEntryService.add(imageEntryDTO);
-        return "pages/index";
+        return "pages/uploadSuccess";
+
+    }
+
+    @PostMapping("/createScenery")
+    public String createScenery(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+                                  BindingResult result,
+                                  Model model){
+
+        if(result.hasErrors()){
+            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            return "pages/uploadScenery";
+        }
+
+        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
+        imageEntryService.add(imageEntryDTO);
+        return "pages/uploadSuccess";
 
     }
 

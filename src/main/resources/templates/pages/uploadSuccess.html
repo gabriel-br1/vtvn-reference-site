@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<div class="d-flex flex-column align-items-center my-3">
+    <h2 class="text-light fw-bold">Upload successful!</h2>
+    <a class="btn btn-lg text-dark" style="background-color:#2bdb9d;font-size:20px;" th:href="@{/}">Home</a>
+</div>
+</body>
+</html>

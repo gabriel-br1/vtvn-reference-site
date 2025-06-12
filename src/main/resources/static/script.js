@@ -6,6 +6,8 @@ let tags = ["Character:Single",
   "Type:Large",
   "Type:Average",
   "Type:Thin",
+  "Type:Lean",
+  "Type:Muscular",
   "Pose:Sitting",
   "Pose:Kneeling",
   "Pose:Squatting",
@@ -22,6 +24,21 @@ let tags = ["Character:Single",
   "Color:Cold",
   "Saturation:Pastel",
   "Saturation:Neon"];
+
+  let tagsScenery = ["Nature:Mountain",
+    "Nature:Forest",
+    "Nature:Desert",
+    "Nature:Plain",
+    "Nature:Sea",
+    "Nature:Sky",
+    "Nature:River",
+    "Color:Warm",
+    "Color:Cold",
+    "Structure:Small",
+    "Structure:Medium",
+    "Structure:Large",
+    "Saturation:Pastel",
+    "Saturation:Neon"];
 
   let n = tags.length;
 
@@ -42,6 +59,24 @@ let tags = ["Character:Single",
         }
     }
   }
+
+  function predictScenery(value){
+      document.getElementById('datalist').innerHTML = '';
+
+      for(let i = 0; i < n; i++){
+          const tagSplit = tagsScenery[i].split(":");
+          const tag = tagSplit[1];
+
+          if((tag.toLowerCase()).indexOf(value.toLowerCase()) > -1){
+              let node = document.createElement("option");
+              let val = document.createTextNode(tagsScenery[i]);
+              node.appendChild(val);
+
+              document.getElementById("datalist")
+              .appendChild(node);
+          }
+      }
+    }
 
     function addTag(){
 
@@ -99,3 +134,42 @@ let tags = ["Character:Single",
     inputElement.value = '';
 
   }
+
+  function addTagScenery(){
+
+      const natureElement = document.getElementById("Nature");
+      const structureElement = document.getElementById("Structure");
+      const colorElement = document.getElementById("Color");
+      const saturElement = document.getElementById("Saturation");
+      const inputElement = document.getElementById("tags");
+      const tagList = document.getElementById("taglist");
+
+      const tagElement = document.createElement("p");
+      tagElement.setAttribute("class", "mx-2 my-3 text-light d-flex align-items-center justify-content-center");
+      console.log(inputElement.value);
+
+      if(inputElement.value.startsWith("Nature") && !natureElement.value.startsWith("Nature")){
+        natureElement.value = inputElement.value;
+        tagElement.innerHTML = inputElement.value;
+        tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;height:2rem;");
+        tagList.appendChild(tagElement);
+      } else if(inputElement.value.startsWith("Structure") && !structureElement.value.startsWith("Structure")){
+        structureElement.value = inputElement.value;
+        tagElement.innerHTML = inputElement.value;
+        tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;height:2rem;");
+        tagList.appendChild(tagElement);
+      } else if (inputElement.value.startsWith("Color") && !colorElement.value.startsWith("Color")){
+        colorElement.value = inputElement.value;
+        tagElement.innerHTML = inputElement.value;
+        tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;height:2rem;");
+        tagList.appendChild(tagElement);
+      } else if (inputElement.value.startsWith("Saturation") && !saturElement.value.startsWith("Saturation")){
+        saturElement.value = inputElement.value;
+        tagElement.innerHTML = inputElement.value;
+        tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
+        tagList.appendChild(tagElement);
+      }
+
+      inputElement.value = '';
+
+    }

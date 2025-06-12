@@ -73,6 +73,9 @@ public class ImageEntryService {
             if(!imageEntryDTO.getTagDTO().getTagSceneryStructure().isEmpty()){
                 imageEntryDTO.setTagSceneryStructure(tagService.convertEnumStructure(imageEntryDTO.getTagDTO().getTagSceneryStructure()));
             }
+            if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
+                imageEntryDTO.setTagImageType(tagService.convertEnumImageType(imageEntryDTO.getTagDTO().getTagImageType()));
+            }
         }
 
         return imageEntryDTO;
