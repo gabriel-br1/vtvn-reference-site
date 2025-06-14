@@ -8,6 +8,7 @@ import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -30,6 +31,14 @@ public class ImageEntryService {
         return StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
                 .map(n -> imageEntryMapper.toDTO(n))
                 .toList();
+    }
+
+    public ImageEntryDTO getById(long id){
+        ImageEntryEntity imageEntryEntity =  StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
+                .filter(n -> n.getImageId() == id)
+                .findFirst()
+                .orElse(new ImageEntryEntity());
+        return imageEntryMapper.toDTO(imageEntryEntity);
     }
 
     private ImageEntryDTO assignEnums(ImageEntryDTO imageEntryDTO){

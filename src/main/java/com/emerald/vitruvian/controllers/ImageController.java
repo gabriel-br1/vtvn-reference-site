@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -59,6 +60,15 @@ public class ImageController {
         imageEntryService.add(imageEntryDTO);
         return "pages/uploadSuccess";
 
+    }
+
+    @GetMapping("/image/{id}")
+    public String renderImagePage(@PathVariable long id,
+            Model model){
+        ImageEntryDTO imageEntryDTO = imageEntryService.getById(id);
+        model.addAttribute("path", imageEntryDTO.getPath());
+        model.addAttribute("title", imageEntryDTO.getTitle());
+        return "pages/image";
     }
 
 }
