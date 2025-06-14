@@ -1,6 +1,7 @@
 package com.emerald.vitruvian.services;
 
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
+import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
@@ -19,9 +20,6 @@ public class ImageEntryService {
     @Autowired
     private ImageEntryMapper imageEntryMapper;
 
-    @Autowired
-    private TagService tagService;
-
     public void add(ImageEntryDTO imageEntryDTO){
         assignEnums(imageEntryDTO);
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
@@ -37,44 +35,55 @@ public class ImageEntryService {
     private ImageEntryDTO assignEnums(ImageEntryDTO imageEntryDTO){
         if(isCharacter(imageEntryDTO)){
             if(!imageEntryDTO.getTagDTO().getTagCharacterClothing().isEmpty()){
-                imageEntryDTO.setTagCharacterClothing(tagService.convertEnumClothing(imageEntryDTO.getTagDTO().getTagCharacterClothing()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterClothing().substring(9).toUpperCase();
+                imageEntryDTO.setTagCharacterClothing(TagCharacterClothing.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterNumber().isEmpty()){
-                imageEntryDTO.setTagCharacterNumber(tagService.convertEnumNumber(imageEntryDTO.getTagDTO().getTagCharacterNumber()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterNumber().substring(10).toUpperCase();
+                imageEntryDTO.setTagCharacterNumber(TagCharacterNumber.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterPose().isEmpty()){
-                imageEntryDTO.setTagCharacterPose(tagService.convertEnumPose(imageEntryDTO.getTagDTO().getTagCharacterPose()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterPose().substring(5).toUpperCase();
+                imageEntryDTO.setTagCharacterPose(TagCharacterPose.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterShape().isEmpty()){
-                imageEntryDTO.setTagCharacterShape(tagService.convertEnumShape(imageEntryDTO.getTagDTO().getTagCharacterShape()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterShape().substring(6).toUpperCase();
+                imageEntryDTO.setTagCharacterShape(TagCharacterShape.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterType().isEmpty()){
-                imageEntryDTO.setTagCharacterType(tagService.convertEnumType(imageEntryDTO.getTagDTO().getTagCharacterType()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterType().substring(5).toUpperCase();
+                imageEntryDTO.setTagCharacterType(TagCharacterType.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
-                imageEntryDTO.setTagImageType(tagService.convertEnumImageType(imageEntryDTO.getTagDTO().getTagImageType()));
+                imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
             }
             if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
-                imageEntryDTO.setTagNeutralColor(tagService.convertEnumColor(imageEntryDTO.getTagDTO().getTagNeutralColor()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().substring(6).toUpperCase();
+                imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
-                imageEntryDTO.setTagNeutralSaturation(tagService.convertEnumSaturation(imageEntryDTO.getTagDTO().getTagNeutralSaturation()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().substring(11).toUpperCase();
+                imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
             }
         } else {
             if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
-                imageEntryDTO.setTagNeutralColor(tagService.convertEnumColor(imageEntryDTO.getTagDTO().getTagNeutralColor()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().substring(6).toUpperCase();
+                imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
-                imageEntryDTO.setTagNeutralSaturation(tagService.convertEnumSaturation(imageEntryDTO.getTagDTO().getTagNeutralSaturation()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().substring(11).toUpperCase();
+                imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagSceneryNature().isEmpty()){
-                imageEntryDTO.setTagSceneryNature(tagService.convertEnumNature(imageEntryDTO.getTagDTO().getTagSceneryNature()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryNature().substring(7).toUpperCase();
+                imageEntryDTO.setTagSceneryNature(TagSceneryNature.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagSceneryStructure().isEmpty()){
-                imageEntryDTO.setTagSceneryStructure(tagService.convertEnumStructure(imageEntryDTO.getTagDTO().getTagSceneryStructure()));
+                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryStructure().substring(10).toUpperCase();
+                imageEntryDTO.setTagSceneryStructure(TagSceneryStructure.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
-                imageEntryDTO.setTagImageType(tagService.convertEnumImageType(imageEntryDTO.getTagDTO().getTagImageType()));
+                imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
             }
         }
 
