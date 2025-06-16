@@ -7,7 +7,7 @@
     </header>
     <div class="my-2 d-flex flex-row flex-wrap" style="margin-left:0.5rem;margin-right:0.5rem;">
         <div class="mx-2 my-2" th:each="imageEntry: ${imageEntries}">
-            <a href="#" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+            <a th:href="@{'/image/' + ${imageEntry.imageId}}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
                 <img class="card-img-top" th:src="${imageEntry.path}" style="object-fit: cover; height: 100%; width 100%;">
                 <p class="card-title h6 text-dark mx-2" th:text="${imageEntry.title}" style="text-decoration:none;"></p>
             </a>

@@ -6,13 +6,12 @@
 <header th:replace="~{fragments/layout.html :: header}">
 </header>
 <div class="d-flex flex-row justify-content-center">
-    <div class="d-flex flex-row justify-content-center bg-light">
+    <div class="d-flex flex-column justify-content-center bg-light px-2 py-2" style="border-radius:10px;height:80%;">
         <div>
-            <img th:src="${path}" style="object-fit: cover;">
-            <h5 class="text-light" th:text="${title}"></h5>
+            <img th:src="${path}">
+            <h4 class="text-dark px-2" th:text="${title}"></h4>
         </div>
-        <div class="bg-dark text-light">
-            text
+        <div class="d-flex justify-content-start flex-wrap" th:text="${imageTags}">
         </div>
     </div>
 </div>

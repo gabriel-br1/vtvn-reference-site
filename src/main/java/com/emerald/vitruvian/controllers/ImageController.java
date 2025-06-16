@@ -66,8 +66,10 @@ public class ImageController {
     public String renderImagePage(@PathVariable long id,
             Model model){
         ImageEntryDTO imageEntryDTO = imageEntryService.getById(id);
+        String tags = imageEntryService.getImageTags(imageEntryDTO);
         model.addAttribute("path", imageEntryDTO.getPath());
         model.addAttribute("title", imageEntryDTO.getTitle());
+        model.addAttribute("imageTags", tags);
         return "pages/image";
     }
 
