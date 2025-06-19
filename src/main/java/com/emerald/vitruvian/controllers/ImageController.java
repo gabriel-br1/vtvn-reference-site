@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class ImageController {
 
@@ -71,6 +73,15 @@ public class ImageController {
         model.addAttribute("title", imageEntryDTO.getTitle());
         model.addAttribute("imageTags", tags);
         return "pages/image";
+    }
+
+    @GetMapping("/results")
+    public String renderSearchResults(String tagSearch,
+                                      Model model){
+        String[] tags = tagSearch.split(" ");
+        List<ImageEntryDTO> resultEntries = imageEntryService.getByTags(tags);
+        model.addAttribute("resultEntries", resultEntries);
+        return "pages/searchResults";
     }
 
 }
