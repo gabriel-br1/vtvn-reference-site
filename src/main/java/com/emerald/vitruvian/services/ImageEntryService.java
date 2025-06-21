@@ -47,37 +47,41 @@ public class ImageEntryService {
     public List<ImageEntryDTO> getByTags(String[] tags){
         List<ImageEntryDTO> resultList = new ArrayList<>();
         for(ImageEntryDTO image : getAllImages()){
+            int tagCount = 0;
             for(String tag : tags){
-                if(image.getTagCharacterClothing() != null && image.getTagCharacterClothing().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagCharacterClothing() != null && image.getTagCharacterClothing().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagCharacterNumber() != null && image.getTagCharacterNumber().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagCharacterNumber() != null && image.getTagCharacterNumber().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagCharacterPose() != null && image.getTagCharacterPose().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagCharacterPose() != null && image.getTagCharacterPose().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagCharacterShape() != null && image.getTagCharacterShape().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagCharacterShape() != null && image.getTagCharacterShape().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagCharacterType() != null && image.getTagCharacterType().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagCharacterType() != null && image.getTagCharacterType().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagImageType() != null && image.getTagImageType().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagImageType() != null && image.getTagImageType().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagNeutralColor() != null && image.getTagNeutralColor().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagNeutralColor() != null && image.getTagNeutralColor().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagNeutralSaturation() != null && image.getTagNeutralSaturation().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagNeutralSaturation() != null && image.getTagNeutralSaturation().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagSceneryNature() != null && image.getTagSceneryNature().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagSceneryNature() != null && image.getTagSceneryNature().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
-                if(image.getTagSceneryStructure() != null && image.getTagSceneryStructure().name().equals(tag.toUpperCase()) && !resultList.contains(image)){
-                    resultList.add(image);
+                if(image.getTagSceneryStructure() != null && image.getTagSceneryStructure().name().equals(tag.toUpperCase())){
+                    tagCount++;
                 }
+            }
+            if(tagCount == tags.length){
+                resultList.add(image);
             }
         }
         return resultList;
