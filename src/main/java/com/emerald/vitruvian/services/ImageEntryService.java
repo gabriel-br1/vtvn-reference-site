@@ -5,6 +5,7 @@ import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.TagDTO;
+import com.emerald.vitruvian.models.TagsDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,36 +49,11 @@ public class ImageEntryService {
         List<ImageEntryDTO> resultList = new ArrayList<>();
         for(ImageEntryDTO image : getAllImages()){
             int tagCount = 0;
-            for(String tag : tags){
-                if(image.getTagCharacterClothing() != null && image.getTagCharacterClothing().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagCharacterNumber() != null && image.getTagCharacterNumber().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagCharacterPose() != null && image.getTagCharacterPose().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagCharacterShape() != null && image.getTagCharacterShape().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagCharacterType() != null && image.getTagCharacterType().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagImageType() != null && image.getTagImageType().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagNeutralColor() != null && image.getTagNeutralColor().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagNeutralSaturation() != null && image.getTagNeutralSaturation().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagSceneryNature() != null && image.getTagSceneryNature().name().equals(tag.toUpperCase())){
-                    tagCount++;
-                }
-                if(image.getTagSceneryStructure() != null && image.getTagSceneryStructure().name().equals(tag.toUpperCase())){
-                    tagCount++;
+            for(String tagQuery : tags){
+                for(String imageTag : convertTagsString(image).getTags()){
+                    if(tagQuery.toUpperCase().equals(imageTag)){
+                        tagCount++;
+                    }
                 }
             }
             if(tagCount == tags.length){
@@ -88,37 +64,10 @@ public class ImageEntryService {
     }
 
     public String getImageTags(ImageEntryDTO imageEntryDTO){
-        TagDTO tagDto = convertTagsString(imageEntryDTO);
+        TagsDTO tagsDTO = convertTagsString(imageEntryDTO);
         String tags = "";
-        if (tagDto.getTagImageType() != null){
-            tags += tagDto.getTagImageType() + " ";
-        }
-        if (tagDto.getTagCharacterClothing() != null){
-            tags += tagDto.getTagCharacterClothing() + " ";
-        }
-        if (tagDto.getTagCharacterNumber() != null){
-            tags += tagDto.getTagCharacterNumber() + " ";
-        }
-        if (tagDto.getTagCharacterPose() != null){
-            tags += tagDto.getTagCharacterPose() + " ";
-        }
-        if (tagDto.getTagCharacterShape() != null){
-            tags += tagDto.getTagCharacterShape() + " ";
-        }
-        if (tagDto.getTagCharacterType() != null){
-            tags += tagDto.getTagCharacterType() + " ";
-        }
-        if (tagDto.getTagNeutralColor() != null){
-            tags += tagDto.getTagNeutralColor() + " ";
-        }
-        if (tagDto.getTagNeutralSaturation() != null){
-            tags += tagDto.getTagNeutralSaturation() + " ";
-        }
-        if (tagDto.getTagSceneryNature() != null){
-            tags += tagDto.getTagSceneryNature() + " ";
-        }
-        if (tagDto.getTagSceneryStructure() != null){
-            tags += tagDto.getTagSceneryStructure() + " ";
+        for(String tag : tagsDTO.getTags()){
+            tags += tag.toLowerCase() + " ";
         }
         return tags;
     }
@@ -126,51 +75,51 @@ public class ImageEntryService {
     private ImageEntryDTO assignEnums(ImageEntryDTO imageEntryDTO){
         if(isCharacter(imageEntryDTO)){
             if(!imageEntryDTO.getTagDTO().getTagCharacterClothing().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterClothing().substring(9).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterClothing().toUpperCase();
                 imageEntryDTO.setTagCharacterClothing(TagCharacterClothing.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterNumber().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterNumber().substring(10).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterNumber().toUpperCase();
                 imageEntryDTO.setTagCharacterNumber(TagCharacterNumber.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterPose().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterPose().substring(5).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterPose().toUpperCase();
                 imageEntryDTO.setTagCharacterPose(TagCharacterPose.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterShape().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterShape().substring(6).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterShape().toUpperCase();
                 imageEntryDTO.setTagCharacterShape(TagCharacterShape.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagCharacterType().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterType().substring(5).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterType().toUpperCase();
                 imageEntryDTO.setTagCharacterType(TagCharacterType.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
                 imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
             }
             if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().substring(6).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().toUpperCase();
                 imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().substring(11).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().toUpperCase();
                 imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
             }
         } else {
             if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().substring(6).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().toUpperCase();
                 imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().substring(11).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().toUpperCase();
                 imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagSceneryNature().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryNature().substring(7).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryNature().toUpperCase();
                 imageEntryDTO.setTagSceneryNature(TagSceneryNature.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagSceneryStructure().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryStructure().substring(10).toUpperCase();
+                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryStructure().toUpperCase();
                 imageEntryDTO.setTagSceneryStructure(TagSceneryStructure.valueOf(specificTag));
             }
             if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
@@ -185,39 +134,39 @@ public class ImageEntryService {
         return imageEntryDTO.getTagDTO().getTagImageType().equals("CHARACTER");
     }
 
-    private TagDTO convertTagsString(ImageEntryDTO imageEntryDTO){
-        TagDTO tagDTO = new TagDTO();
+    private TagsDTO convertTagsString(ImageEntryDTO imageEntryDTO){
+        TagsDTO tags = new TagsDTO();
         if(imageEntryDTO.getTagCharacterClothing() != null){
-            tagDTO.setTagCharacterClothing(imageEntryDTO.getTagCharacterClothing().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagCharacterClothing().name());
         }
         if(imageEntryDTO.getTagCharacterNumber() != null){
-            tagDTO.setTagCharacterNumber(imageEntryDTO.getTagCharacterNumber().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagCharacterNumber().name());
         }
         if(imageEntryDTO.getTagCharacterPose() != null){
-            tagDTO.setTagCharacterPose(imageEntryDTO.getTagCharacterPose().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagCharacterPose().name());
         }
         if(imageEntryDTO.getTagCharacterShape() != null){
-            tagDTO.setTagCharacterShape(imageEntryDTO.getTagCharacterShape().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagCharacterShape().name());
         }
         if(imageEntryDTO.getTagCharacterType() != null){
-            tagDTO.setTagCharacterType(imageEntryDTO.getTagCharacterType().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagCharacterType().name());
         }
         if(imageEntryDTO.getTagImageType() != null){
-            tagDTO.setTagImageType(imageEntryDTO.getTagImageType().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagImageType().name());
         }
         if(imageEntryDTO.getTagNeutralColor() != null){
-            tagDTO.setTagNeutralColor(imageEntryDTO.getTagNeutralColor().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagNeutralColor().name());
         }
         if(imageEntryDTO.getTagNeutralSaturation() != null){
-            tagDTO.setTagNeutralSaturation(imageEntryDTO.getTagNeutralSaturation().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagNeutralSaturation().name());
         }
         if(imageEntryDTO.getTagSceneryNature() != null){
-            tagDTO.setTagSceneryNature(imageEntryDTO.getTagSceneryNature().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagSceneryNature().name());
         }
         if(imageEntryDTO.getTagSceneryStructure() != null){
-            tagDTO.setTagSceneryStructure(imageEntryDTO.getTagSceneryStructure().name().toLowerCase());
+            tags.addTag(imageEntryDTO.getTagSceneryStructure().name());
         }
-        return tagDTO;
+        return tags;
     }
 
 }

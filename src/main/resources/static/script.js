@@ -95,37 +95,44 @@ let tags = ["Character:Single",
     console.log(inputElement.value);
 
     if(inputElement.value.startsWith("Character") && !charElement.value.startsWith("Character")){
-      charElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(10);
+      charElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     } else if (inputElement.value.startsWith("Shape") && !shapeElement.value.startsWith("Shape")){
-      shapeElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(6);
+      shapeElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#db982b;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     } else if (inputElement.value.startsWith("Type") && !typeElement.value.startsWith("Type")){
-      typeElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(5);
+      typeElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     } else if (inputElement.value.startsWith("Pose") && !poseElement.value.startsWith("Pose")){
-      poseElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(5);
+      poseElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#2bdb9d;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     } else if (inputElement.value.startsWith("Clothing") && !clothElement.value.startsWith("Clothing")){
-      clothElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(9);
+      clothElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#2b9ddb;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     } else if (inputElement.value.startsWith("Color") && !colorElement.value.startsWith("Color")){
-      colorElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(6);
+      colorElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
     } else if (inputElement.value.startsWith("Saturation") && !saturElement.value.startsWith("Saturation")){
-      saturElement.value = inputElement.value;
+      let shortenedTag = inputElement.value.substring(11);
+      saturElement.value = shortenedTag;
       tagElement.innerHTML = inputElement.value;
       tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
       tagList.appendChild(tagElement);
@@ -149,22 +156,26 @@ let tags = ["Character:Single",
       console.log(inputElement.value);
 
       if(inputElement.value.startsWith("Nature") && !natureElement.value.startsWith("Nature")){
-        natureElement.value = inputElement.value;
+        let shortenedTag = inputElement.value.substring(7);
+        natureElement.value = shortenedTag;
         tagElement.innerHTML = inputElement.value;
         tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;height:2rem;");
         tagList.appendChild(tagElement);
       } else if(inputElement.value.startsWith("Structure") && !structureElement.value.startsWith("Structure")){
-        structureElement.value = inputElement.value;
+        let shortenedTag = inputElement.value.substring(10);
+        structureElement.value = shortenedTag;
         tagElement.innerHTML = inputElement.value;
         tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;height:2rem;");
         tagList.appendChild(tagElement);
       } else if (inputElement.value.startsWith("Color") && !colorElement.value.startsWith("Color")){
-        colorElement.value = inputElement.value;
+        let shortenedTag = inputElement.value.substring(6);
+        colorElement.value = shortenedTag;
         tagElement.innerHTML = inputElement.value;
         tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;height:2rem;");
         tagList.appendChild(tagElement);
       } else if (inputElement.value.startsWith("Saturation") && !saturElement.value.startsWith("Saturation")){
-        saturElement.value = inputElement.value;
+        let shortenedTag = inputElement.value.substring(11);
+        saturElement.value = shortenedTag;
         tagElement.innerHTML = inputElement.value;
         tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
         tagList.appendChild(tagElement);
