@@ -78,8 +78,7 @@ public class ImageController {
     @GetMapping("/results")
     public String renderSearchResults(String tagSearch,
                                       Model model){
-        String[] tags = tagSearch.split(" ");
-        List<ImageEntryDTO> resultEntries = imageEntryService.getByTags(tags);
+        List<ImageEntryDTO> resultEntries = imageEntryService.getByTags(tagSearch);
         model.addAttribute("resultEntries", resultEntries);
         return "pages/searchResults";
     }

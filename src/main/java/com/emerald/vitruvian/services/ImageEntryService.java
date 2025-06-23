@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -45,13 +47,19 @@ public class ImageEntryService {
         return imageEntryMapper.toDTO(imageEntryEntity);
     }
 
-    public List<ImageEntryDTO> getByTags(String[] tags){
+    public List<ImageEntryDTO> getByTags(String tagSearch){
         List<ImageEntryDTO> resultList = new ArrayList<>();
         for(ImageEntryDTO image : getAllImages()){
             int tagCount = 0;
+            String tagsNameInput =  tagSearch + " " + image.getTitle();
+            String[] tags = tagsNameInput.split(" ");
             for(String tagQuery : tags){
-                for(String imageTag : convertTagsString(image).getTags()){
-                    if(tagQuery.toUpperCase().equals(imageTag)){
+                String[] titleSplit = image.getTitle().split(" ");
+                String[] imageTags = new String[convertTagsString(image).getTags().size()];
+                convertTagsString(image).getTags().toArray(imageTags);
+                String[] tagsNameData = Stream.concat(Arrays.stream(titleSplit), Arrays.stream(imageTags)).toArray(String[]::new);
+                for(String imageTag : tagsNameData){
+                    if(tagQuery.equals(imageTag.toLowerCase())){
                         tagCount++;
                     }
                 }
