@@ -4,14 +4,10 @@ import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
-import com.emerald.vitruvian.models.TagDTO;
 import com.emerald.vitruvian.models.TagsDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.HTML;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

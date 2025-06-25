@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<div class="d-flex flex-column align-items-center">
+  <h2 class="text-light">Registration successful!</h2>
+  <a th:href="@{/}" class="btn btn-lg" style="background-color:#2bdb9d;font-size:20px;">Home</a>
+</div>
+</body>
+</html>

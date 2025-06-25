@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<div class="d-flex justify-content-center">
+    <form method="post" class="d-flex flex-column align-items-center">
+        <label for="email" class="text-light">email</label>
+        <input class="form-control form-control-lg" id="email" type="email" name="email">
+        <label for="password" class="text-light">password</label>
+        <input class="form-control form-control-lg" id="password" type="password" name="password">
+        <button type="submit" class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;">login</button>
+    </form>
+</div>
+</body>
+</html>
