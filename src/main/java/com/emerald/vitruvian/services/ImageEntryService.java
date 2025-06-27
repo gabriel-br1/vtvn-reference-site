@@ -36,10 +36,7 @@ public class ImageEntryService {
     }
 
     public ImageEntryDTO getById(long id){
-        ImageEntryEntity imageEntryEntity =  StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
-                .filter(n -> n.getImageId() == id)
-                .findFirst()
-                .orElse(new ImageEntryEntity());
+        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
         return imageEntryMapper.toDTO(imageEntryEntity);
     }
 
