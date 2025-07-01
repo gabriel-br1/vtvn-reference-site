@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<div class="d-flex flex-column align-items-center">
+  <h1>An unknown error has occured - <span th:text="${status}"></span></h1>
+  <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:href="@{/}">Home</a>
+</div>
+</body>
+</html>

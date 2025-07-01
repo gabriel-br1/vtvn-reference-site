@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<div th:object="${user}" class="d-flex flex-column align-items-center my-2">
+  <h2>User email:</h2>
+  <p th:text="*{email}"></p>
+</div>
+</body>
+</html>

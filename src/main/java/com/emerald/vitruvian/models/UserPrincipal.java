@@ -3,12 +3,10 @@ package com.emerald.vitruvian.models;
 import com.emerald.vitruvian.Entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 
-@Component
 public class UserPrincipal implements UserDetails {
 
     private UserEntity user;
@@ -58,12 +56,5 @@ public class UserPrincipal implements UserDetails {
 
     public void setUser(UserEntity user) {
         this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "UserPrincipal{" +
-                "user=" + user +
-                '}';
     }
 }
