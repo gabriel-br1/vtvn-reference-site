@@ -24,6 +24,10 @@ public class ImageEntryEntity {
     @Transient
     private TagDTO tagDTO;
 
+    @ManyToOne()
+    @JoinColumn(nullable = false)
+    private UserEntity user;
+
     //tag section
 
     @Column(nullable = false)
@@ -184,6 +188,14 @@ public class ImageEntryEntity {
         this.tagNeutralSaturation = tagNeutralSaturation;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryEntity{" +
@@ -191,6 +203,7 @@ public class ImageEntryEntity {
                 ", title='" + title + '\'' +
                 ", path='" + path + '\'' +
                 ", tagDTO=" + tagDTO +
+                ", user=" + user +
                 ", tagImageType=" + tagImageType +
                 ", tagCharacterNumber=" + tagCharacterNumber +
                 ", tagCharacterPose=" + tagCharacterPose +

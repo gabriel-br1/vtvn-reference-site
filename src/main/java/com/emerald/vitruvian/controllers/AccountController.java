@@ -1,11 +1,14 @@
 package com.emerald.vitruvian.controllers;
 
 import com.emerald.vitruvian.Entities.UserEntity;
+import com.emerald.vitruvian.exceptions.DuplicateEmailException;
+import com.emerald.vitruvian.exceptions.PasswordsDoNotMatchException;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +40,7 @@ public class AccountController {
         return "pages/register";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/user/{id}")
     public String renderUserPage(@PathVariable long id,
             Model model){
@@ -59,9 +63,9 @@ public class AccountController {
             return "pages/register";
         }
 
-        boolean registrationSuccess = userService.add(userDTO);
-
-        if(!registrationSuccess){
+        try {
+            userService.add(userDTO);
+        } catch (Exception e){
             userDTO.setPasswordConfirm("");
             model.addAttribute("userDTO", userDTO);
             return "pages/register";

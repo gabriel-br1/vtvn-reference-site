@@ -1,9 +1,13 @@
 package com.emerald.vitruvian.controllers;
 
+import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.models.ImageEntryDTO;
+import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.ImageEntryService;
+import com.emerald.vitruvian.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,18 +24,27 @@ public class ImageController {
     @Autowired
     private ImageEntryService imageEntryService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadCharacter")
     public String renderCharacterUpload(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
         return "pages/uploadCharacter";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadScenery")
     public String renderSceneryUpload(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
         return "pages/uploadScenery";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/createCharacter")
     public String createCharacter(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
                               BindingResult result,
@@ -42,12 +55,15 @@ public class ImageController {
             return "pages/uploadCharacter";
         }
 
+        UserEntity user = userRepo.findById(userService.getPrincipalId());
+
         imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
-        imageEntryService.add(imageEntryDTO);
+        imageEntryService.add(imageEntryDTO, user);
         return "pages/uploadSuccess";
 
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/createScenery")
     public String createScenery(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
                                   BindingResult result,
@@ -58,8 +74,10 @@ public class ImageController {
             return "pages/uploadScenery";
         }
 
+        UserEntity user = userRepo.findById(userService.getPrincipalId());
+
         imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-        imageEntryService.add(imageEntryDTO);
+        imageEntryService.add(imageEntryDTO, user);
         return "pages/uploadSuccess";
 
     }

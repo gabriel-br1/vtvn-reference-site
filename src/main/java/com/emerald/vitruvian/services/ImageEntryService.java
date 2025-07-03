@@ -1,6 +1,7 @@
 package com.emerald.vitruvian.services;
 
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
+import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
@@ -23,9 +24,10 @@ public class ImageEntryService {
     @Autowired
     private ImageEntryMapper imageEntryMapper;
 
-    public void add(ImageEntryDTO imageEntryDTO){
+    public void add(ImageEntryDTO imageEntryDTO, UserEntity userEntity){
         assignEnums(imageEntryDTO);
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
+        newImage.setUser(userEntity);
         imageEntryRepo.save(newImage);
     }
 

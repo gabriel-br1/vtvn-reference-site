@@ -49,7 +49,7 @@ public class SecurityConfiguration {
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-        return authenticationProvider();
+        return provider;
     }
 
     public SecurityContextRepository securityContextRepository(){
