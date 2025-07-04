@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>Vitruvian</title>
@@ -35,8 +35,9 @@
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Messages</a>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Profile</a>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Support</a>
-    <a class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/login}">Login</a>
-    <a class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/register}">Register</a>
+    <a sec:authorize="isAuthenticated()" class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/logout}">Logout</a>
+    <a sec:authorize="isAnonymous()" class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/login}">Login</a>
+    <a sec:authorize="isAnonymous()" class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/register}">Register</a>
 </header>
 </body>
 </html>

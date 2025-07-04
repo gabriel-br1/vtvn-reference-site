@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                                 .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
                         .permitAll())
                 .securityContext(sec -> sec
                         .securityContextRepository(securityContextRepository()))

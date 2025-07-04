@@ -1,8 +1,6 @@
 package com.emerald.vitruvian.controllers;
 
 import com.emerald.vitruvian.Entities.UserEntity;
-import com.emerald.vitruvian.exceptions.DuplicateEmailException;
-import com.emerald.vitruvian.exceptions.PasswordsDoNotMatchException;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.UserRepo;
