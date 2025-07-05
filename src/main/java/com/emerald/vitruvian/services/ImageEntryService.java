@@ -172,4 +172,8 @@ public class ImageEntryService {
         return tags;
     }
 
+    public String getTagImageType(ImageEntryDTO imageEntryDTO){
+        return imageEntryDTO.getTagImageType().name();
+    }
+
 }

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDTO {
 
+    private long id;
+
     @NotBlank(message = "fill in your email address")
     private String email;
 
@@ -45,10 +47,19 @@ public class UserDTO {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
                 '}';

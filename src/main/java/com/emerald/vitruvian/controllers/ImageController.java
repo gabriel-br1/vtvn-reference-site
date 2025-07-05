@@ -1,7 +1,9 @@
 package com.emerald.vitruvian.controllers;
 
 import com.emerald.vitruvian.Entities.UserEntity;
+import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
+import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.UserService;
@@ -29,6 +31,9 @@ public class ImageController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadCharacter")
@@ -85,11 +90,27 @@ public class ImageController {
     @GetMapping("/image/{id}")
     public String renderImagePage(@PathVariable long id,
             Model model){
+
+        UserDTO user = userMapper.toDTO(userRepo.findById(userService.getPrincipalId()));
+        if (user != null){
+            model.addAttribute("userId", user.getId());
+        } else {
+            model.addAttribute("userId", -1);
+        }
+
         ImageEntryDTO imageEntryDTO = imageEntryService.getById(id);
+        model.addAttribute("imageUserId", imageEntryDTO.getUser());
+
+        model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
+
         String tags = imageEntryService.getImageTags(imageEntryDTO);
         model.addAttribute("path", imageEntryDTO.getPath());
         model.addAttribute("title", imageEntryDTO.getTitle());
         model.addAttribute("imageTags", tags);
+
+        System.out.println(user.getId());
+        System.out.println(imageEntryDTO.getUser());
+
         return "pages/image";
     }
 

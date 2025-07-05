@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.models;
 
+import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -18,6 +19,8 @@ public class ImageEntryDTO {
     private String path;
 
     private TagDTO tagDTO;
+
+    private UserEntity user;
 
     //tag section
 
@@ -162,6 +165,14 @@ public class ImageEntryDTO {
         this.tagNeutralSaturation = tagNeutralSaturation;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
@@ -169,6 +180,7 @@ public class ImageEntryDTO {
                 ", title='" + title + '\'' +
                 ", path='" + path + '\'' +
                 ", tagDTO=" + tagDTO +
+                ", user=" + user +
                 ", tagImageType=" + tagImageType +
                 ", tagCharacterNumber=" + tagCharacterNumber +
                 ", tagCharacterPose=" + tagCharacterPose +

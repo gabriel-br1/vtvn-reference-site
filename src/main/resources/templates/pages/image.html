@@ -13,6 +13,10 @@
         </div>
         <div class="d-flex justify-content-start flex-wrap px-2" th:text="${imageTags}">
         </div>
+        <div th:if="${userId} == ${imageUserId}">
+            <a class="btn btn-lg" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{}">Edit</a>
+            <a class="btn btn-lg" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'SCENERY'" th:href="@{}">Edit</a>
+        </div>
     </div>
 </div>
 </body>
