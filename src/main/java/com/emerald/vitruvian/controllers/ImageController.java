@@ -1,9 +1,12 @@
 package com.emerald.vitruvian.controllers;
 
+import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
+import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.UserDTO;
+import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.UserService;
@@ -13,10 +16,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +25,12 @@ public class ImageController {
 
     @Autowired
     private ImageEntryService imageEntryService;
+
+    @Autowired
+    private ImageEntryRepo imageEntryRepo;
+
+    @Autowired
+    private ImageEntryMapper imageEntryMapper;
 
     @Autowired
     private UserService userService;
@@ -91,25 +97,19 @@ public class ImageController {
     public String renderImagePage(@PathVariable long id,
             Model model){
 
-        UserDTO user = userMapper.toDTO(userRepo.findById(userService.getPrincipalId()));
-        if (user != null){
-            model.addAttribute("userId", user.getId());
-        } else {
-            model.addAttribute("userId", -1);
+        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id);
+        ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryEntity);
+
+        UserEntity userEntity = userRepo.findById(userService.getPrincipalId());
+        if (userEntity != null){
+            if (userEntity.getId() == imageEntryEntity.getUser().getId()){
+                model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
+                returnImageDetails(imageEntryDTO, model);
+                return "pages/imagePrincipal";
+            }
         }
 
-        ImageEntryDTO imageEntryDTO = imageEntryService.getById(id);
-        model.addAttribute("imageUserId", imageEntryDTO.getUser());
-
-        model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
-
-        String tags = imageEntryService.getImageTags(imageEntryDTO);
-        model.addAttribute("path", imageEntryDTO.getPath());
-        model.addAttribute("title", imageEntryDTO.getTitle());
-        model.addAttribute("imageTags", tags);
-
-        System.out.println(user.getId());
-        System.out.println(imageEntryDTO.getUser());
+        returnImageDetails(imageEntryDTO, model);
 
         return "pages/image";
     }
@@ -120,6 +120,25 @@ public class ImageController {
         List<ImageEntryDTO> resultEntries = imageEntryService.getByTags(tagSearch);
         model.addAttribute("resultEntries", resultEntries);
         return "pages/searchResults";
+    }
+
+    @PutMapping("/updateCharacter/{id}")
+    public String updateCharacterEntry(@PathVariable long id,
+                                       @Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+                                       BindingResult result,
+                                       Model model){
+        model.addAttribute("ImageEntryDTO", imageEntryDTO);
+
+
+        return "index";
+    }
+
+    private void returnImageDetails(ImageEntryDTO imageEntryDTO,
+                                    Model model){
+        String tags = imageEntryService.getImageTags(imageEntryDTO);
+        model.addAttribute("path", imageEntryDTO.getPath());
+        model.addAttribute("title", imageEntryDTO.getTitle());
+        model.addAttribute("imageTags", tags);
     }
 
 }

@@ -37,11 +37,6 @@ public class ImageEntryService {
                 .toList();
     }
 
-    public ImageEntryDTO getById(long id){
-        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
-        return imageEntryMapper.toDTO(imageEntryEntity);
-    }
-
     public List<ImageEntryDTO> getByTags(String tagSearch){
         List<ImageEntryDTO> resultList = new ArrayList<>();
         for(ImageEntryDTO image : getAllImages()){

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageEntryRepo extends CrudRepository<ImageEntryEntity, Long>{
+    ImageEntryEntity findById(long id);
 }
