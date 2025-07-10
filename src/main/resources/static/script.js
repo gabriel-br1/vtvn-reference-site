@@ -184,3 +184,31 @@ let tags = ["Character:Single",
       inputElement.value = '';
 
     }
+
+    function addTags(){
+          const natureElement = document.getElementById("Nature");
+          const structureElement = document.getElementById("Structure");
+          const colorElement = document.getElementById("Color");
+          const saturElement = document.getElementById("Saturation");
+          const tagList = document.getElementById("taglist");
+
+          console.log("in addtags");
+
+          if(natureElement.value !=== null){
+                  tagElement.innerHTML = natureElement.value;
+                  tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;height:2rem;");
+                  tagList.appendChild(tagElement);
+          } if(structureElement.value !=== null){
+                  tagElement.innerHTML = structureElement.value;
+                  tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;height:2rem;");
+                  tagList.appendChild(tagElement);
+          } if (colorElement.value !=== null){
+                  tagElement.innerHTML = colorElement.value;
+                  tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;height:2rem;");
+                  tagList.appendChild(tagElement);
+          } if (saturElement.value !=== null){
+                  tagElement.innerHTML = saturElement.value;
+                  tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
+                  tagList.appendChild(tagElement);
+          }
+    }

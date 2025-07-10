@@ -94,7 +94,7 @@ public class ImageController {
     }
 
     @GetMapping("/image/{id}")
-    public String renderImagePage(@PathVariable long id,
+    public String renderImagePage(@PathVariable("id") long id,
             Model model){
 
         ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id);
@@ -104,6 +104,7 @@ public class ImageController {
         if (userEntity != null){
             if (userEntity.getId() == imageEntryEntity.getUser().getId()){
                 model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
+                model.addAttribute("ImageEntryDTO", imageEntryDTO);
                 returnImageDetails(imageEntryDTO, model);
                 return "pages/imagePrincipal";
             }
@@ -122,15 +123,29 @@ public class ImageController {
         return "pages/searchResults";
     }
 
-    @PutMapping("/updateCharacter/{id}")
-    public String updateCharacterEntry(@PathVariable long id,
+    @GetMapping("/updateCharacter/{id}")
+    public String renderUpdateCharacter(@PathVariable long id,
                                        @Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
-                                       BindingResult result,
                                        Model model){
         model.addAttribute("ImageEntryDTO", imageEntryDTO);
+        model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
 
+        return "pages/uploadCharacter";
+    }
 
-        return "index";
+    @GetMapping("/updateScenery/{id}")
+    public String renderUpdateScenery(@PathVariable long id,
+                                      Model model){
+
+        ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryRepo.findById(id));
+        imageEntryDTO.setTagDTO(imageEntryService.assignTagDTO(imageEntryDTO));
+
+        model.addAttribute("ImageEntryDTO", imageEntryDTO);
+        model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
+
+        System.out.println(imageEntryDTO.getTagDTO());
+
+        return "pages/uploadScenery";
     }
 
     private void returnImageDetails(ImageEntryDTO imageEntryDTO,

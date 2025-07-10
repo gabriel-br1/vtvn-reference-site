@@ -5,6 +5,7 @@ import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
+import com.emerald.vitruvian.models.TagDTO;
 import com.emerald.vitruvian.models.TagsDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +131,41 @@ public class ImageEntryService {
 
     private boolean isCharacter(ImageEntryDTO imageEntryDTO){
         return imageEntryDTO.getTagDTO().getTagImageType().equals("CHARACTER");
+    }
+
+    public TagDTO assignTagDTO(ImageEntryDTO imageEntryDTO){
+        TagDTO tags = new TagDTO();
+        if(imageEntryDTO.getTagCharacterClothing() != null){
+            tags.setTagCharacterClothing(imageEntryDTO.getTagCharacterClothing().name());
+        }
+        if(imageEntryDTO.getTagCharacterNumber() != null){
+            tags.setTagCharacterNumber(imageEntryDTO.getTagCharacterNumber().name());
+        }
+        if(imageEntryDTO.getTagCharacterPose() != null){
+            tags.setTagCharacterPose(imageEntryDTO.getTagCharacterPose().name());
+        }
+        if(imageEntryDTO.getTagCharacterShape() != null){
+            tags.setTagCharacterShape(imageEntryDTO.getTagCharacterShape().name());
+        }
+        if(imageEntryDTO.getTagCharacterType() != null){
+            tags.setTagCharacterType(imageEntryDTO.getTagCharacterType().name());
+        }
+        if(imageEntryDTO.getTagImageType() != null){
+            tags.setTagImageType(imageEntryDTO.getTagImageType().name());
+        }
+        if(imageEntryDTO.getTagNeutralColor() != null){
+            tags.setTagNeutralColor(imageEntryDTO.getTagNeutralColor().name());
+        }
+        if(imageEntryDTO.getTagNeutralSaturation() != null){
+            tags.setTagNeutralSaturation(imageEntryDTO.getTagNeutralSaturation().name());
+        }
+        if(imageEntryDTO.getTagSceneryNature() != null){
+            tags.setTagSceneryNature(imageEntryDTO.getTagSceneryNature().name());
+        }
+        if(imageEntryDTO.getTagSceneryStructure() != null){
+            tags.setTagSceneryStructure(imageEntryDTO.getTagSceneryStructure().name());
+        }
+        return tags;
     }
 
     private TagsDTO convertTagsString(ImageEntryDTO imageEntryDTO){
