@@ -194,19 +194,19 @@ let tags = ["Character:Single",
 
           console.log("in addtags");
 
-          if(natureElement.value !=== null){
+          if(natureElement.value !== null){
                   tagElement.innerHTML = natureElement.value;
                   tagElement.setAttribute("style", "background-color:#db3a2b;border-radius:10px;width:12rem;height:2rem;");
                   tagList.appendChild(tagElement);
-          } if(structureElement.value !=== null){
+          } if(structureElement.value !== null){
                   tagElement.innerHTML = structureElement.value;
                   tagElement.setAttribute("style", "background-color:#51db2b;border-radius:10px;width:12rem;height:2rem;");
                   tagList.appendChild(tagElement);
-          } if (colorElement.value !=== null){
+          } if (colorElement.value !== null){
                   tagElement.innerHTML = colorElement.value;
                   tagElement.setAttribute("style", "background-color:#2b49db;border-radius:10px;width:12rem;height:2rem;");
                   tagList.appendChild(tagElement);
-          } if (saturElement.value !=== null){
+          } if (saturElement.value !== null){
                   tagElement.innerHTML = saturElement.value;
                   tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
                   tagList.appendChild(tagElement);

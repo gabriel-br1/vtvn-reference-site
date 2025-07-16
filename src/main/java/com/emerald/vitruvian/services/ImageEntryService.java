@@ -32,6 +32,13 @@ public class ImageEntryService {
         imageEntryRepo.save(newImage);
     }
 
+    public void edit(ImageEntryDTO imageEntryDTO, long id){
+        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id);
+        assignEnums(imageEntryDTO);
+        ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
+        imageEntryMapper.updateImageEntryEntity(newImage, imageEntryEntity);
+    }
+
     public List<ImageEntryDTO> getAllImages(){
         return StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
                 .map(n -> imageEntryMapper.toDTO(n))

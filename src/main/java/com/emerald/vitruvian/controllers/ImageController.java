@@ -12,6 +12,10 @@ import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +44,15 @@ public class ImageController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @GetMapping("/script.js")
+    public ResponseEntity<Resource> serveJs(){
+        Resource resource = new ClassPathResource("static/script.js");
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.valueOf("application/javascript"))
+                .body(resource);
+    }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadCharacter")
@@ -145,7 +158,26 @@ public class ImageController {
 
         System.out.println(imageEntryDTO.getTagDTO());
 
-        return "pages/uploadScenery";
+        return "pages/editScenery";
+    }
+
+    @PutMapping("/updateCharacter/{id}")
+    public String editCharacter(){
+        return "pages/index";
+    }
+
+    @PutMapping("/updateScenery/{id}")
+    public String editScenery(@PathVariable long id,
+                              @Valid ImageEntryDTO imageEntryDTO,
+                              BindingResult result,
+                              Model model){
+        if(result.hasErrors()){
+            return renderUpdateScenery(id, model);
+        }
+
+        imageEntryService.edit(imageEntryDTO, id);
+
+        return "pages/index";
     }
 
     private void returnImageDetails(ImageEntryDTO imageEntryDTO,

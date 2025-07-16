@@ -7,7 +7,7 @@
   </header>
   <div class="d-flex justify-content-center">
     <div class="col-5">
-      <form method="post" th:action="@{/createScenery}" th:object="${ImageEntryDTO}">
+      <form method="put" th:action="@{'/updateScenery/' + ${ImageEntryDTO.imageId}}" th:object="${ImageEntryDTO}">
         <div class="col-12 mx-2 my-3">
           <label class="text-light" for="title">Title:</label>
           <input class="form-control form-control-lg" id="title" type="text" th:field="*{title}">
