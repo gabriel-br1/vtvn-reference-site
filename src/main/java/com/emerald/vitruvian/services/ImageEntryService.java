@@ -33,10 +33,13 @@ public class ImageEntryService {
     }
 
     public void edit(ImageEntryDTO imageEntryDTO, long id){
-        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id);
+        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
         assignEnums(imageEntryDTO);
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
+        newImage.setImageId(imageEntryEntity.getImageId());
+        newImage.setUser(imageEntryEntity.getUser());
         imageEntryMapper.updateImageEntryEntity(newImage, imageEntryEntity);
+        imageEntryRepo.save(newImage);
     }
 
     public List<ImageEntryDTO> getAllImages(){

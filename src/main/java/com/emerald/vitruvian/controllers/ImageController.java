@@ -110,7 +110,7 @@ public class ImageController {
     public String renderImagePage(@PathVariable("id") long id,
             Model model){
 
-        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id);
+        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
         ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryEntity);
 
         UserEntity userEntity = userRepo.findById(userService.getPrincipalId());
@@ -138,46 +138,60 @@ public class ImageController {
 
     @GetMapping("/updateCharacter/{id}")
     public String renderUpdateCharacter(@PathVariable long id,
-                                       @Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
                                        Model model){
+
+        ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryRepo.findById(id).orElse(new ImageEntryEntity()));
+        imageEntryDTO.setTagDTO(imageEntryService.assignTagDTO(imageEntryDTO));
+
         model.addAttribute("ImageEntryDTO", imageEntryDTO);
         model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
 
-        return "pages/uploadCharacter";
+        return "pages/editCharacter";
     }
 
     @GetMapping("/updateScenery/{id}")
     public String renderUpdateScenery(@PathVariable long id,
                                       Model model){
 
-        ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryRepo.findById(id));
+        ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryRepo.findById(id).orElse(new ImageEntryEntity()));
         imageEntryDTO.setTagDTO(imageEntryService.assignTagDTO(imageEntryDTO));
 
         model.addAttribute("ImageEntryDTO", imageEntryDTO);
         model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
 
-        System.out.println(imageEntryDTO.getTagDTO());
-
         return "pages/editScenery";
     }
 
-    @PutMapping("/updateCharacter/{id}")
-    public String editCharacter(){
-        return "pages/index";
-    }
+    @PostMapping("/updateCharacter/{id}")
+    public String editCharacter(@PathVariable long id,
+                                @Valid ImageEntryDTO imageEntryDTO,
+                                BindingResult result,
+                                Model model){
 
-    @PutMapping("/updateScenery/{id}")
-    public String editScenery(@PathVariable long id,
-                              @Valid ImageEntryDTO imageEntryDTO,
-                              BindingResult result,
-                              Model model){
         if(result.hasErrors()){
             return renderUpdateScenery(id, model);
         }
 
+        imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
         imageEntryService.edit(imageEntryDTO, id);
 
-        return "pages/index";
+        return renderImagePage(id, model);
+    }
+
+    @PostMapping("/updateScenery/{id}")
+    public String editScenery(@PathVariable long id,
+                              @Valid ImageEntryDTO imageEntryDTO,
+                              BindingResult result,
+                              Model model){
+
+        if(result.hasErrors()){
+            return renderUpdateScenery(id, model);
+        }
+
+        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
+        imageEntryService.edit(imageEntryDTO, id);
+
+        return renderImagePage(id, model);
     }
 
     private void returnImageDetails(ImageEntryDTO imageEntryDTO,

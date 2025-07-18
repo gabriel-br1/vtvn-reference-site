@@ -7,7 +7,7 @@
   </header>
   <div class="d-flex justify-content-center">
     <div class="col-5">
-      <form method="post" th:action="@{'/updateScenery/' + ${ImageEntryDTO.imageId}}" th:object="${ImageEntryDTO}">
+      <form method="post" th:action="@{'/updateCharacter/' + ${ImageEntryDTO.imageId}}" th:object="${ImageEntryDTO}">
         <div class="col-12 mx-2 my-3">
           <label class="text-light" for="title">Title:</label>
           <input class="form-control form-control-lg" id="title" type="text" th:field="*{title}">
@@ -17,17 +17,20 @@
           <input class="form-control form-control-lg" id="path" type="url" th:field="*{path}">
         </div>
         <div class="invisible" style="height:0px;">
+          <input type="text" id="Character" th:field="*{TagDTO.tagCharacterNumber}">
+          <input type="text" id="Shape" th:field="*{TagDTO.tagCharacterShape}">
+          <input type="text" id="Type" th:field="*{TagDTO.tagCharacterType}">
+          <input type="text" id="Pose" th:field="*{TagDTO.tagCharacterPose}">
+          <input type="text" id="Clothing" th:field="*{TagDTO.tagCharacterClothing}">
           <input type="text" id="Color" th:field="*{TagDTO.tagNeutralColor}">
           <input type="text" id="Saturation" th:field="*{TagDTO.tagNeutralSaturation}">
-          <input type="text" id="Nature" th:field="*{TagDTO.tagSceneryNature}">
-          <input type="text" id="Structure" th:field="*{TagDTO.tagSceneryStructure}">
         </div>
         <button type="submit" class="btn btn-lg col-10" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;">Create</button>
       </form>
       <div class="col-12 mx-2">
         <label class="text-light" for="tags">Tags:</label>
-        <input class="form-control form-control-lg" id="tags" type="text" list="datalist" onkeyup="predictScenery(this.value)">
-        <button class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" onclick="addTagScenery()">Add tag</button>
+        <input class="form-control form-control-lg" id="tags" type="text" list="datalist" onkeyup="predictCharacter(this.value)">
+        <button class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" onclick="addTag()">Add tag</button>
       </div>
       <datalist id="datalist">
       </datalist>

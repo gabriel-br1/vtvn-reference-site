@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-start flex-wrap px-2" th:text="${imageTags}">
         </div>
         <div th:object="${ImageEntryDTO}">
-            <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{'/updateCharacter/' + ${id}">Edit</a>
+            <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{'/updateCharacter/' + ${ImageEntryDTO.imageId}}">Edit</a>
             <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'SCENERY'" th:href="@{'/updateScenery/' + ${ImageEntryDTO.imageId}}">Edit</a>
         </div>
     </div>
