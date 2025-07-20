@@ -2,9 +2,13 @@ package com.emerald.vitruvian.models;
 
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
 
 @Component
 public class ImageEntryDTO {
@@ -15,8 +19,18 @@ public class ImageEntryDTO {
     @Size(max = 50, message = "Title is too long")
     private String title;
 
-    @NotBlank(message = "Fill in the path")
     private String path;
+
+    private MultipartFile image;
+
+    @NotBlank
+    private String imageName;
+
+    @NotBlank
+    private String imageType;
+
+    @Lob
+    private byte[] imageData;
 
     private TagDTO tagDTO;
 
@@ -173,12 +187,48 @@ public class ImageEntryDTO {
         this.user = user;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
                 ", path='" + path + '\'' +
+                ", image=" + image +
+                ", imageName='" + imageName + '\'' +
+                ", imageType='" + imageType + '\'' +
+                ", imageData=" + Arrays.toString(imageData) +
                 ", tagDTO=" + tagDTO +
                 ", user=" + user +
                 ", tagImageType=" + tagImageType +

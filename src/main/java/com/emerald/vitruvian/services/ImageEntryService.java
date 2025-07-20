@@ -10,6 +10,9 @@ import com.emerald.vitruvian.models.TagsDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +28,13 @@ public class ImageEntryService {
     @Autowired
     private ImageEntryMapper imageEntryMapper;
 
-    public void add(ImageEntryDTO imageEntryDTO, UserEntity userEntity){
+    public void add(ImageEntryDTO imageEntryDTO, UserEntity userEntity) throws IOException {
         assignEnums(imageEntryDTO);
+
+        imageEntryDTO.setImageName(imageEntryDTO.getImage().getOriginalFilename());
+        imageEntryDTO.setImageType(imageEntryDTO.getImage().getContentType());
+        imageEntryDTO.setImageData(imageEntryDTO.getImage().getBytes());
+
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
         newImage.setUser(userEntity);
         imageEntryRepo.save(newImage);

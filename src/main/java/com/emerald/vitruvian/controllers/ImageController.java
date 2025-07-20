@@ -21,7 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -82,8 +84,15 @@ public class ImageController {
         UserEntity user = userRepo.findById(userService.getPrincipalId());
 
         imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
-        imageEntryService.add(imageEntryDTO, user);
-        return "pages/uploadSuccess";
+
+        try {
+            imageEntryService.add(imageEntryDTO, user);
+        } catch (IOException e) {
+            System.out.println("Unable to upload image");
+            throw new RuntimeException(e);
+        }
+
+        return "pages/index";
 
     }
 
@@ -101,8 +110,15 @@ public class ImageController {
         UserEntity user = userRepo.findById(userService.getPrincipalId());
 
         imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-        imageEntryService.add(imageEntryDTO, user);
-        return "pages/uploadSuccess";
+
+        try {
+            imageEntryService.add(imageEntryDTO, user);
+        } catch (IOException e) {
+            System.out.println("Unable to upload image");
+            throw new RuntimeException(e);
+        }
+
+        return "pages/index";
 
     }
 
