@@ -20,12 +20,6 @@ public class ImageEntryEntity {
     @Column(nullable = false)
     private String title;
 
-    @Transient
-    private String path;
-
-    @Transient
-    private MultipartFile image;
-
     @Column(nullable = false)
     private String imageName;
 
@@ -33,6 +27,7 @@ public class ImageEntryEntity {
     private String imageType;
 
     @Column(nullable = false)
+    @Lob
     private byte[] imageData;
 
     @JdbcTypeCode(SqlTypes.JSON)
@@ -105,14 +100,6 @@ public class ImageEntryEntity {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public TagDTO getTagDTO() {
@@ -211,14 +198,6 @@ public class ImageEntryEntity {
         this.user = user;
     }
 
-    public MultipartFile getImage() {
-        return image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
-    }
-
     public String getImageName() {
         return imageName;
     }
@@ -248,8 +227,6 @@ public class ImageEntryEntity {
         return "ImageEntryEntity{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
-                ", path='" + path + '\'' +
-                ", image=" + image +
                 ", imageName='" + imageName + '\'' +
                 ", imageType='" + imageType + '\'' +
                 ", imageData=" + Arrays.toString(imageData) +

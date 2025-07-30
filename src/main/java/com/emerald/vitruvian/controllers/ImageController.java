@@ -4,8 +4,8 @@ import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.mappers.UserMapper;
+import com.emerald.vitruvian.models.ImageDTO;
 import com.emerald.vitruvian.models.ImageEntryDTO;
-import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.ImageEntryService;
@@ -60,6 +60,16 @@ public class ImageController {
     @GetMapping("/uploadCharacter")
     public String renderCharacterUpload(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+        model.addAttribute("ImageDTO", new ImageDTO());
+        return "pages/uploadCharacter";
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/uploadCharacter/img")
+    public String renderCharacterUploadImage(Model model,
+                                             ImageDTO imageDTO){
+        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+        model.addAttribute("ImageDTO", imageDTO);
         return "pages/uploadCharacter";
     }
 
@@ -88,7 +98,6 @@ public class ImageController {
         try {
             imageEntryService.add(imageEntryDTO, user);
         } catch (IOException e) {
-            System.out.println("Unable to upload image");
             throw new RuntimeException(e);
         }
 
@@ -102,24 +111,49 @@ public class ImageController {
                                   BindingResult result,
                                   Model model){
 
-        if(result.hasErrors()){
-            model.addAttribute("ImageEntryDTO", imageEntryDTO);
-            return "pages/uploadScenery";
-        }
-
-        UserEntity user = userRepo.findById(userService.getPrincipalId());
-
-        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-
-        try {
-            imageEntryService.add(imageEntryDTO, user);
-        } catch (IOException e) {
-            System.out.println("Unable to upload image");
-            throw new RuntimeException(e);
-        }
+//        if(result.hasErrors()){
+//            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+//            return "pages/uploadScenery";
+//        }
+//
+//        UserEntity user = userRepo.findById(userService.getPrincipalId());
+//
+//        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
+//
+//        imageEntryService.add(imageEntryDTO, user);
 
         return "pages/index";
 
+    }
+
+    @PostMapping("/uploadImage")
+    public String uploadImage(@RequestParam("image") MultipartFile image,
+                               @RequestParam("isCharacter") String isCharacter,
+                               Model model){
+
+//        ImageEntryDTO imageEntryDTO = new ImageEntryDTO();
+
+//        try {
+//            imageEntryService.addImage(imageEntryDTO, image);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+        ImageDTO imageDTO = new ImageDTO();
+
+        imageDTO.setImageName(image.getOriginalFilename());
+        imageDTO.setImageType(image.getContentType());
+        try {
+            imageDTO.setImageData(image.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(isCharacter.equals("true")){
+            return renderCharacterUploadImage(model, imageDTO);
+        } else {
+            return renderSceneryUpload(model);
+        }
     }
 
     @GetMapping("/image/{id}")
@@ -213,7 +247,7 @@ public class ImageController {
     private void returnImageDetails(ImageEntryDTO imageEntryDTO,
                                     Model model){
         String tags = imageEntryService.getImageTags(imageEntryDTO);
-        model.addAttribute("path", imageEntryDTO.getPath());
+//        model.addAttribute("path", imageEntryDTO.getPath());
         model.addAttribute("title", imageEntryDTO.getTitle());
         model.addAttribute("imageTags", tags);
     }

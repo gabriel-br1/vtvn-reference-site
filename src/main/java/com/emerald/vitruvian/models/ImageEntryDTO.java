@@ -19,17 +19,10 @@ public class ImageEntryDTO {
     @Size(max = 50, message = "Title is too long")
     private String title;
 
-    private String path;
-
-    private MultipartFile image;
-
-    @NotBlank
     private String imageName;
 
-    @NotBlank
     private String imageType;
 
-    @Lob
     private byte[] imageData;
 
     private TagDTO tagDTO;
@@ -81,14 +74,6 @@ public class ImageEntryDTO {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public TagDTO getTagDTO() {
@@ -211,21 +196,11 @@ public class ImageEntryDTO {
         this.imageData = imageData;
     }
 
-    public MultipartFile getImage() {
-        return image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
-    }
-
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
-                ", path='" + path + '\'' +
-                ", image=" + image +
                 ", imageName='" + imageName + '\'' +
                 ", imageType='" + imageType + '\'' +
                 ", imageData=" + Arrays.toString(imageData) +

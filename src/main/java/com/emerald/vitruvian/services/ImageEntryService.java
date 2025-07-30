@@ -31,13 +31,15 @@ public class ImageEntryService {
     public void add(ImageEntryDTO imageEntryDTO, UserEntity userEntity) throws IOException {
         assignEnums(imageEntryDTO);
 
-        imageEntryDTO.setImageName(imageEntryDTO.getImage().getOriginalFilename());
-        imageEntryDTO.setImageType(imageEntryDTO.getImage().getContentType());
-        imageEntryDTO.setImageData(imageEntryDTO.getImage().getBytes());
-
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
         newImage.setUser(userEntity);
         imageEntryRepo.save(newImage);
+    }
+
+    public void addImage(ImageEntryDTO imageEntryDTO, MultipartFile image) throws IOException {
+        imageEntryDTO.setImageName(image.getOriginalFilename());
+        imageEntryDTO.setImageType(image.getContentType());
+        imageEntryDTO.setImageData(image.getBytes());
     }
 
     public void edit(ImageEntryDTO imageEntryDTO, long id){
