@@ -10,7 +10,9 @@ import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -23,7 +25,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Controller
@@ -168,14 +172,29 @@ public class ImageController {
             if (userEntity.getId() == imageEntryEntity.getUser().getId()){
                 model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
                 model.addAttribute("ImageEntryDTO", imageEntryDTO);
+                model.addAttribute("imageId", imageEntryDTO.getImageId());
                 returnImageDetails(imageEntryDTO, model);
                 return "pages/imagePrincipal";
             }
         }
 
+        model.addAttribute("imageId", imageEntryDTO.getImageId());
         returnImageDetails(imageEntryDTO, model);
 
         return "pages/image";
+    }
+
+    @GetMapping("/image/getter/{id}")
+    public void showEntryImage(@PathVariable("id") long id,
+                               HttpServletResponse response){
+        response.setContentType("image/jpeg");
+        ImageEntryDTO imageEntry = imageEntryMapper.toDTO(imageEntryRepo.findById(id).orElse(new ImageEntryEntity()));
+        InputStream inputStream = new ByteArrayInputStream(imageEntry.getImageData());
+        try {
+            IOUtils.copy(inputStream, response.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/results")

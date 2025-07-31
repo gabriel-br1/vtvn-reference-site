@@ -26,7 +26,7 @@ public class ImageEntryEntity {
     @Column(nullable = false)
     private String imageType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "BLOB")
     @Lob
     private byte[] imageData;
 
