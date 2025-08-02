@@ -60,6 +60,7 @@ public class ImageController {
                 .body(resource);
     }
 
+    //initial upload character entry page
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadCharacter")
     public String renderCharacterUpload(Model model){
@@ -68,6 +69,7 @@ public class ImageController {
         return "pages/uploadCharacter";
     }
 
+    //upload character entry page after image upload
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadCharacter/img")
     public String renderCharacterUploadImage(Model model,
@@ -77,10 +79,22 @@ public class ImageController {
         return "pages/uploadCharacter";
     }
 
+    //initial upload scenery entry page
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/uploadScenery")
     public String renderSceneryUpload(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+        model.addAttribute("ImageDTO", new ImageDTO());
+        return "pages/uploadScenery";
+    }
+
+    //upload scenery entry page after image upload
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/uploadScenery/img")
+    public String renderSceneryUploadImage(Model model,
+                                             ImageDTO imageDTO){
+        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+        model.addAttribute("ImageDTO", imageDTO);
         return "pages/uploadScenery";
     }
 
@@ -115,37 +129,35 @@ public class ImageController {
                                   BindingResult result,
                                   Model model){
 
-//        if(result.hasErrors()){
-//            model.addAttribute("ImageEntryDTO", imageEntryDTO);
-//            return "pages/uploadScenery";
-//        }
-//
-//        UserEntity user = userRepo.findById(userService.getPrincipalId());
-//
-//        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-//
-//        imageEntryService.add(imageEntryDTO, user);
+        if(result.hasErrors()){
+            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            return "pages/uploadScenery";
+        }
+
+        UserEntity user = userRepo.findById(userService.getPrincipalId());
+
+        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
+
+        try {
+            imageEntryService.add(imageEntryDTO, user);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return "pages/index";
 
     }
 
+    //uploads image and binds it to the ImageEntryDTO
     @PostMapping("/uploadImage")
     public String uploadImage(@RequestParam("image") MultipartFile image,
                                @RequestParam("isCharacter") String isCharacter,
                                Model model){
 
-//        ImageEntryDTO imageEntryDTO = new ImageEntryDTO();
-
-//        try {
-//            imageEntryService.addImage(imageEntryDTO, image);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
         ImageDTO imageDTO = new ImageDTO();
 
         imageDTO.setImageName(image.getOriginalFilename());
+
         imageDTO.setImageType(image.getContentType());
         try {
             imageDTO.setImageData(image.getBytes());
@@ -156,7 +168,7 @@ public class ImageController {
         if(isCharacter.equals("true")){
             return renderCharacterUploadImage(model, imageDTO);
         } else {
-            return renderSceneryUpload(model);
+            return renderSceneryUploadImage(model, imageDTO);
         }
     }
 
@@ -184,6 +196,7 @@ public class ImageController {
         return "pages/image";
     }
 
+    //converts image from blob to viewable image for the image entry page
     @GetMapping("/image/getter/{id}")
     public void showEntryImage(@PathVariable("id") long id,
                                HttpServletResponse response){

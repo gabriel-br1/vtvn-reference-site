@@ -12,17 +12,24 @@
           <label class="text-light" for="title">Title:</label>
           <input class="form-control form-control-lg" id="title" type="text" th:field="*{title}">
         </div>
-        <div class="col-12 mx-2 my-3">
-          <label class="text-light" for="path">Path:</label>
-          <input class="form-control form-control-lg" id="path" type="url" th:field="*{path}">
-        </div>
         <div class="invisible" style="height:0px;">
           <input type="text" id="Color" th:field="*{TagDTO.tagNeutralColor}">
           <input type="text" id="Saturation" th:field="*{TagDTO.tagNeutralSaturation}">
           <input type="text" id="Nature" th:field="*{TagDTO.tagSceneryNature}">
           <input type="text" id="Structure" th:field="*{TagDTO.tagSceneryStructure}">
         </div>
+        <input type="text" id="imageName" th:field="${ImageDTO.imageName}">
+        <input type="text" id="imageType" th:field="${ImageDTO.imageType}">
+        <input type="text" id="imageData" th:field="${ImageDTO.imageData}">
         <button type="submit" class="btn btn-lg col-10" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;">Create</button>
+      </form>
+      <form method="post" th:action="@{/uploadImage}" enctype="multipart/form-data">
+        <div class="col-12 mx-2 my-3">
+          <label class="text-light" for="image">Upload image:</label>
+          <input class="form-control form-control-lg" id="image" type="file" accept="image/*" name="image">
+          <input class="invisible" type="text" id="isCharacter" name="isCharacter" th:value="false">
+          <button type="submit" class="btn btn-lg col-10" style="background-color:#2bdb9d;font-size:20px;">Upload</button>
+        </div>
       </form>
       <div class="col-12 mx-2">
         <label class="text-light" for="tags">Tags:</label>

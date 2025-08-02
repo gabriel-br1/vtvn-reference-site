@@ -37,6 +37,7 @@ public class HomeController {
         return "pages/index";
     }
 
+    //converts images from blob to viewable images on the home page
     @GetMapping("/home/getter/{id}")
     public void showEntryImage(@PathVariable("id") long id,
                                HttpServletResponse response){
