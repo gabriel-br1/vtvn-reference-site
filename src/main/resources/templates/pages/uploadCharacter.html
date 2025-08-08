@@ -7,14 +7,14 @@
   </header>
   <div class="d-flex justify-content-center">
     <div class="col-5">
-      <form method="post" th:action="@{/createCharacter}" th:object="${ImageEntryDTO}">
+      <form method="post" th:action="@{/createCharacter}" th:object="${ImageEntryDTO}" enctype="multipart/form-data">
         <div class="col-12 mx-2 my-3">
           <label class="text-light" for="title">Title:</label>
           <input class="form-control form-control-lg" id="title" type="text" th:field="*{title}">
         </div>
         <div class="col-12 mx-2 my-3">
-          <label class="text-light" for="path">Path:</label>
-          <input class="form-control form-control-lg" id="path" type="url" th:field="*{path}">
+          <label class="text-light" for="image">Path:</label>
+          <input class="form-control form-control-lg" id="image" name="image" type="file" accept="image/jpeg, image/png">
         </div>
         <div class="invisible" style="height:0px;">
           <input type="text" id="Character" th:field="*{TagDTO.tagCharacterNumber}">

@@ -18,7 +18,7 @@ public class ImageEntryEntity {
     private String title;
 
     @Column(nullable = false)
-    private String path;
+    private String fileName;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Transient
@@ -92,12 +92,12 @@ public class ImageEntryEntity {
         this.title = title;
     }
 
-    public String getPath() {
-        return path;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public TagDTO getTagDTO() {
@@ -201,7 +201,7 @@ public class ImageEntryEntity {
         return "ImageEntryEntity{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
-                ", path='" + path + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", tagDTO=" + tagDTO +
                 ", user=" + user +
                 ", tagImageType=" + tagImageType +

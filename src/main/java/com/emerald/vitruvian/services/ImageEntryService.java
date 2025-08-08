@@ -25,11 +25,11 @@ public class ImageEntryService {
     @Autowired
     private ImageEntryMapper imageEntryMapper;
 
-    public void add(ImageEntryDTO imageEntryDTO, UserEntity userEntity){
+    public ImageEntryEntity add(ImageEntryDTO imageEntryDTO){
         assignEnums(imageEntryDTO);
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
-        newImage.setUser(userEntity);
         imageEntryRepo.save(newImage);
+        return newImage;
     }
 
     public void edit(ImageEntryDTO imageEntryDTO, long id){

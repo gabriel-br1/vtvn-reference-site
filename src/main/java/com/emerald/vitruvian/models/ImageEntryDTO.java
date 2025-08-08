@@ -15,8 +15,7 @@ public class ImageEntryDTO {
     @Size(max = 50, message = "Title is too long")
     private String title;
 
-    @NotBlank(message = "Fill in the path")
-    private String path;
+    private String fileName;
 
     private TagDTO tagDTO;
 
@@ -69,12 +68,12 @@ public class ImageEntryDTO {
         this.title = title;
     }
 
-    public String getPath() {
-        return path;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public TagDTO getTagDTO() {
@@ -178,7 +177,7 @@ public class ImageEntryDTO {
         return "ImageEntryDTO{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
-                ", path='" + path + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", tagDTO=" + tagDTO +
                 ", user=" + user +
                 ", tagImageType=" + tagImageType +

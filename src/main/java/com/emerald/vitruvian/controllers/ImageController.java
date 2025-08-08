@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.controllers;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
@@ -8,6 +9,7 @@ import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
+import com.emerald.vitruvian.services.FileUploadService;
 import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.UserService;
 import jakarta.validation.Valid;
@@ -19,9 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -44,6 +49,9 @@ public class ImageController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private FileUploadService uploadService;
 
     @GetMapping("/script.js")
     public ResponseEntity<Resource> serveJs(){
@@ -71,20 +79,37 @@ public class ImageController {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/createCharacter")
     public String createCharacter(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+                              @RequestParam("image") MultipartFile image,
                               BindingResult result,
                               Model model){
+
+        System.out.println(image.getOriginalFilename());
 
         if(result.hasErrors()){
             model.addAttribute("ImageEntryDTO", imageEntryDTO);
             return "pages/uploadCharacter";
         }
 
-        UserEntity user = userRepo.findById(userService.getPrincipalId());
+        if(!image.isEmpty()){
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            imageEntryDTO.setFileName(fileName);
 
-        imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
-        imageEntryService.add(imageEntryDTO, user);
-        return "pages/uploadSuccess";
+            UserEntity user = userRepo.findById(userService.getPrincipalId());
+            imageEntryDTO.setUser(user);
+            imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
 
+            ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
+            String uploadDir = "src/main/resources/static/images/" + savedImage.getImageId();
+
+            try {
+                uploadService.uploadFile(uploadDir, fileName, image);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            return "pages/uploadSuccess";
+        }
+        return "error";
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -101,7 +126,7 @@ public class ImageController {
         UserEntity user = userRepo.findById(userService.getPrincipalId());
 
         imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-        imageEntryService.add(imageEntryDTO, user);
+        imageEntryService.add(imageEntryDTO);
         return "pages/uploadSuccess";
 
     }
@@ -197,7 +222,7 @@ public class ImageController {
     private void returnImageDetails(ImageEntryDTO imageEntryDTO,
                                     Model model){
         String tags = imageEntryService.getImageTags(imageEntryDTO);
-        model.addAttribute("path", imageEntryDTO.getPath());
+//        model.addAttribute("path", imageEntryDTO.getPath());
         model.addAttribute("title", imageEntryDTO.getTitle());
         model.addAttribute("imageTags", tags);
     }
