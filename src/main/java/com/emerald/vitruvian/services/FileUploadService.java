@@ -29,4 +29,14 @@ public class FileUploadService {
         }
     }
 
+    public byte[] getImage(String imageDirectory, String imageName) throws IOException {
+        Path imagePath = Path.of(imageDirectory, imageName);
+
+        if (Files.exists(imagePath)){
+            return Files.readAllBytes(imagePath);
+        } else {
+            return null;
+        }
+    }
+
 }

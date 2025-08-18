@@ -99,7 +99,7 @@ public class ImageController {
             imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
 
             ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
-            String uploadDir = "src/main/resources/static/images/" + savedImage.getImageId();
+            String uploadDir = "src/main/resources/static/images/";
 
             try {
                 uploadService.uploadFile(uploadDir, fileName, image);
@@ -141,8 +141,8 @@ public class ImageController {
         UserEntity userEntity = userRepo.findById(userService.getPrincipalId());
         if (userEntity != null){
             if (userEntity.getId() == imageEntryEntity.getUser().getId()){
+                model.addAttribute("ImageEntryEntity", imageEntryEntity);
                 model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
-                model.addAttribute("ImageEntryDTO", imageEntryDTO);
                 returnImageDetails(imageEntryDTO, model);
                 return "pages/imagePrincipal";
             }
@@ -222,7 +222,7 @@ public class ImageController {
     private void returnImageDetails(ImageEntryDTO imageEntryDTO,
                                     Model model){
         String tags = imageEntryService.getImageTags(imageEntryDTO);
-//        model.addAttribute("path", imageEntryDTO.getPath());
+        model.addAttribute("imageEntry", imageEntryDTO);
         model.addAttribute("title", imageEntryDTO.getTitle());
         model.addAttribute("imageTags", tags);
     }

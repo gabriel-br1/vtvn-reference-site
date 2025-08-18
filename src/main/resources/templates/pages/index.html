@@ -6,13 +6,12 @@
     <header th:replace="~{fragments/layout.html :: header}">
     </header>
     <div class="my-2 d-flex flex-row flex-wrap" style="margin-left:0.5rem;margin-right:0.5rem;">
-        <div class="mx-2 my-2" th:each="imageEntry: ${imageEntries}">
+        <div id="imageBoard" class="mx-2 my-2" th:each="imageEntry: ${imageEntries}">
             <a th:href="@{'/image/' + ${imageEntry.imageId}}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
-                <img class="card-img-top" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fplaceholderimagegenerator.com%2Fwp-content%2Fuploads%2F2024%2F12%2FLight-placeholder-image-portrait_jpg_.jpg&f=1&nofb=1&ipt=7dbbcb1c6ec6b1d1a0c48709ed68d582a10d95e18d5ba69ae3552d0abaab3e93" style="object-fit: cover; height: 100%; width 100%;">
+                <img class="card-img-top" th:src="@{'images/' + ${imageEntry.fileName}}" style="object-fit: cover; height: 100%; width 100%;">
                 <p class="card-title h6 text-dark mx-2" th:text="${imageEntry.title}" style="text-decoration:none;"></p>
             </a>
         </div>
     </div>
-
 </body>
 </html>

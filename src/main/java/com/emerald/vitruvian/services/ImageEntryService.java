@@ -38,6 +38,7 @@ public class ImageEntryService {
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
         newImage.setImageId(imageEntryEntity.getImageId());
         newImage.setUser(imageEntryEntity.getUser());
+        newImage.setFileName(imageEntryEntity.getFileName());
         imageEntryMapper.updateImageEntryEntity(newImage, imageEntryEntity);
         imageEntryRepo.save(newImage);
     }
