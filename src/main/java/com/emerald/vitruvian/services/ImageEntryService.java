@@ -32,6 +32,10 @@ public class ImageEntryService {
         return newImage;
     }
 
+    public void delete(ImageEntryDTO imageEntryDTO){
+
+    }
+
     public void edit(ImageEntryDTO imageEntryDTO, long id){
         ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
         assignEnums(imageEntryDTO);

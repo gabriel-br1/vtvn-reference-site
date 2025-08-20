@@ -29,13 +29,10 @@ public class FileUploadService {
         }
     }
 
-    public byte[] getImage(String imageDirectory, String imageName) throws IOException {
-        Path imagePath = Path.of(imageDirectory, imageName);
-
-        if (Files.exists(imagePath)){
-            return Files.readAllBytes(imagePath);
-        } else {
-            return null;
+    public void deleteFile(String uploadDir, String fileName) throws IOException {
+        Path filePath = Path.of(uploadDir, fileName);
+        if(Files.exists(filePath)){
+            Files.delete(filePath);
         }
     }
 

@@ -13,9 +13,14 @@
         </div>
         <div class="d-flex justify-content-start flex-wrap px-2" th:text="${imageTags}">
         </div>
-        <div th:object="${ImageEntryEntity}">
-            <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{'/updateCharacter/' + *{imageId}}">Edit</a>
-            <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'SCENERY'" th:href="@{'/updateScenery/' + *{imageId}}">Edit</a>
+        <div class="d-flex justify-content-start">
+            <div th:object="${ImageEntryEntity}">
+                <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{'/updateCharacter/' + *{imageId}}">Edit</a>
+                <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'SCENERY'" th:href="@{'/updateScenery/' + *{imageId}}">Edit</a>
+            </div>
+            <form method="post" th:action="@{'/deleteImage/' + ${ImageEntryEntity.imageId}}">
+                <button type="submit" class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;">Delete</button>
+            </form>
         </div>
     </div>
 </div>
