@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<form method="post" th:action="@{/createToken}" th:object="${UserDTO}" class="invisible">
+    <div class="d-flex flex-column align-items-center">
+        <button type="submit" id="homeButton" class="btn btn-lg" style="background-color:#2bdb9d;font-size:20px;">Home</button>
+    </div>
+</form>
+<div class="d-flex flex-column align-items-center">
+    <h2 class="text-light">Login successful!</h2>
+</div>
+<script src="/script.js"></script>
+<script>window.setTimeout(redirect, 1000);</script>
+</body>
+</html>

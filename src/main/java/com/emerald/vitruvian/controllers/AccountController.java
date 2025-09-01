@@ -4,6 +4,7 @@ import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.UserRepo;
+import com.emerald.vitruvian.services.JWTService;
 import com.emerald.vitruvian.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -19,7 +20,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AccountController {
 
     @Autowired
+    private HomeController homeController;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
+    private JWTService jwtService;
 
     @Autowired
     private UserRepo userRepo;
@@ -36,6 +43,21 @@ public class AccountController {
     public String renderRegister(Model model){
         model.addAttribute("userDTO", new UserDTO());
         return "pages/register";
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/loginSuccess")
+    public String renderLoginSuccess(Model model){
+        UserDTO user = userMapper.toDTO(userRepo.findById(userService.getPrincipalId()));
+        model.addAttribute("UserDTO", user);
+        return "pages/loginSuccess";
+    }
+
+    @PostMapping("/createToken")
+    public String createToken(@ModelAttribute UserDTO user,
+                              Model model){
+        String token = jwtService.generateToken(user.getEmail());
+        return homeController.renderHome(model);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
