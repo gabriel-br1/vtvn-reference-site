@@ -2,11 +2,9 @@ package com.emerald.vitruvian.models;
 
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 
@@ -19,11 +17,7 @@ public class ImageEntryDTO {
     @Size(max = 50, message = "Title is too long")
     private String title;
 
-    private String imageName;
-
-    private String imageType;
-
-    private byte[] imageData;
+    private String fileName;
 
     private TagDTO tagDTO;
 
@@ -74,6 +68,14 @@ public class ImageEntryDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public TagDTO getTagDTO() {
@@ -172,38 +174,12 @@ public class ImageEntryDTO {
         this.user = user;
     }
 
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-    public String getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
-    }
-
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
-    }
-
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
-                ", imageName='" + imageName + '\'' +
-                ", imageType='" + imageType + '\'' +
-                ", imageData=" + Arrays.toString(imageData) +
+                ", fileName='" + fileName + '\'' +
                 ", tagDTO=" + tagDTO +
                 ", user=" + user +
                 ", tagImageType=" + tagImageType +

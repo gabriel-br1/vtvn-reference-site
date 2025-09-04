@@ -5,7 +5,6 @@ import com.emerald.vitruvian.models.TagDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 
@@ -21,14 +20,7 @@ public class ImageEntryEntity {
     private String title;
 
     @Column(nullable = false)
-    private String imageName;
-
-    @Column(nullable = false)
-    private String imageType;
-
-    @Column(nullable = false, columnDefinition = "BLOB")
-    @Lob
-    private byte[] imageData;
+    private String fileName;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Transient
@@ -100,6 +92,14 @@ public class ImageEntryEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public TagDTO getTagDTO() {
@@ -198,38 +198,12 @@ public class ImageEntryEntity {
         this.user = user;
     }
 
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-    public String getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
-    }
-
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
-    }
-
     @Override
     public String toString() {
         return "ImageEntryEntity{" +
                 "imageId=" + imageId +
                 ", title='" + title + '\'' +
-                ", imageName='" + imageName + '\'' +
-                ", imageType='" + imageType + '\'' +
-                ", imageData=" + Arrays.toString(imageData) +
+                ", fileName='" + fileName + '\'' +
                 ", tagDTO=" + tagDTO +
                 ", user=" + user +
                 ", tagImageType=" + tagImageType +

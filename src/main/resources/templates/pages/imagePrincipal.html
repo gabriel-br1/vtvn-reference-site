@@ -8,14 +8,19 @@
 <div class="d-flex flex-row justify-content-center" style="height:52rem;">
     <div class="d-flex flex-column justify-content-start bg-light px-2 py-2" style="border-radius:10px;">
         <div>
-            <img th:src="@{'/image/getter/' + ${imageId}}" style="height:42rem;">
+            <img th:src="@{'/images/' + ${imageEntry.fileName}}" style="height:42rem;">
             <h4 class="text-dark px-2" th:text="${title}"></h4>
         </div>
         <div class="d-flex justify-content-start flex-wrap px-2" th:text="${imageTags}">
         </div>
-        <div th:object="${ImageEntryDTO}">
-            <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{'/updateCharacter/' + ${ImageEntryDTO.imageId}}">Edit</a>
-            <a class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'SCENERY'" th:href="@{'/updateScenery/' + ${ImageEntryDTO.imageId}}">Edit</a>
+        <div class="d-flex justify-content-start">
+            <div th:object="${ImageEntryEntity}">
+                <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'CHARACTER'" th:href="@{'/updateCharacter/' + *{imageId}}">Edit</a>
+                <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:if="${TagImageType} == 'SCENERY'" th:href="@{'/updateScenery/' + *{imageId}}">Edit</a>
+            </div>
+            <form method="post" th:action="@{'/deleteImage/' + ${ImageEntryEntity.imageId}}">
+                <button type="submit" class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;">Delete</button>
+            </form>
         </div>
     </div>
 </div>

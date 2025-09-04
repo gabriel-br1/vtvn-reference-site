@@ -212,3 +212,9 @@ let tags = ["Character:Single",
                   tagList.appendChild(tagElement);
           }
     }
+
+    function redirect(){
+      const homeButton = document.getElementById("homeButton");
+
+      homeButton.click();
+    }

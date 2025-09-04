@@ -10,9 +10,6 @@ import com.emerald.vitruvian.models.TagsDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,18 +25,15 @@ public class ImageEntryService {
     @Autowired
     private ImageEntryMapper imageEntryMapper;
 
-    public void add(ImageEntryDTO imageEntryDTO, UserEntity userEntity) throws IOException {
+    public ImageEntryEntity add(ImageEntryDTO imageEntryDTO){
         assignEnums(imageEntryDTO);
-
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
-        newImage.setUser(userEntity);
         imageEntryRepo.save(newImage);
+        return newImage;
     }
 
-    public void addImage(ImageEntryDTO imageEntryDTO, MultipartFile image) throws IOException {
-        imageEntryDTO.setImageName(image.getOriginalFilename());
-        imageEntryDTO.setImageType(image.getContentType());
-        imageEntryDTO.setImageData(image.getBytes());
+    public void delete(ImageEntryDTO imageEntryDTO){
+
     }
 
     public void edit(ImageEntryDTO imageEntryDTO, long id){
@@ -48,6 +42,7 @@ public class ImageEntryService {
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
         newImage.setImageId(imageEntryEntity.getImageId());
         newImage.setUser(imageEntryEntity.getUser());
+        newImage.setFileName(imageEntryEntity.getFileName());
         imageEntryMapper.updateImageEntryEntity(newImage, imageEntryEntity);
         imageEntryRepo.save(newImage);
     }
