@@ -1,4 +1,4 @@
-let tags = ["Character:Single",
+/* let tags = ["Character:Single",
   "Character:Multiple",
   "Shape:Masculine",
   "Shape:Feminine",
@@ -40,9 +40,9 @@ let tags = ["Character:Single",
     "Saturation:Pastel",
     "Saturation:Neon"];
 
-  let n = tags.length;
+  let n = tags.length; */
 
-  function predictCharacter(value){
+/*   function predictCharacter(value){
     document.getElementById('datalist').innerHTML = '';
 
     for(let i = 0; i < n; i++){
@@ -58,9 +58,9 @@ let tags = ["Character:Single",
             .appendChild(node);
         }
     }
-  }
+  } */
 
-  function predictScenery(value){
+/*   function predictScenery(value){
       document.getElementById('datalist').innerHTML = '';
 
       for(let i = 0; i < n; i++){
@@ -76,9 +76,9 @@ let tags = ["Character:Single",
               .appendChild(node);
           }
       }
-    }
+    } */
 
-    function addTag(){
+/*     function addTag(){
 
     const charElement = document.getElementById("Character");
     const shapeElement = document.getElementById("Shape");
@@ -140,9 +140,9 @@ let tags = ["Character:Single",
 
     inputElement.value = '';
 
-  }
+  } */
 
-  function addTagScenery(){
+/*   function addTagScenery(){
 
       const natureElement = document.getElementById("Nature");
       const structureElement = document.getElementById("Structure");
@@ -183,9 +183,9 @@ let tags = ["Character:Single",
 
       inputElement.value = '';
 
-    }
+    } */
 
-    function addTags(){
+/*     function addTags(){
           const natureElement = document.getElementById("Nature");
           const structureElement = document.getElementById("Structure");
           const colorElement = document.getElementById("Color");
@@ -211,7 +211,7 @@ let tags = ["Character:Single",
                   tagElement.setAttribute("style", "background-color:#a02bdb;border-radius:10px;width:12rem;height:2rem;");
                   tagList.appendChild(tagElement);
           }
-    }
+    } */
 
     function redirect(){
       const homeButton = document.getElementById("homeButton");

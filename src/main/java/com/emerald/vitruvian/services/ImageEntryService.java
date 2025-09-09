@@ -12,12 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
 public class ImageEntryService {
+
+    private static HashSet<String> filterWords = new HashSet<>(Arrays.asList(
+            "and", "for", "nor", "but", "or", "yet", "so",
+            "both", "or", "whether", "only", "also", "either",
+            "neither", "just", "the", "as", "if", "then", "rather",
+            "such", "that", "even", "is", "are"));
 
     @Autowired
     private ImageEntryRepo imageEntryRepo;
@@ -26,7 +33,8 @@ public class ImageEntryService {
     private ImageEntryMapper imageEntryMapper;
 
     public ImageEntryEntity add(ImageEntryDTO imageEntryDTO){
-        assignEnums(imageEntryDTO);
+        imageEntryDTO.setTagsDTO(parseTags(imageEntryDTO));
+        imageEntryDTO.setTags(getImageTags(imageEntryDTO));
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
         imageEntryRepo.save(newImage);
         return newImage;
@@ -38,7 +46,8 @@ public class ImageEntryService {
 
     public void edit(ImageEntryDTO imageEntryDTO, long id){
         ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
-        assignEnums(imageEntryDTO);
+        imageEntryDTO.setTagsDTO(parseTags(imageEntryDTO));
+        imageEntryDTO.setTags(getImageTags(imageEntryDTO));
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
         newImage.setImageId(imageEntryEntity.getImageId());
         newImage.setUser(imageEntryEntity.getUser());
@@ -58,19 +67,27 @@ public class ImageEntryService {
         for(ImageEntryDTO image : getAllImages()){
             int tagCount = 0;
             String tagsNameInput =  tagSearch + " " + image.getTitle();
-            String[] tags = tagsNameInput.split(" ");
-            for(String tagQuery : tags){
-                String[] titleSplit = image.getTitle().split(" ");
-                String[] imageTags = new String[convertTagsString(image).getTags().size()];
-                convertTagsString(image).getTags().toArray(imageTags);
-                String[] tagsNameData = Stream.concat(Arrays.stream(titleSplit), Arrays.stream(imageTags)).toArray(String[]::new);
-                for(String imageTag : tagsNameData){
+            String[] titleSplit = image
+                    .getTitle()
+                    .split(" ");
+
+            String[] imageTags = image
+                    .getTagsDTO()
+                    .getTags()
+                    .toArray(new String[0]);
+
+            String[] imageTitleTags = new String[titleSplit.length + imageTags.length];
+            System.arraycopy(titleSplit, 0, imageTitleTags, 0, titleSplit.length);
+            System.arraycopy(imageTags, 0, imageTitleTags, titleSplit.length, imageTags.length);
+            String[] searchImageTags = tagsNameInput.split(" ");
+            for(String tagQuery : searchImageTags){
+                for(String imageTag : imageTitleTags){
                     if(tagQuery.equals(imageTag.toLowerCase())){
                         tagCount++;
                     }
                 }
             }
-            if(tagCount == tags.length){
+            if(tagCount == searchImageTags.length){
                 resultList.add(image);
             }
         }
@@ -78,148 +95,161 @@ public class ImageEntryService {
     }
 
     public String getImageTags(ImageEntryDTO imageEntryDTO){
-        TagsDTO tagsDTO = convertTagsString(imageEntryDTO);
-        String tags = "";
-        for(String tag : tagsDTO.getTags()){
-            tags += tag.toLowerCase() + " ";
-        }
-        return tags;
+        String[] tags = imageEntryDTO
+                .getTagsDTO()
+                .getTags()
+                .toArray(new String[0]);
+        return String.join(" ", tags);
     }
 
-    private ImageEntryDTO assignEnums(ImageEntryDTO imageEntryDTO){
-        if(isCharacter(imageEntryDTO)){
-            if(!imageEntryDTO.getTagDTO().getTagCharacterClothing().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterClothing().toUpperCase();
-                imageEntryDTO.setTagCharacterClothing(TagCharacterClothing.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagCharacterNumber().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterNumber().toUpperCase();
-                imageEntryDTO.setTagCharacterNumber(TagCharacterNumber.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagCharacterPose().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterPose().toUpperCase();
-                imageEntryDTO.setTagCharacterPose(TagCharacterPose.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagCharacterShape().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterShape().toUpperCase();
-                imageEntryDTO.setTagCharacterShape(TagCharacterShape.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagCharacterType().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterType().toUpperCase();
-                imageEntryDTO.setTagCharacterType(TagCharacterType.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
-                imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().toUpperCase();
-                imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().toUpperCase();
-                imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
-            }
-        } else {
-            if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().toUpperCase();
-                imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().toUpperCase();
-                imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagSceneryNature().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryNature().toUpperCase();
-                imageEntryDTO.setTagSceneryNature(TagSceneryNature.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagSceneryStructure().isEmpty()){
-                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryStructure().toUpperCase();
-                imageEntryDTO.setTagSceneryStructure(TagSceneryStructure.valueOf(specificTag));
-            }
-            if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
-                imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
-            }
-        }
+//    private ImageEntryDTO assignEnums(ImageEntryDTO imageEntryDTO){
+//        if(isCharacter(imageEntryDTO)){
+//            if(!imageEntryDTO.getTagDTO().getTagCharacterClothing().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterClothing().toUpperCase();
+//                imageEntryDTO.setTagCharacterClothing(TagCharacterClothing.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagCharacterNumber().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterNumber().toUpperCase();
+//                imageEntryDTO.setTagCharacterNumber(TagCharacterNumber.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagCharacterPose().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterPose().toUpperCase();
+//                imageEntryDTO.setTagCharacterPose(TagCharacterPose.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagCharacterShape().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterShape().toUpperCase();
+//                imageEntryDTO.setTagCharacterShape(TagCharacterShape.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagCharacterType().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagCharacterType().toUpperCase();
+//                imageEntryDTO.setTagCharacterType(TagCharacterType.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
+//                imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().toUpperCase();
+//                imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().toUpperCase();
+//                imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
+//            }
+//        } else {
+//            if(!imageEntryDTO.getTagDTO().getTagNeutralColor().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralColor().toUpperCase();
+//                imageEntryDTO.setTagNeutralColor(TagNeutralColor.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagNeutralSaturation().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagNeutralSaturation().toUpperCase();
+//                imageEntryDTO.setTagNeutralSaturation(TagNeutralSaturation.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagSceneryNature().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryNature().toUpperCase();
+//                imageEntryDTO.setTagSceneryNature(TagSceneryNature.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagSceneryStructure().isEmpty()){
+//                String specificTag = imageEntryDTO.getTagDTO().getTagSceneryStructure().toUpperCase();
+//                imageEntryDTO.setTagSceneryStructure(TagSceneryStructure.valueOf(specificTag));
+//            }
+//            if(!imageEntryDTO.getTagDTO().getTagImageType().isEmpty()){
+//                imageEntryDTO.setTagImageType(TagImageType.valueOf(imageEntryDTO.getTagDTO().getTagImageType()));
+//            }
+//        }
+//
+//        return imageEntryDTO;
+//    }
 
-        return imageEntryDTO;
-    }
+//    private boolean isCharacter(ImageEntryDTO imageEntryDTO){
+//        return imageEntryDTO.getTagDTO().getTagImageType().equals("CHARACTER");
+//    }
 
-    private boolean isCharacter(ImageEntryDTO imageEntryDTO){
-        return imageEntryDTO.getTagDTO().getTagImageType().equals("CHARACTER");
-    }
+//    public TagDTO assignTagDTO(ImageEntryDTO imageEntryDTO){
+//        TagDTO tags = new TagDTO();
+//        if(imageEntryDTO.getTagCharacterClothing() != null){
+//            tags.setTagCharacterClothing(imageEntryDTO.getTagCharacterClothing().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterNumber() != null){
+//            tags.setTagCharacterNumber(imageEntryDTO.getTagCharacterNumber().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterPose() != null){
+//            tags.setTagCharacterPose(imageEntryDTO.getTagCharacterPose().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterShape() != null){
+//            tags.setTagCharacterShape(imageEntryDTO.getTagCharacterShape().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterType() != null){
+//            tags.setTagCharacterType(imageEntryDTO.getTagCharacterType().name());
+//        }
+//        if(imageEntryDTO.getTagImageType() != null){
+//            tags.setTagImageType(imageEntryDTO.getTagImageType().name());
+//        }
+//        if(imageEntryDTO.getTagNeutralColor() != null){
+//            tags.setTagNeutralColor(imageEntryDTO.getTagNeutralColor().name());
+//        }
+//        if(imageEntryDTO.getTagNeutralSaturation() != null){
+//            tags.setTagNeutralSaturation(imageEntryDTO.getTagNeutralSaturation().name());
+//        }
+//        if(imageEntryDTO.getTagSceneryNature() != null){
+//            tags.setTagSceneryNature(imageEntryDTO.getTagSceneryNature().name());
+//        }
+//        if(imageEntryDTO.getTagSceneryStructure() != null){
+//            tags.setTagSceneryStructure(imageEntryDTO.getTagSceneryStructure().name());
+//        }
+//        return tags;
+//    }
 
-    public TagDTO assignTagDTO(ImageEntryDTO imageEntryDTO){
-        TagDTO tags = new TagDTO();
-        if(imageEntryDTO.getTagCharacterClothing() != null){
-            tags.setTagCharacterClothing(imageEntryDTO.getTagCharacterClothing().name());
-        }
-        if(imageEntryDTO.getTagCharacterNumber() != null){
-            tags.setTagCharacterNumber(imageEntryDTO.getTagCharacterNumber().name());
-        }
-        if(imageEntryDTO.getTagCharacterPose() != null){
-            tags.setTagCharacterPose(imageEntryDTO.getTagCharacterPose().name());
-        }
-        if(imageEntryDTO.getTagCharacterShape() != null){
-            tags.setTagCharacterShape(imageEntryDTO.getTagCharacterShape().name());
-        }
-        if(imageEntryDTO.getTagCharacterType() != null){
-            tags.setTagCharacterType(imageEntryDTO.getTagCharacterType().name());
-        }
-        if(imageEntryDTO.getTagImageType() != null){
-            tags.setTagImageType(imageEntryDTO.getTagImageType().name());
-        }
-        if(imageEntryDTO.getTagNeutralColor() != null){
-            tags.setTagNeutralColor(imageEntryDTO.getTagNeutralColor().name());
-        }
-        if(imageEntryDTO.getTagNeutralSaturation() != null){
-            tags.setTagNeutralSaturation(imageEntryDTO.getTagNeutralSaturation().name());
-        }
-        if(imageEntryDTO.getTagSceneryNature() != null){
-            tags.setTagSceneryNature(imageEntryDTO.getTagSceneryNature().name());
-        }
-        if(imageEntryDTO.getTagSceneryStructure() != null){
-            tags.setTagSceneryStructure(imageEntryDTO.getTagSceneryStructure().name());
-        }
-        return tags;
-    }
-
-    private TagsDTO convertTagsString(ImageEntryDTO imageEntryDTO){
+    private TagsDTO parseTags(ImageEntryDTO imageEntryDTO){
         TagsDTO tags = new TagsDTO();
-        if(imageEntryDTO.getTagCharacterClothing() != null){
-            tags.addTag(imageEntryDTO.getTagCharacterClothing().name());
+        String[] separatedDesc = imageEntryDTO.getDescription().split(" ");
+        int count = 0;
+        for(String word : separatedDesc){
+            for(String filterWord : filterWords){
+                if(!filterWord.equalsIgnoreCase(word)){
+                    count++;
+                }
+            }
+            if(count == filterWords.size()){
+                tags.addTag(word);
+            }
+            count = 0;
         }
-        if(imageEntryDTO.getTagCharacterNumber() != null){
-            tags.addTag(imageEntryDTO.getTagCharacterNumber().name());
-        }
-        if(imageEntryDTO.getTagCharacterPose() != null){
-            tags.addTag(imageEntryDTO.getTagCharacterPose().name());
-        }
-        if(imageEntryDTO.getTagCharacterShape() != null){
-            tags.addTag(imageEntryDTO.getTagCharacterShape().name());
-        }
-        if(imageEntryDTO.getTagCharacterType() != null){
-            tags.addTag(imageEntryDTO.getTagCharacterType().name());
-        }
-        if(imageEntryDTO.getTagImageType() != null){
-            tags.addTag(imageEntryDTO.getTagImageType().name());
-        }
-        if(imageEntryDTO.getTagNeutralColor() != null){
-            tags.addTag(imageEntryDTO.getTagNeutralColor().name());
-        }
-        if(imageEntryDTO.getTagNeutralSaturation() != null){
-            tags.addTag(imageEntryDTO.getTagNeutralSaturation().name());
-        }
-        if(imageEntryDTO.getTagSceneryNature() != null){
-            tags.addTag(imageEntryDTO.getTagSceneryNature().name());
-        }
-        if(imageEntryDTO.getTagSceneryStructure() != null){
-            tags.addTag(imageEntryDTO.getTagSceneryStructure().name());
-        }
+//        if(imageEntryDTO.getTagCharacterClothing() != null){
+//            tags.addTag(imageEntryDTO.getTagCharacterClothing().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterNumber() != null){
+//            tags.addTag(imageEntryDTO.getTagCharacterNumber().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterPose() != null){
+//            tags.addTag(imageEntryDTO.getTagCharacterPose().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterShape() != null){
+//            tags.addTag(imageEntryDTO.getTagCharacterShape().name());
+//        }
+//        if(imageEntryDTO.getTagCharacterType() != null){
+//            tags.addTag(imageEntryDTO.getTagCharacterType().name());
+//        }
+//        if(imageEntryDTO.getTagImageType() != null){
+//            tags.addTag(imageEntryDTO.getTagImageType().name());
+//        }
+//        if(imageEntryDTO.getTagNeutralColor() != null){
+//            tags.addTag(imageEntryDTO.getTagNeutralColor().name());
+//        }
+//        if(imageEntryDTO.getTagNeutralSaturation() != null){
+//            tags.addTag(imageEntryDTO.getTagNeutralSaturation().name());
+//        }
+//        if(imageEntryDTO.getTagSceneryNature() != null){
+//            tags.addTag(imageEntryDTO.getTagSceneryNature().name());
+//        }
+//        if(imageEntryDTO.getTagSceneryStructure() != null){
+//            tags.addTag(imageEntryDTO.getTagSceneryStructure().name());
+//        }
+
         return tags;
     }
 
-    public String getTagImageType(ImageEntryDTO imageEntryDTO){
-        return imageEntryDTO.getTagImageType().name();
-    }
+//    public String getTagImageType(ImageEntryDTO imageEntryDTO){
+//        return imageEntryDTO.getTagImageType().name();
+//    }
 
 }

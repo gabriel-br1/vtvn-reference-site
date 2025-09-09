@@ -64,29 +64,29 @@ public class ImageController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping("/uploadCharacter")
+    @GetMapping("/uploadImage")
     public String renderCharacterUpload(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
-        return "pages/uploadCharacter";
+        return "pages/uploadImage";
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping("/uploadScenery")
-    public String renderSceneryUpload(Model model){
-        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
-        return "pages/uploadScenery";
-    }
+//    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+//    @GetMapping("/uploadScenery")
+//    public String renderSceneryUpload(Model model){
+//        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+//        return "pages/uploadScenery";
+//    }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PostMapping("/createCharacter")
-    public String createCharacter(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+    @PostMapping("/createImage")
+    public String createImage(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
                               @RequestParam("image") MultipartFile image,
                               BindingResult result,
                               Model model){
 
         if(result.hasErrors()){
             model.addAttribute("ImageEntryDTO", imageEntryDTO);
-            return "pages/uploadCharacter";
+            return "pages/uploadImage";
         }
 
         if(!image.isEmpty()){
@@ -97,9 +97,7 @@ public class ImageController {
                     .findById(userService
                             .getPrincipalId());
             imageEntryDTO.setUser(user);
-            imageEntryDTO.getTagDTO().setTagImageType("CHARACTER");
 
-            ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
             String uploadDir = "src/main/resources/static/images/";
 
             try {
@@ -108,47 +106,50 @@ public class ImageController {
                 model.addAttribute("status", e.getMessage());
                 return "error";
             }
-        }
-        return "pages/uploadSuccess";
-    }
-
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PostMapping("/createScenery")
-    public String createScenery(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
-                                  @RequestParam("image") MultipartFile image,
-                                  BindingResult result,
-                                  Model model){
-
-        if(result.hasErrors()){
-            model.addAttribute("ImageEntryDTO", imageEntryDTO);
-            return "pages/uploadScenery";
-        }
-
-        if(!image.isEmpty()){
-            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-            imageEntryDTO.setFileName(fileName);
-
-            UserEntity user = userRepo
-                    .findById(userService
-                            .getPrincipalId());
-            imageEntryDTO.setUser(user);
-            imageEntryDTO
-                    .getTagDTO()
-                    .setTagImageType("SCENERY");
 
             ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
-            String uploadDir = "src/main/resources/static/images/";
 
-            try {
-                uploadService.uploadFile(uploadDir, fileName, image);
-            } catch (IOException e) {
-                model.addAttribute("status", e.getMessage());
-                return "error";
-            }
         }
         return "pages/uploadSuccess";
-
     }
+
+//    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+//    @PostMapping("/createScenery")
+//    public String createScenery(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+//                                  @RequestParam("image") MultipartFile image,
+//                                  BindingResult result,
+//                                  Model model){
+//
+//        if(result.hasErrors()){
+//            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+//            return "pages/uploadScenery";
+//        }
+//
+//        if(!image.isEmpty()){
+//            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+//            imageEntryDTO.setFileName(fileName);
+//
+//            UserEntity user = userRepo
+//                    .findById(userService
+//                            .getPrincipalId());
+//            imageEntryDTO.setUser(user);
+//            imageEntryDTO
+//                    .getTagDTO()
+//                    .setTagImageType("SCENERY");
+//
+//            ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
+//            String uploadDir = "src/main/resources/static/images/";
+//
+//            try {
+//                uploadService.uploadFile(uploadDir, fileName, image);
+//            } catch (IOException e) {
+//                model.addAttribute("status", e.getMessage());
+//                return "error";
+//            }
+//        }
+//        return "pages/uploadSuccess";
+//
+//    }
 
     @GetMapping("/image/{id}")
     public String renderImagePage(@PathVariable("id") long id,
@@ -163,13 +164,12 @@ public class ImageController {
         if (userEntity != null){
             if (userEntity.getId() == imageEntryEntity.getUser().getId()){
                 model.addAttribute("ImageEntryEntity", imageEntryEntity);
-                model.addAttribute("TagImageType", imageEntryService.getTagImageType(imageEntryDTO));
-                returnImageDetails(imageEntryDTO, model);
+                model.addAttribute("imageEntry", imageEntryDTO);
                 return "pages/imagePrincipal";
             }
         }
 
-        returnImageDetails(imageEntryDTO, model);
+        model.addAttribute("imageEntry", imageEntryDTO);
 
         return "pages/image";
     }
@@ -182,75 +182,68 @@ public class ImageController {
         return "pages/searchResults";
     }
 
-    @GetMapping("/updateCharacter/{id}")
-    public String renderUpdateCharacter(@PathVariable long id,
+    @GetMapping("/updateImage/{id}")
+    public String renderUpdateImage(@PathVariable long id,
                                        Model model){
 
         ImageEntryDTO imageEntryDTO = imageEntryMapper
                 .toDTO(imageEntryRepo
                         .findById(id)
                         .orElse(new ImageEntryEntity()));
-        imageEntryDTO
-                .setTagDTO(imageEntryService
-                        .assignTagDTO(imageEntryDTO));
 
         model.addAttribute("ImageEntryDTO", imageEntryDTO);
-        model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
 
-        return "pages/editCharacter";
+        return "pages/editImage";
     }
 
-    @GetMapping("/updateScenery/{id}")
-    public String renderUpdateScenery(@PathVariable long id,
-                                      Model model){
+//    @GetMapping("/updateScenery/{id}")
+//    public String renderUpdateScenery(@PathVariable long id,
+//                                      Model model){
+//
+//        ImageEntryDTO imageEntryDTO = imageEntryMapper
+//                .toDTO(imageEntryRepo
+//                        .findById(id)
+//                        .orElse(new ImageEntryEntity()));
+//        imageEntryDTO
+//                .setTagDTO(imageEntryService
+//                        .assignTagDTO(imageEntryDTO));
+//
+//        model.addAttribute("ImageEntryDTO", imageEntryDTO);
+//        model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
+//
+//        return "pages/editScenery";
+//    }
 
-        ImageEntryDTO imageEntryDTO = imageEntryMapper
-                .toDTO(imageEntryRepo
-                        .findById(id)
-                        .orElse(new ImageEntryEntity()));
-        imageEntryDTO
-                .setTagDTO(imageEntryService
-                        .assignTagDTO(imageEntryDTO));
-
-        model.addAttribute("ImageEntryDTO", imageEntryDTO);
-        model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
-
-        return "pages/editScenery";
-    }
-
-    @PostMapping("/updateCharacter/{id}")
-    public String editCharacter(@PathVariable long id,
+    @PostMapping("/updateImage/{id}")
+    public String updateImage(@PathVariable long id,
                                 @Valid ImageEntryDTO imageEntryDTO,
                                 BindingResult result,
                                 Model model){
 
         if(result.hasErrors()){
-            return renderUpdateCharacter(id, model);
+            return renderUpdateImage(id, model);
         }
 
-        imageEntryDTO
-                .getTagDTO()
-                .setTagImageType("CHARACTER");
         imageEntryService.edit(imageEntryDTO, id);
 
         return renderImagePage(id, model);
     }
 
-    @PostMapping("/updateScenery/{id}")
-    public String editScenery(@PathVariable long id,
-                              @Valid ImageEntryDTO imageEntryDTO,
-                              BindingResult result,
-                              Model model){
-
-        if(result.hasErrors()){
-            return renderUpdateScenery(id, model);
-        }
-
-        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-        imageEntryService.edit(imageEntryDTO, id);
-
-        return renderImagePage(id, model);
-    }
+//    @PostMapping("/updateScenery/{id}")
+//    public String editScenery(@PathVariable long id,
+//                              @Valid ImageEntryDTO imageEntryDTO,
+//                              BindingResult result,
+//                              Model model){
+//
+//        if(result.hasErrors()){
+//            return renderUpdateScenery(id, model);
+//        }
+//
+//        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
+//        imageEntryService.edit(imageEntryDTO, id);
+//
+//        return renderImagePage(id, model);
+//    }
 
     @PostMapping("/deleteImage/{id}")
     public String deleteImage(@PathVariable long id,
@@ -277,12 +270,9 @@ public class ImageController {
         return homeController.renderHome(model);
     }
 
-    private void returnImageDetails(ImageEntryDTO imageEntryDTO,
-                                    Model model){
-        String tags = imageEntryService.getImageTags(imageEntryDTO);
-        model.addAttribute("imageEntry", imageEntryDTO);
-        model.addAttribute("title", imageEntryDTO.getTitle());
-        model.addAttribute("imageTags", tags);
-    }
+//    private void returnImageDetails(ImageEntryDTO imageEntryDTO,
+//                                    Model model){
+//        model.addAttribute("imageEntry", imageEntryDTO);
+//    }
 
 }

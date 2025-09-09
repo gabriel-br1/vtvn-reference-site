@@ -25,13 +25,7 @@
       <input id="tagSearch" th:name="tagSearch" type="text" class="form-control form-control-lg" style="font-size:20px;">
       <button type="submit" class="btn btn-lg text-dark mx-2" style="background-color:#2bdb9d;font-size:20px;">Search</button>
   </form>
-    <div class="dropdown">
-        <a class="text-light btn btn-dark mx-2 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" style="font-size:20px;">Upload</a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a class="dropdown-item" th:href="@{/uploadCharacter}">Character</a></li>
-            <li><a class="dropdown-item" th:href="@{/uploadScenery}">Scenery</a></li>
-        </ul>
-    </div>
+    <a class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/uploadImage}">Upload</a>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Messages</a>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Profile</a>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Support</a>
