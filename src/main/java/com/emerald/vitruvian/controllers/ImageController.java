@@ -3,7 +3,6 @@ package com.emerald.vitruvian.controllers;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
-import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
@@ -45,8 +44,8 @@ public class ImageController {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private UserMapper userMapper;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @Autowired
     private FileUploadService uploadService;
@@ -69,13 +68,6 @@ public class ImageController {
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
         return "pages/uploadImage";
     }
-
-//    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-//    @GetMapping("/uploadScenery")
-//    public String renderSceneryUpload(Model model){
-//        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
-//        return "pages/uploadScenery";
-//    }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/createImage")
@@ -112,44 +104,6 @@ public class ImageController {
         }
         return "pages/uploadSuccess";
     }
-
-//    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-//    @PostMapping("/createScenery")
-//    public String createScenery(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
-//                                  @RequestParam("image") MultipartFile image,
-//                                  BindingResult result,
-//                                  Model model){
-//
-//        if(result.hasErrors()){
-//            model.addAttribute("ImageEntryDTO", imageEntryDTO);
-//            return "pages/uploadScenery";
-//        }
-//
-//        if(!image.isEmpty()){
-//            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-//            imageEntryDTO.setFileName(fileName);
-//
-//            UserEntity user = userRepo
-//                    .findById(userService
-//                            .getPrincipalId());
-//            imageEntryDTO.setUser(user);
-//            imageEntryDTO
-//                    .getTagDTO()
-//                    .setTagImageType("SCENERY");
-//
-//            ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
-//            String uploadDir = "src/main/resources/static/images/";
-//
-//            try {
-//                uploadService.uploadFile(uploadDir, fileName, image);
-//            } catch (IOException e) {
-//                model.addAttribute("status", e.getMessage());
-//                return "error";
-//            }
-//        }
-//        return "pages/uploadSuccess";
-//
-//    }
 
     @GetMapping("/image/{id}")
     public String renderImagePage(@PathVariable("id") long id,
@@ -196,24 +150,6 @@ public class ImageController {
         return "pages/editImage";
     }
 
-//    @GetMapping("/updateScenery/{id}")
-//    public String renderUpdateScenery(@PathVariable long id,
-//                                      Model model){
-//
-//        ImageEntryDTO imageEntryDTO = imageEntryMapper
-//                .toDTO(imageEntryRepo
-//                        .findById(id)
-//                        .orElse(new ImageEntryEntity()));
-//        imageEntryDTO
-//                .setTagDTO(imageEntryService
-//                        .assignTagDTO(imageEntryDTO));
-//
-//        model.addAttribute("ImageEntryDTO", imageEntryDTO);
-//        model.addAttribute("TagDTO", imageEntryDTO.getTagDTO());
-//
-//        return "pages/editScenery";
-//    }
-
     @PostMapping("/updateImage/{id}")
     public String updateImage(@PathVariable long id,
                                 @Valid ImageEntryDTO imageEntryDTO,
@@ -228,22 +164,6 @@ public class ImageController {
 
         return renderImagePage(id, model);
     }
-
-//    @PostMapping("/updateScenery/{id}")
-//    public String editScenery(@PathVariable long id,
-//                              @Valid ImageEntryDTO imageEntryDTO,
-//                              BindingResult result,
-//                              Model model){
-//
-//        if(result.hasErrors()){
-//            return renderUpdateScenery(id, model);
-//        }
-//
-//        imageEntryDTO.getTagDTO().setTagImageType("SCENERY");
-//        imageEntryService.edit(imageEntryDTO, id);
-//
-//        return renderImagePage(id, model);
-//    }
 
     @PostMapping("/deleteImage/{id}")
     public String deleteImage(@PathVariable long id,
@@ -269,10 +189,5 @@ public class ImageController {
 
         return homeController.renderHome(model);
     }
-
-//    private void returnImageDetails(ImageEntryDTO imageEntryDTO,
-//                                    Model model){
-//        model.addAttribute("imageEntry", imageEntryDTO);
-//    }
 
 }
