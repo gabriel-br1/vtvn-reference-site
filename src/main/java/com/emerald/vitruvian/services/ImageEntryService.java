@@ -1,10 +1,13 @@
 package com.emerald.vitruvian.services;
 
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
+import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
+import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.TagsDTO;
+import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,19 +40,17 @@ public class ImageEntryService {
         return newImage;
     }
 
-    public void delete(ImageEntryDTO imageEntryDTO){
-
-    }
-
     public void edit(ImageEntryDTO imageEntryDTO, long id){
-        ImageEntryEntity imageEntryEntity = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
-        imageEntryDTO.setTagsDTO(parseTags(imageEntryDTO));
-        imageEntryDTO.setTags(getImageTags(imageEntryDTO));
+        ImageEntryEntity oldImage = imageEntryRepo.findById(id).orElse(new ImageEntryEntity());
+        if(imageEntryDTO.getDescription() != null){
+            imageEntryDTO.setTagsDTO(parseTags(imageEntryDTO));
+            imageEntryDTO.setTags(getImageTags(imageEntryDTO));
+        }
         ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
-        newImage.setImageId(imageEntryEntity.getImageId());
-        newImage.setUser(imageEntryEntity.getUser());
-        newImage.setFileName(imageEntryEntity.getFileName());
-        imageEntryMapper.updateImageEntryEntity(newImage, imageEntryEntity);
+//        newImage.setImageId(imageEntryEntity.getImageId());
+//        newImage.setUser(imageEntryEntity.getUser());
+//        newImage.setFileName(imageEntryEntity.getFileName());
+        imageEntryMapper.updateImageEntryEntity(oldImage, newImage);
         imageEntryRepo.save(newImage);
     }
 
@@ -118,4 +119,14 @@ public class ImageEntryService {
         return tags;
     }
 
+    public void likeImage(UserEntity user, ImageEntryEntity image) {
+        List<ImageEntryEntity> likedImages = user.getLikedImages();
+        likedImages.add(image);
+        user.setLikedImages(likedImages);
+
+        long imageId = image.getImageId();
+        ImageEntryDTO imageDTO = imageEntryMapper.toDTO(image);
+
+        edit(imageDTO, imageId);
+    }
 }

@@ -124,6 +124,7 @@ public class ImageController {
         }
 
         model.addAttribute("imageEntry", imageEntryDTO);
+        model.addAttribute("ImageEntryEntity", imageEntryEntity);
 
         return "pages/image";
     }
@@ -188,6 +189,22 @@ public class ImageController {
                         .toEntity(imageEntryDTO));
 
         return homeController.renderHome(model);
+    }
+
+    @PostMapping("/likeImage/{id}")
+    public String likeImage(@PathVariable("id") long id,
+                            Model model){
+        UserEntity user = userRepo
+                .findById(userService
+                        .getPrincipalId());
+
+        ImageEntryEntity image = imageEntryRepo
+                .findById(id)
+                .orElse(new ImageEntryEntity());
+
+        imageEntryService.likeImage(user, image);
+
+        return renderImagePage(id, model);
     }
 
 }

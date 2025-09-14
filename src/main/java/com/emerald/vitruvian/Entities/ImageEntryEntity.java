@@ -3,6 +3,8 @@ package com.emerald.vitruvian.Entities;
 import com.emerald.vitruvian.models.TagsDTO;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Image entries")
 public class ImageEntryEntity {
@@ -26,6 +28,9 @@ public class ImageEntryEntity {
     @ManyToOne()
     @JoinColumn(nullable = false)
     private UserEntity user;
+
+    @ManyToMany(mappedBy = "likedImages")
+    private List<UserEntity> likedBy;
 
     public long getImageId() {
         return imageId;
@@ -75,6 +80,14 @@ public class ImageEntryEntity {
         this.tags = tags;
     }
 
+    public List<UserEntity> getLikedBy() {
+        return likedBy;
+    }
+
+    public void setLikedBy(List<UserEntity> likedBy) {
+        this.likedBy = likedBy;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryEntity{" +
@@ -84,6 +97,7 @@ public class ImageEntryEntity {
                 ", tagsDTO=" + tagsDTO +
                 ", tags='" + tags + '\'' +
                 ", user=" + user +
+                ", likedBy=" + likedBy +
                 '}';
     }
 }

@@ -24,6 +24,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<ImageEntryEntity> images;
 
+    @ManyToMany
+    private List<ImageEntryEntity> likedImages;
+
     public long getId() {
         return id;
     }
@@ -64,6 +67,14 @@ public class UserEntity {
         this.images = images;
     }
 
+    public List<ImageEntryEntity> getLikedImages() {
+        return likedImages;
+    }
+
+    public void setLikedImages(List<ImageEntryEntity> likedImages) {
+        this.likedImages = likedImages;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -72,6 +83,7 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", admin=" + admin +
                 ", images=" + images +
+                ", likedImages=" + likedImages +
                 '}';
     }
 }

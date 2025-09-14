@@ -42,6 +42,13 @@ public class UserService implements UserDetailsService{
         throw new PasswordsDoNotMatchException("Passwords do not match.");
     }
 
+    public void edit(UserDTO user, long id){
+        UserEntity oldUser = userRepo.findById(id);
+        UserEntity newUser = userMapper.toEntity(user);
+        userMapper.updateUserEntity(oldUser, newUser);
+        userRepo.save(newUser);
+    }
+
     private boolean confirmPassword(UserDTO userDTO){
         return userDTO.getPassword().equals(userDTO.getPasswordConfirm());
     }

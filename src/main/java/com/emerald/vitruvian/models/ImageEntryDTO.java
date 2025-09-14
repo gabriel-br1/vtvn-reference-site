@@ -4,6 +4,7 @@ import com.emerald.vitruvian.Entities.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
+import java.util.List;
 
 @Component
 public class ImageEntryDTO {
@@ -23,6 +24,8 @@ public class ImageEntryDTO {
     private String description;
 
     private UserEntity user;
+
+    private List<UserEntity> likedBy;
 
 
     public long getImageId() {
@@ -81,6 +84,14 @@ public class ImageEntryDTO {
         this.user = user;
     }
 
+    public List<UserEntity> getLikedBy() {
+        return likedBy;
+    }
+
+    public void setLikedBy(List<UserEntity> likedBy) {
+        this.likedBy = likedBy;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
@@ -91,6 +102,7 @@ public class ImageEntryDTO {
                 ", tags='" + tags + '\'' +
                 ", description='" + description + '\'' +
                 ", user=" + user +
+                ", likedBy=" + likedBy +
                 '}';
     }
 }
