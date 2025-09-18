@@ -27,7 +27,9 @@
   </form>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/uploadImage}">Upload</a>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Messages</a>
-    <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Profile</a>
+    <form th:action="@{renderProfile}">
+        <button sec:authorize="isAuthenticated()" class="text-light btn btn-dark mx-2" style="font-size:20px;">Profile</button>
+    </form>
     <a class="text-light btn btn-dark mx-2" style="font-size:20px;">Support</a>
     <a sec:authorize="isAuthenticated()" class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/logout}">Logout</a>
     <a sec:authorize="isAnonymous()" class="text-light btn btn-dark mx-2" style="font-size:20px;" th:href="@{/login}">Login</a>

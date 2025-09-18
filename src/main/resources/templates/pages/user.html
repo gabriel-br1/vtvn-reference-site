@@ -8,6 +8,15 @@
 <div th:object="${user}" class="d-flex flex-column align-items-center my-2 text-light">
   <h2>User email:</h2>
   <p th:text="*{email}"></p>
+    <h2>Liked images:</h2>
+    <div class="d-flex flex-row justify-content-center">
+        <div id="imageBoard" class="mx-2 my-2" th:each="imageEntry: ${imageEntries}">
+            <a th:href="@{'/image/' + ${imageEntry.imageId}}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+                <img class="card-img-top" th:src="@{'images/' + ${imageEntry.fileName}}" style="object-fit: cover; height: 100%; width 100%;">
+                <p class="card-title h6 text-dark mx-2" th:text="${imageEntry.title}" style="text-decoration:none;"></p>
+            </a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

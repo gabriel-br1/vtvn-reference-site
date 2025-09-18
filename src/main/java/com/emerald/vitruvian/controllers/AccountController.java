@@ -60,18 +60,18 @@ public class AccountController {
         return homeController.renderHome(model);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping("/user/{id}")
-    public String renderUserPage(@PathVariable long id,
-            Model model){
-        UserEntity user = userRepo.findById(userService.getPrincipalId());
-        if(user.getId() == id){
-            userMapper.toDTO(user);
-            model.addAttribute("user", user);
-            return "pages/user";
-        }
-        return "error";
-    }
+//    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+//    @GetMapping("/user/{id}")
+//    public String renderUserPage(@PathVariable long id,
+//            Model model){
+//        UserEntity user = userRepo.findById(userService.getPrincipalId());
+//        if(user.getId() == id){
+//            userMapper.toDTO(user);
+//            model.addAttribute("user", user);
+//            return "pages/user";
+//        }
+//        return "error";
+//    }
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute UserDTO userDTO,
@@ -92,6 +92,17 @@ public class AccountController {
         }
 
         return "pages/registerSuccess";
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/renderProfile")
+    public String renderProfile(Model model){
+        UserEntity user = userRepo.findById(userService.getPrincipalId());
+        userMapper.toDTO(user);
+        model.addAttribute("user", user);
+        model.addAttribute("imageEntries", user.getLikedImages());
+
+        return "pages/user";
     }
 
 }
