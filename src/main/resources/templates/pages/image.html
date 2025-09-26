@@ -15,6 +15,9 @@
             <form method="post" th:action="@{'/likeImage/' + ${ImageEntryEntity.imageId}}">
                 <button type="submit" class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;">Like</button>
             </form>
+            <div th:object="${ImageEntryEntity}">
+                <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:href="@{'/report/' + *{imageId}}">Report</a>
+            </div>
         </div>
     </div>
 </div>

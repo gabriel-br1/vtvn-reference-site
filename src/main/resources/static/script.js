@@ -218,3 +218,26 @@
 
       homeButton.click();
     }
+
+    function checkSelect(){
+      //const selection = document.querySelectorAll(select > option)
+      const selection = document.getElementById("selection")
+      const inputField = document.getElementById("reportTypeStr")
+
+      if(selection.value == "Spam"){
+        inputField.value = "spam"
+        return
+      } else if(selection.value == "Duplicate"){
+        inputField.value = "duplicate"
+        return
+      } else if(selection.value == "Copyright"){
+        inputField.value = "copyright"
+        return
+      } else if(selection.value == "Law"){
+        inputField.value = "law"
+        return
+      } else {
+        inputField.value = null
+        return
+      }
+    }
