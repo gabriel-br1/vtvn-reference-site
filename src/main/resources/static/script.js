@@ -241,3 +241,11 @@
         return
       }
     }
+
+    function fillValues(){
+      const titleElement = document.getElementById("title")
+      const descElement = document.getElementById("description")
+
+      titleElement.value = "Profile picture"
+      descElement.value = "Picture used to represent a profile"
+    }

@@ -21,11 +21,14 @@ public class ImageEntryDTO {
 
     private String tags;
 
+    @NotBlank(message = "Fill in the description")
     private String description;
 
     private UserEntity user;
 
     private List<UserEntity> likedBy;
+
+    private int isProfile;
 
 
     public long getImageId() {
@@ -92,6 +95,14 @@ public class ImageEntryDTO {
         this.likedBy = likedBy;
     }
 
+    public int getIsProfile() {
+        return isProfile;
+    }
+
+    public void setIsProfile(int isProfile) {
+        this.isProfile = isProfile;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
@@ -103,6 +114,7 @@ public class ImageEntryDTO {
                 ", description='" + description + '\'' +
                 ", user=" + user +
                 ", likedBy=" + likedBy +
+                ", isProfile=" + isProfile +
                 '}';
     }
 }

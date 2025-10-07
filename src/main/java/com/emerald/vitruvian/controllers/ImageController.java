@@ -89,6 +89,8 @@ public class ImageController {
                             .getPrincipalId());
             imageEntryDTO.setUser(user);
 
+            imageEntryDTO.setIsProfile(0);
+
             String uploadDir = "src/main/resources/static/images/";
 
             try {
@@ -100,6 +102,9 @@ public class ImageController {
 
             ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
 
+        } else{
+            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            return "pages/uploadImage";
         }
         return "pages/uploadSuccess";
     }

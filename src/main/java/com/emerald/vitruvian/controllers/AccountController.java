@@ -1,26 +1,36 @@
 package com.emerald.vitruvian.controllers;
 
+import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.UserMapper;
+import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.UserRepo;
+import com.emerald.vitruvian.services.FileUploadService;
+import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.JWTService;
 import com.emerald.vitruvian.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class AccountController {
 
     @Autowired
     private HomeController homeController;
+
+    @Autowired
+    private ImageController imageController;
 
     @Autowired
     private UserService userService;
@@ -33,6 +43,12 @@ public class AccountController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ImageEntryService imageEntryService;
+
+    @Autowired
+    private FileUploadService uploadService;
 
     @GetMapping("/login")
     public String renderLogin(){
@@ -98,11 +114,65 @@ public class AccountController {
     @GetMapping("/renderProfile")
     public String renderProfile(Model model){
         UserEntity user = userRepo.findById(userService.getPrincipalId());
+        ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(user);
         userMapper.toDTO(user);
         model.addAttribute("user", user);
         model.addAttribute("imageEntries", user.getLikedImages());
+        model.addAttribute("imagePath", profilePicture.getFileName());
 
         return "pages/user";
+    }
+
+    @GetMapping("/profile/upload")
+    public String renderUploadPfp(Model model){
+        model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
+        return "pages/uploadProfilePicture";
+    }
+
+    @PostMapping("/profile/upload")
+    public String uploadPfp(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
+                            @RequestParam("image") MultipartFile image,
+                            BindingResult result,
+                            Model model){
+
+        if(result.hasErrors()){
+            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            return "pages/uploadProfilePicture";
+        }
+
+        if(!image.isEmpty()){
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            imageEntryDTO.setFileName(fileName);
+
+            UserEntity user = userRepo
+                    .findById(userService
+                            .getPrincipalId());
+            imageEntryDTO.setUser(user);
+
+            ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(user);
+
+            if(!profilePicture.getTitle().isEmpty()){
+                imageController.deleteImage(profilePicture.getImageId(), model);
+            }
+
+            imageEntryDTO.setIsProfile(1);
+
+            String uploadDir = "src/main/resources/static/images/";
+
+            try {
+                uploadService.uploadFile(uploadDir, fileName, image);
+            } catch (IOException e) {
+                model.addAttribute("status", e.getMessage());
+                return "error";
+            }
+
+            ImageEntryEntity savedImage = imageEntryService.add(imageEntryDTO);
+
+        } else {
+            model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            return "pages/uploadProfilePicture";
+        }
+        return "pages/uploadSuccess";
     }
 
 }

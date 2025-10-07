@@ -2,6 +2,8 @@ package com.emerald.vitruvian.Entities;
 
 import com.emerald.vitruvian.models.TagsDTO;
 import jakarta.persistence.*;
+import org.hibernate.type.NumericBooleanConverter;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.List;
 
@@ -31,6 +33,9 @@ public class ImageEntryEntity {
 
     @ManyToMany(mappedBy = "likedImages")
     private List<UserEntity> likedBy;
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private int isProfile;
 
     public long getImageId() {
         return imageId;
@@ -88,6 +93,14 @@ public class ImageEntryEntity {
         this.likedBy = likedBy;
     }
 
+    public int getIsProfile() {
+        return isProfile;
+    }
+
+    public void setIsProfile(int isProfile) {
+        this.isProfile = isProfile;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryEntity{" +
@@ -98,6 +111,7 @@ public class ImageEntryEntity {
                 ", tags='" + tags + '\'' +
                 ", user=" + user +
                 ", likedBy=" + likedBy +
+                ", isProfile=" + isProfile +
                 '}';
     }
 }

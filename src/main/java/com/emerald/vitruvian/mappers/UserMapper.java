@@ -6,8 +6,10 @@ import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface UserMapper {
 
     public UserDTO toDTO(UserEntity source);

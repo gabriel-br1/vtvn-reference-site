@@ -56,8 +56,17 @@ public class ImageEntryService {
 
     public List<ImageEntryDTO> getAllImages(){
         return StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
+                .filter(n -> n.getIsProfile() == 0)
                 .map(n -> imageEntryMapper.toDTO(n))
                 .toList();
+    }
+
+    public ImageEntryDTO getProfilePicture(UserEntity user){
+        return StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
+                .filter(n -> n.getIsProfile() == 1)
+                .findFirst()
+                .map(n -> imageEntryMapper.toDTO(n))
+                .orElse(new ImageEntryDTO());
     }
 
     public List<ImageEntryDTO> getByTags(String tagSearch){
