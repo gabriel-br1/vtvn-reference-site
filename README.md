@@ -6,8 +6,9 @@ The website will act as an online repository for images to be used as reference 
 - authorization
 - JWT security
 - image uploading
-
-**TODO:**
 - profile section
 - image saving
 - reporting functionality
+
+**TODO:**
+- custom galleries
