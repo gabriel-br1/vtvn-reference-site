@@ -117,7 +117,6 @@ public class AccountController {
         ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(user);
         userMapper.toDTO(user);
         model.addAttribute("user", user);
-        model.addAttribute("imageEntries", user.getLikedImages());
         model.addAttribute("imagePath", profilePicture.getFileName());
 
         return "pages/user";
@@ -127,6 +126,17 @@ public class AccountController {
     public String renderUploadPfp(Model model){
         model.addAttribute("ImageEntryDTO", new ImageEntryDTO());
         return "pages/uploadProfilePicture";
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/profile/liked")
+    public String renderLiked(Model model){
+        UserEntity user = userRepo.findById(userService.getPrincipalId());
+        userMapper.toDTO(user);
+        model.addAttribute("user", user);
+        model.addAttribute("imageEntries", user.getLikedImages());
+
+        return "pages/gallery";
     }
 
     @PostMapping("/profile/upload")

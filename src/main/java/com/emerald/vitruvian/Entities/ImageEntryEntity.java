@@ -34,6 +34,9 @@ public class ImageEntryEntity {
     @ManyToMany(mappedBy = "likedImages")
     private List<UserEntity> likedBy;
 
+    @ManyToMany(mappedBy = "images")
+    private List<GalleryEntity> galleries;
+
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private int isProfile;
 
@@ -101,6 +104,14 @@ public class ImageEntryEntity {
         this.isProfile = isProfile;
     }
 
+    public List<GalleryEntity> getGalleries() {
+        return galleries;
+    }
+
+    public void setGalleries(List<GalleryEntity> galleries) {
+        this.galleries = galleries;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryEntity{" +
@@ -111,6 +122,7 @@ public class ImageEntryEntity {
                 ", tags='" + tags + '\'' +
                 ", user=" + user +
                 ", likedBy=" + likedBy +
+                ", galleries=" + galleries +
                 ", isProfile=" + isProfile +
                 '}';
     }

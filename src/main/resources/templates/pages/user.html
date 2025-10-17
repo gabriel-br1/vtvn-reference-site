@@ -17,14 +17,27 @@
           <p th:text="*{email}"></p>
         </div>
     </div>
-    <h2>Liked images:</h2>
-    <div class="d-flex flex-row justify-content-center">
-        <div id="imageBoard" class="mx-2 my-2" th:each="imageEntry: ${imageEntries}">
-            <a th:href="@{'/image/' + ${imageEntry.imageId}}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
-                <img class="card-img-top" th:src="@{'images/' + ${imageEntry.fileName}}" style="object-fit: cover; height: 100%; width 100%;">
-                <p class="card-title h6 text-dark mx-2" th:text="${imageEntry.title}" style="text-decoration:none;"></p>
-            </a>
-        </div>
+</div>
+<div class="d-flex flex-row justify-content-start">
+    <div id="liked" class="mx-2 my-2">
+        <a th:href="@{/profile/liked}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+            <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;">
+            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">text</p>
+        </a>
+    </div>
+    <!--
+    <div id="imageBoard" th:each="" class="mx-2 my-2">
+        <a th:href="@{/profile/liked}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+            <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;">
+            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">text</p>
+        </a>
+    </div>
+    -->
+    <div id="addGallery" class="mx-2 my-2">
+        <a th:href="@{/profile/addGallery}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+            <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;">
+            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">Add a new Gallery</p>
+        </a>
     </div>
 </div>
 </body>

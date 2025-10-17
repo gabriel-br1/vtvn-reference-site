@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.models;
 
+import com.emerald.vitruvian.Entities.GalleryEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -26,6 +27,8 @@ public class UserDTO {
     private String passwordConfirm;
 
     private List<ImageEntryEntity> likedImages;
+
+    private List<GalleryEntity> galleries;
 
     public String getEmail() {
         return email;
@@ -67,6 +70,14 @@ public class UserDTO {
         this.likedImages = likedImages;
     }
 
+    public List<GalleryEntity> getGalleries() {
+        return galleries;
+    }
+
+    public void setGalleries(List<GalleryEntity> galleries) {
+        this.galleries = galleries;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -75,6 +86,7 @@ public class UserDTO {
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
                 ", likedImages=" + likedImages +
+                ", galleries=" + galleries +
                 '}';
     }
 }
