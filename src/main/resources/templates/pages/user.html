@@ -21,18 +21,18 @@
 <div class="d-flex flex-row justify-content-start">
     <div id="liked" class="mx-2 my-2">
         <a th:href="@{/profile/liked}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
-            <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;">
-            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">text</p>
+            <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;" th:src="@{'images/' + ${lastLikedImage}}">
+            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">LIked Images</p>
         </a>
     </div>
-    <!--
-    <div id="imageBoard" th:each="" class="mx-2 my-2">
-        <a th:href="@{/profile/liked}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
-            <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;">
-            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">text</p>
-        </a>
+    <div class="d-flex flex-row justify-content-start" th:each="gallery: ${Galleries}">
+        <div class="mx-2 my-2">
+            <a th:href="@{'/profile/Gallery/' + ${gallery.id}}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+                <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;" th:src="@{'images/' + ${gallery.lastImage.fileName}}">
+                <p class="card-title h6 text-dark mx-2"style="text-decoration:none;" th:text="${gallery.galleryName}"></p>
+            </a>
+        </div>
     </div>
-    -->
     <div id="addGallery" class="mx-2 my-2">
         <a th:href="@{/profile/addGallery}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
             <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;">

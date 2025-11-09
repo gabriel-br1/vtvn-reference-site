@@ -20,6 +20,10 @@ public class GalleryDTO {
 
     private UserEntity user;
 
+    private ImageEntryEntity lastImage;
+
+    private long newImageId;
+
     public String getGalleryName() {
         return galleryName;
     }
@@ -52,6 +56,22 @@ public class GalleryDTO {
         this.description = description;
     }
 
+    public ImageEntryEntity getLastImage() {
+        return lastImage;
+    }
+
+    public void setLastImage(ImageEntryEntity lastImage) {
+        this.lastImage = lastImage;
+    }
+
+    public long getNewImageId() {
+        return newImageId;
+    }
+
+    public void setNewImageId(long newImageId) {
+        this.newImageId = newImageId;
+    }
+
     @Override
     public String toString() {
         return "GalleryDTO{" +
@@ -59,6 +79,8 @@ public class GalleryDTO {
                 ", description='" + description + '\'' +
                 ", images=" + images +
                 ", user=" + user +
+                ", lastImage=" + lastImage +
+                ", newImageId=" + newImageId +
                 '}';
     }
 }

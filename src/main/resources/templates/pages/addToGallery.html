@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+</head>
+<body class="bg-dark">
+<header th:replace="~{fragments/layout.html :: header}">
+</header>
+<form method="post" th:action="@{/profile/addToGallery/}" id="form" class="d-flex flex-row justify-content-start" style="width:16rem; height:24rem; ">
+    <div th:each="gallery: ${Galleries}">
+        <div class="gallery card d-flex flex-column justify-content-end mx-2" style="width:16rem; height:24rem; ">
+            <img class="card-img-top justify-content-center align-items-center" style="object-fit: contain; height: 100%; width 100%;" th:src="@{'/images/' + ${gallery.lastImage.fileName}}">
+            <div class="d-flex align-items-end">
+                <input type="checkbox" class="justify-content-start form-check-input" onchange="checkCheckboxes()">
+                <label th:text="${gallery.galleryName}"></label>
+            </div>
+        </div>
+    </div>
+    <input class="invisible" th:value="${imageId}" name="imageId">
+    <input class="invisible" name="galleryNames" id="galleryNames">
+    <button type="submit" class="col-12" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0; height: 3rem;">Add to Gallery/ies</button>
+</form>
+
+<script src="/script.js"></script>
+<!--
+<script>window.setTimeout(fillImageIds, 1000);</script>
+-->
+</body>
+</html>

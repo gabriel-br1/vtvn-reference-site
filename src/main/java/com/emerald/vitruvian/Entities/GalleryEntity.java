@@ -25,6 +25,12 @@ public class GalleryEntity {
     @JoinColumn(nullable = false)
     private UserEntity user;
 
+    @Transient
+    private ImageEntryEntity lastImage;
+
+    @Transient
+    private long newImageId;
+
     public long getId() {
         return id;
     }
@@ -65,6 +71,22 @@ public class GalleryEntity {
         this.description = description;
     }
 
+    public ImageEntryEntity getLastImage() {
+        return lastImage;
+    }
+
+    public void setLastImage(ImageEntryEntity lastImage) {
+        this.lastImage = lastImage;
+    }
+
+    public long getNewImageId() {
+        return newImageId;
+    }
+
+    public void setNewImageId(long newImageId) {
+        this.newImageId = newImageId;
+    }
+
     @Override
     public String toString() {
         return "GalleryEntity{" +
@@ -73,6 +95,8 @@ public class GalleryEntity {
                 ", description='" + description + '\'' +
                 ", images=" + images +
                 ", user=" + user +
+                ", lastImage=" + lastImage +
+                ", newImageId=" + newImageId +
                 '}';
     }
 }

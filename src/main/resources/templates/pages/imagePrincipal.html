@@ -21,6 +21,9 @@
             <form method="post" th:action="@{'/likeImage/' + ${ImageEntryEntity.imageId}}">
                 <button type="submit" class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;">Like</button>
             </form>
+            <a th:href="@{'/profile/addToGallery/' + ${ImageEntryEntity.imageId}}">
+                <button type="submit" class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;">Add to Gallery</button>
+            </a>
             <div th:object="${ImageEntryEntity}">
                 <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:href="@{'/report/' + *{imageId}}">Report</a>
             </div>

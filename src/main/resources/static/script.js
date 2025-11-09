@@ -249,3 +249,98 @@
       titleElement.value = "Profile picture"
       descElement.value = "Picture used to represent a profile"
     }
+
+    function fillImageIds(){
+      const paragraphElements = document.querySelectorAll('p')
+      const imageId = document.getElementById("imageId")
+      const id = imageId.getAttribute("value")
+
+      console.log(paragraphElements.length)
+
+      for(let i = 0; i < paragraphElements.length; i++){
+        paragraphElements[i].setAttribute("field", id)
+      }
+    }
+
+    function checkCheckboxes(){
+
+      const galleryElements = document.querySelectorAll(".gallery")
+      const galleryList = document.getElementById("galleryNames")
+      let nameArray = galleryList.value.split("*")
+
+      for(let i = 0; i < galleryElements.length; i++){
+        let isPresent = false;
+        let presentIndex = 0
+        let checkbox = galleryElements[i].querySelector(".form-check-input")
+        let divElement = checkbox.parentNode
+        let label = divElement.querySelector("label")
+        let labelContent = label.textContent
+        console.log("current label: " + labelContent)
+
+        if(checkbox.checked){
+          for(let j = 0; j < nameArray.length; j++){
+            if(nameArray[j] == labelContent){
+              isPresent = true
+              break
+            }
+          }
+
+          if(!isPresent){
+            const joinedArray = nameArray.join("*")
+            galleryList.value = joinedArray + "*" + labelContent
+            console.log("add")
+            console.log(galleryList.value)
+            console.log("----")
+            return
+          }
+          
+        }
+        else{
+          for(let j = 0; j < nameArray.length; j++){
+            if(nameArray[j] == labelContent){
+              presentIndex = j
+              isPresent = true
+              break
+            }
+          }
+          if(isPresent){
+            nameArray[presentIndex] = "%"
+            const preSplitArray = nameArray.join("*")
+            const splitArray = preSplitArray.split("%")
+            galleryList.value = splitArray.join("")
+            console.log("remove")
+            console.log(galleryList.value)
+            console.log("----")
+            console.log(isPresent)
+            return
+          }
+        
+        }
+
+      }
+
+      /*
+      for(let i = 0; i < galleryElements.length; i++){
+        const checkbox = galleryElements[i].querySelector(".form-check-input")
+        const divElement = checkbox.parentNode
+        const label = divElement.querySelector("label")
+        let galleryName = label.textContent
+        for(let i = 1; i < nameArray.length; i++){
+            if(nameArray[i].trim() == galleryName){
+              isPresent = true
+              index = i;
+              console.log(i)
+              break
+            }
+          }
+        if(checkbox.checked && !isPresent){
+          galleryList.value += "," + galleryName
+          console.log(galleryList.value)
+        } else if (!checkbox.checked){
+          nameArray[i] = ""
+          galleryList.value = nameArray.join(",")
+          console.log(nameArray)
+        }
+      }*/
+
+    }

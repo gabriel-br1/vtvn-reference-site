@@ -1,5 +1,7 @@
 package com.emerald.vitruvian.services;
 
+import com.emerald.vitruvian.Entities.GalleryEntity;
+import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.exceptions.DuplicateEmailException;
 import com.emerald.vitruvian.exceptions.EmailNotFoundException;
@@ -84,4 +86,13 @@ public class UserService implements UserDetailsService{
         }
         return -1;
     }
+
+    public String lastLikedImage(UserEntity user){
+        if(user.getLikedImages().isEmpty()){
+            return "placeholder.jpg";
+        } else {
+            return user.getLikedImages().getLast().getFileName();
+        }
+    }
+
 }

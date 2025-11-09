@@ -1,15 +1,13 @@
 package com.emerald.vitruvian.controllers;
 
+import com.emerald.vitruvian.Entities.GalleryEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.UserRepo;
-import com.emerald.vitruvian.services.FileUploadService;
-import com.emerald.vitruvian.services.ImageEntryService;
-import com.emerald.vitruvian.services.JWTService;
-import com.emerald.vitruvian.services.UserService;
+import com.emerald.vitruvian.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Controller
@@ -49,6 +48,9 @@ public class AccountController {
 
     @Autowired
     private FileUploadService uploadService;
+
+    @Autowired
+    private GalleryService galleryService;
 
     @GetMapping("/login")
     public String renderLogin(){
@@ -102,6 +104,7 @@ public class AccountController {
         try {
             userService.add(userDTO);
         } catch (Exception e){
+            System.out.println(e.getMessage());
             userDTO.setPasswordConfirm("");
             model.addAttribute("userDTO", userDTO);
             return "pages/register";
@@ -115,9 +118,12 @@ public class AccountController {
     public String renderProfile(Model model){
         UserEntity user = userRepo.findById(userService.getPrincipalId());
         ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(user);
-        userMapper.toDTO(user);
-        model.addAttribute("user", user);
+        UserDTO userdto = userMapper.toDTO(user);
+        List<GalleryEntity> galleries = galleryService.lastImage(user);
+        model.addAttribute("lastLikedImage", userService.lastLikedImage(user));
+        model.addAttribute("user", userdto);
         model.addAttribute("imagePath", profilePicture.getFileName());
+        model.addAttribute("Galleries", galleries);
 
         return "pages/user";
     }
