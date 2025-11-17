@@ -23,7 +23,7 @@ public class ImageEntryService {
     private static HashSet<String> filterWords = new HashSet<>(Arrays.asList(
             "and", "for", "nor", "but", "or", "yet", "so",
             "both", "or", "whether", "only", "also", "either",
-            "neither", "just", "the", "as", "if", "then", "rather",
+            "neither", "just", "the", "a", "as", "if", "then", "rather",
             "such", "that", "even", "is", "are"));
 
     @Autowired
@@ -49,9 +49,6 @@ public class ImageEntryService {
         oldImage.setTagsDTO(imageEntryDTO.getTagsDTO());
         oldImage.setTags(imageEntryDTO.getTags());
         ImageEntryEntity newImage = new ImageEntryEntity();
-//        newImage.setImageId(imageEntryEntity.getImageId());
-//        newImage.setUser(imageEntryEntity.getUser());
-//        newImage.setFileName(imageEntryEntity.getFileName());
         imageEntryMapper.updateImageEntryEntity(oldImage, newImage);
         imageEntryRepo.save(newImage);
     }
@@ -75,46 +72,15 @@ public class ImageEntryService {
         List<ImageEntryDTO> resultList = new ArrayList<>();
         String[] splitSearchTags = tagSearch.split(" ");
         for(ImageEntryDTO image : getAllImages()){
-            for(String imageTag : image.getTags().split(" ")){
+            String[] imageTags = image.getTags().split(" ");
+            for(String imageTag : imageTags){
                 for(String searchTag : splitSearchTags){
-                    if(searchTag.equalsIgnoreCase(imageTag)){
-                        add(image);
+                    if(searchTag.equalsIgnoreCase(imageTag) && !resultList.contains(image)){
+                        resultList.add(image);
                         break;
                     }
                 }
             }
-
-            /*
-            int tagCount = 0;
-            String tagsNameInput =  tagSearch + " " + image.getTitle();
-            String[] titleSplit = image
-                    .getTitle()
-                    .split(" ");
-
-            ImageEntryDTO tagsCarrier = new ImageEntryDTO();
-            tagsCarrier.setDescription(image.getTags());
-            image.setTagsDTO(parseTags(tagsCarrier));
-
-            String[] imageTags = image
-                    .getTagsDTO()
-                    .getTags()
-                    .toArray(new String[0]);
-
-            String[] imageTitleTags = new String[titleSplit.length + imageTags.length];
-            System.arraycopy(titleSplit, 0, imageTitleTags, 0, titleSplit.length);
-            System.arraycopy(imageTags, 0, imageTitleTags, titleSplit.length, imageTags.length);
-            String[] searchImageTags = tagsNameInput.split(" ");
-            for(String tagQuery : searchImageTags){
-                for(String imageTag : imageTitleTags){
-                    if(tagQuery.equals(imageTag.toLowerCase())){
-                        tagCount++;
-                    }
-                }
-            }
-            if(tagCount > 0){
-                resultList.add(image);
-            }
-            */
         }
         return resultList;
     }
