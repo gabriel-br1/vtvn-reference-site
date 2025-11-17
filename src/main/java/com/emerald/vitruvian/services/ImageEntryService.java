@@ -46,7 +46,9 @@ public class ImageEntryService {
             imageEntryDTO.setTagsDTO(parseTags(imageEntryDTO));
             imageEntryDTO.setTags(getImageTags(imageEntryDTO));
         }
-        ImageEntryEntity newImage = imageEntryMapper.toEntity(imageEntryDTO);
+        oldImage.setTagsDTO(imageEntryDTO.getTagsDTO());
+        oldImage.setTags(imageEntryDTO.getTags());
+        ImageEntryEntity newImage = new ImageEntryEntity();
 //        newImage.setImageId(imageEntryEntity.getImageId());
 //        newImage.setUser(imageEntryEntity.getUser());
 //        newImage.setFileName(imageEntryEntity.getFileName());
@@ -71,12 +73,27 @@ public class ImageEntryService {
 
     public List<ImageEntryDTO> getByTags(String tagSearch){
         List<ImageEntryDTO> resultList = new ArrayList<>();
+        String[] splitSearchTags = tagSearch.split(" ");
         for(ImageEntryDTO image : getAllImages()){
+            for(String imageTag : image.getTags().split(" ")){
+                for(String searchTag : splitSearchTags){
+                    if(searchTag.equalsIgnoreCase(imageTag)){
+                        add(image);
+                        break;
+                    }
+                }
+            }
+
+            /*
             int tagCount = 0;
             String tagsNameInput =  tagSearch + " " + image.getTitle();
             String[] titleSplit = image
                     .getTitle()
                     .split(" ");
+
+            ImageEntryDTO tagsCarrier = new ImageEntryDTO();
+            tagsCarrier.setDescription(image.getTags());
+            image.setTagsDTO(parseTags(tagsCarrier));
 
             String[] imageTags = image
                     .getTagsDTO()
@@ -94,9 +111,10 @@ public class ImageEntryService {
                     }
                 }
             }
-            if(tagCount == searchImageTags.length){
+            if(tagCount > 0){
                 resultList.add(image);
             }
+            */
         }
         return resultList;
     }
@@ -111,7 +129,8 @@ public class ImageEntryService {
 
     private TagsDTO parseTags(ImageEntryDTO imageEntryDTO){
         TagsDTO tags = new TagsDTO();
-        String[] separatedDesc = imageEntryDTO.getDescription().split(" ");
+        String descriptionPlusTitle = imageEntryDTO.getDescription() + " " + imageEntryDTO.getTitle();
+        String[] separatedDesc = descriptionPlusTitle.split(" ");
         int count = 0;
         for(String word : separatedDesc){
             for(String filterWord : filterWords){
@@ -137,5 +156,14 @@ public class ImageEntryService {
         ImageEntryDTO imageDTO = imageEntryMapper.toDTO(image);
 
         edit(imageDTO, imageId);
+    }
+
+    public boolean checkReservedChars(String title){
+        for(int i = 0; i < title.length(); i++){
+            if(title.charAt(i) == '*'){
+                return true;
+            }
+        }
+        return false;
     }
 }

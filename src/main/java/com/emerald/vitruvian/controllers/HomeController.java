@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.controllers;
 
+import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.services.FileUploadService;
 import com.emerald.vitruvian.services.ImageEntryService;

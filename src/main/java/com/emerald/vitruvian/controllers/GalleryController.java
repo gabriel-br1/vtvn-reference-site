@@ -90,7 +90,7 @@ public class GalleryController {
     public String createGallery(@Valid @ModelAttribute GalleryDTO galleryDTO,
                                 Model model,
                                 BindingResult result){
-        if(result.hasErrors()){
+        if(result.hasErrors() || galleryService.checkReservedChars(galleryDTO.getGalleryName())){
             model.addAttribute("GalleryDTO", galleryDTO);
             return "pages/addGallery";
         }
@@ -110,17 +110,18 @@ public class GalleryController {
                 .orElse(new ImageEntryEntity());
 
         galleryService.addImage(image, galleryNames);
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println(galleryNames);
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX");
 
         return "pages/uploadSuccess";
+    }
+
+    @PostMapping("/profile/removeImages/{galleryId}")
+    public String removeFromGallery(@PathVariable("galleryId") long galleryId,
+                                    @RequestParam String imageNames,
+                                    Model model){
+        GalleryEntity gallery = galleryRepo.findById(galleryId).orElse(new GalleryEntity());
+        galleryService.removeImage(gallery, imageNames);
+
+        return homeController.renderHome(model);
     }
 
     @PostMapping("/profile/editGallery/{galleryId}")
@@ -128,7 +129,7 @@ public class GalleryController {
                                 @PathVariable("galleryId") long galleryId,
                                 Model model,
                                 BindingResult result){
-        if(result.hasErrors()){
+        if(result.hasErrors() || galleryService.checkReservedChars(galleryDTO.getGalleryName())){
             model.addAttribute(galleryDTO);
             return "pages/editGallery";
         }

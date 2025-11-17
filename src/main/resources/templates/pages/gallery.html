@@ -8,18 +8,26 @@
 <div th:object="${user}" class="d-flex flex-column align-items-start my-2 text-light">
     <div class="d-flex flex-row justify-content-start">
         <div id="imageBoard" class="mx-2 my-2" th:each="imageEntry: ${imageEntries}">
-            <a th:href="@{'/image/' + ${imageEntry.imageId}}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
+            <a th:href="@{'/image/' + ${imageEntry.imageId}}" class="galleryImage card d-flex flex-column justify-content-end text-dark" style="width:16rem; height:24rem; ">
                 <img class="card-img-top" th:src="@{'/images/' + ${imageEntry.fileName}}" style="object-fit: cover; height: 100%; width 100%;">
-                <p class="card-title h6 text-dark mx-2" th:text="${imageEntry.title}" style="text-decoration:none;"></p>
+                <div class="d-flex align-items-end">
+                    <input type="checkbox" class="justify-content-start form-check-input" onchange="checkCheckboxesDelete()">
+                    <label th:text="${imageEntry.title}"></label>
+                </div>
             </a>
         </div>
     </div>
 </div>
-<div class="d-flex">
-    <a class="btn col-6 d-flex justify-content-center" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;" th:href="@{'/profile/editGallery/' + ${galleryId}}">Edit Gallery</a>
+<div class="d-flex justify-content-center">
+    <form method="post" th:action="@{'/profile/removeImages/' + ${galleryId}}">
+        <input class="invisible" name="imageNames" id="imageNames">
+        <button type="submit" class="btn d-flex justify-content-center col-4" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;left:0;">Delete Image/s</button>
+    </form>
+    <a class="btn d-flex justify-content-center col-4" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;" th:href="@{'/profile/editGallery/' + ${galleryId}}">Edit Gallery</a>
     <form method="post" th:action="@{'/profile/deleteGallery/' + ${galleryId}}">
-        <button class="btn col-6 d-flex justify-content-center" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;right:0;">Delete Gallery</button>
+        <button type="submit" class="btn d-flex justify-content-center col-4" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;right:0;">Delete Gallery</button>
     </form>
 </div>
+<script src="/script.js"></script>
 </body>
 </html>

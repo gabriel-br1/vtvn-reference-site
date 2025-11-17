@@ -75,7 +75,7 @@ public class ImageController {
                               BindingResult result,
                               Model model){
 
-        if(result.hasErrors()){
+        if(result.hasErrors() || imageEntryService.checkReservedChars(imageEntryDTO.getTitle())){
             model.addAttribute("ImageEntryDTO", imageEntryDTO);
             return "pages/uploadImage";
         }
@@ -161,7 +161,7 @@ public class ImageController {
                                 BindingResult result,
                                 Model model){
 
-        if(result.hasErrors()){
+        if(result.hasErrors() || imageEntryService.checkReservedChars(imageEntryDTO.getTitle())){
             return renderUpdateImage(id, model);
         }
 

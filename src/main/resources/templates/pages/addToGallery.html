@@ -10,7 +10,7 @@
         <div class="gallery card d-flex flex-column justify-content-end mx-2" style="width:16rem; height:24rem; ">
             <img class="card-img-top justify-content-center align-items-center" style="object-fit: contain; height: 100%; width 100%;" th:src="@{'/images/' + ${gallery.lastImage.fileName}}">
             <div class="d-flex align-items-end">
-                <input type="checkbox" class="justify-content-start form-check-input" onchange="checkCheckboxes()">
+                <input type="checkbox" class="justify-content-start form-check-input" onchange="checkCheckboxesAdd()">
                 <label th:text="${gallery.galleryName}"></label>
             </div>
         </div>

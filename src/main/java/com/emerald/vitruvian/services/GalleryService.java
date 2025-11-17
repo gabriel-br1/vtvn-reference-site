@@ -8,8 +8,11 @@ import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.GalleryDTO;
 import com.emerald.vitruvian.repositories.GalleryRepo;
+import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -21,6 +24,9 @@ public class GalleryService {
 
     @Autowired
     private GalleryMapper galleryMapper;
+
+    @Autowired
+    private ImageEntryRepo imageEntryRepo;
 
     @Autowired
     private ImageEntryMapper imageEntryMapper;
@@ -44,6 +50,7 @@ public class GalleryService {
         GalleryEntity oldGallery = galleryRepo.findById(id).orElse(new GalleryEntity());
         oldGallery.setGalleryName(galleryDTO.getGalleryName());
         oldGallery.setDescription(galleryDTO.getDescription());
+//        oldGallery.setImages(galleryDTO.getImages());
         GalleryEntity newGallery = new GalleryEntity();
 
         galleryMapper.updateGalleryEntity(oldGallery, newGallery);
@@ -62,6 +69,60 @@ public class GalleryService {
                 }
             }
         }
+    }
+
+    public void removeImage(GalleryEntity galleryEntity, String imageNames){
+        String[] imageArray = parseGalleryList(imageNames);
+        List<ImageEntryEntity> imagesToRemove = new ArrayList<>();
+        for(String image : imageArray){
+            for(ImageEntryEntity imageEntity : galleryEntity.getImages()){
+                if(imageEntity.getTitle().equals(image)){
+                    System.out.println("removing " + imageEntity.getTitle());
+                    System.out.println();
+                    ImageEntryEntity imageToRemove = StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
+                            .filter(n -> n.getTitle().equals(image))
+                            .findFirst()
+                            .orElse(new ImageEntryEntity());
+                    imagesToRemove.add(imageToRemove);
+                }
+            }
+        }
+
+        List<Integer> ids = new ArrayList<>();
+
+        for(ImageEntryEntity imageEntry : imagesToRemove){
+            for(int i = 0; i < galleryEntity.getImages().size(); i++){
+                if(galleryEntity.getImages().get(i).getImageId() == imageEntry.getImageId()){
+                    ids.add(i);
+                }
+            }
+        }
+
+        List<ImageEntryEntity> imageEntryEntityList = galleryEntity.getImages();
+        boolean firstLoop = true;
+
+        for(int i : ids){
+            for(ImageEntryEntity image : galleryEntity.getImages()){
+                System.out.println("before");
+                System.out.println(image.getTitle());
+                System.out.println();
+            }
+
+            if(firstLoop){
+                imageEntryEntityList.remove(i);
+                firstLoop = false;
+            } else {
+                imageEntryEntityList.remove(i-1);
+            }
+
+            for(ImageEntryEntity image : galleryEntity.getImages()){
+                System.out.println("after");
+                System.out.println(image.getTitle());
+            }
+        }
+
+        galleryEntity.setImages(imageEntryEntityList);
+        edit(galleryMapper.toDTO(galleryEntity), galleryEntity.getId());
     }
 
     public List<GalleryEntity> lastImage(UserEntity user){
@@ -96,6 +157,15 @@ public class GalleryService {
         return StreamSupport.stream(galleryRepo.findAll().spliterator(), false)
                 .filter(n -> n.getUser().getId() == user.getId())
                 .toList();
+    }
+
+    public boolean checkReservedChars(String title){
+        for(int i = 0; i < title.length(); i++){
+            if(title.charAt(i) == '*'){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
