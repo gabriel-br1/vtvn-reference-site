@@ -14,16 +14,14 @@ public class UserDTO {
 
     private long id;
 
-    @NotBlank(message = "fill in your email address")
+    @NotBlank(message = "Invalid input: Empty email address")
     private String email;
 
-    @NotBlank(message = "fill in your password")
-    @Size(message = "password must be between 6 and 24 characters")
-    @Min(value = 6)
-    @Max(value = 24)
+    @NotBlank(message = "Invalid input: Empty password")
+    @Size(min = 6, max = 24, message = "Invalid input: Password must be between 6 and 24 characters long")
     private String password;
 
-    @NotBlank(message = "fill in your password confirmation")
+    @NotBlank(message = "Invalid input: Empty password confirmation")
     private String passwordConfirm;
 
     private List<ImageEntryEntity> likedImages;

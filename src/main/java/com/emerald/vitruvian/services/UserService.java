@@ -36,6 +36,7 @@ public class UserService implements UserDetailsService{
             if(confirmEmail(userDTO)){
                 userDTO.setPassword(encoder.encode(userDTO.getPassword()));
                 userRepo.save(userMapper.toEntity(userDTO));
+                return;
             }
             System.out.println("email");
             throw new DuplicateEmailException("An account under this email address already exists.");

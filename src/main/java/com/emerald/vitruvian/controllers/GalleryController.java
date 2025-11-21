@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -88,10 +90,15 @@ public class GalleryController {
 
     @PostMapping("/profile/addGallery")
     public String createGallery(@Valid @ModelAttribute GalleryDTO galleryDTO,
-                                Model model,
-                                BindingResult result){
+                                BindingResult result,
+                                Model model){
         if(result.hasErrors() || galleryService.checkReservedChars(galleryDTO.getGalleryName())){
+            List<String> errors = new ArrayList<>();
+            for(ObjectError objectError : result.getAllErrors()){
+                errors.add(objectError.getDefaultMessage());
+            }
             model.addAttribute("GalleryDTO", galleryDTO);
+            model.addAttribute("Errors", errors);
             return "pages/addGallery";
         }
         UserEntity user = userRepo.findById(userService.getPrincipalId());

@@ -6,6 +6,7 @@ import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
 import com.emerald.vitruvian.services.ReportService;
 import com.emerald.vitruvian.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -44,9 +45,9 @@ public class ReportController {
     }
 
     @PostMapping("/report/{id}")
-    public String postReport(@ModelAttribute ReportDTO report,
-                             @PathVariable long id,
+    public String postReport(@Valid @ModelAttribute ReportDTO report,
                              BindingResult result,
+                             @PathVariable long id,
                              Model model){
         if(result.hasErrors()){
             model.addAttribute("ReportDTO", report);

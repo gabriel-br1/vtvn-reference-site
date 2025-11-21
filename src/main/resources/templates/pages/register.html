@@ -6,7 +6,7 @@
 <header th:replace="~{fragments/layout.html :: header}">
 </header>
 <div class="d-flex justify-content-center">
-    <form method="post" th:action="@{/register}" th:object="${userDTO}" class="d-flex flex-column align-items-center">
+    <form method="post" th:action="@{/register}" th:object="${userDTO}" class="d-flex flex-column align-items-center col-4">
         <label for="email" class="text-light">email: </label>
         <input class="form-control form-control-lg" id="email" type="email" name="email" th:field="*{email}">
         <label for="password" class="text-light">password: </label>
@@ -14,6 +14,9 @@
         <label for="passwordConfirm" class="text-light">confirm password: </label>
         <input class="form-control form-control-lg" id="passwordConfirm" type="password" name="passwordConfirm" th:field="*{passwordConfirm}">
         <button type="submit" class="btn btn-lg my-2" style="background-color:#2bdb9d;font-size:20px;">register</button>
+        <ul>
+            <li th:each="err : ${Errors}" th:text="${err}" class="error text-danger" />
+        </ul>
     </form>
 </div>
 </body>

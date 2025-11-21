@@ -10,10 +10,10 @@ import java.util.List;
 @Component
 public class GalleryDTO {
 
-    @NotBlank(message = "Please fill in the gallery name.")
+    @NotBlank(message = "Invalid input: Empty gallery name.")
     private String galleryName;
 
-    @NotBlank(message = "Please fill in the gallery description.")
+    @NotBlank(message = "Invalid input: Empty gallery description.")
     private String description;
 
     private List<ImageEntryEntity> images;

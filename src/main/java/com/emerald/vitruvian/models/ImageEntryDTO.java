@@ -12,8 +12,8 @@ public class ImageEntryDTO {
 
     private long imageId;
 
-    @NotBlank(message = "Fill in the title")
-    @Size(max = 50, message = "Title is too long")
+    @NotBlank(message = "Invalid input: Empty title")
+    @Size(max = 50, message = "Invalid input: Title is too long")
     private String title;
 
     private String fileName;
@@ -22,7 +22,7 @@ public class ImageEntryDTO {
 
     private String tags;
 
-    @NotBlank(message = "Fill in the description")
+    @NotBlank(message = "Invalid input: Fill in the description")
     private String description;
 
     private UserEntity user;

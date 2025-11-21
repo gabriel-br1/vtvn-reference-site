@@ -21,6 +21,9 @@
               <input class="form-control form-control-lg" id="description" type="text" th:field="*{description}">
           </div>
         <button type="submit" class="btn btn-lg col-12" style="background-color:#2bdb9d;font-size:20px;position:fixed;bottom:0;">Create</button>
+          <ul>
+              <li th:each="err : ${Errors}" th:text="${err}" class="error text-danger" />
+          </ul>
       </form>
     </div>
   </div>

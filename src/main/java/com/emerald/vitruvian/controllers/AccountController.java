@@ -15,10 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -92,12 +94,17 @@ public class AccountController {
 //    }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute UserDTO userDTO,
+    public String registerUser(@Valid @ModelAttribute UserDTO userDTO,
                                BindingResult result,
                                Model model){
 
         if(result.hasErrors()){
+            List<String> errors = new ArrayList<>();
+            for(ObjectError objectError : result.getAllErrors()){
+                errors.add(objectError.getDefaultMessage());
+            }
             model.addAttribute("userDTO", userDTO);
+            model.addAttribute("Errors", errors);
             return "pages/register";
         }
 
@@ -147,8 +154,8 @@ public class AccountController {
 
     @PostMapping("/profile/upload")
     public String uploadPfp(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
-                            @RequestParam("image") MultipartFile image,
                             BindingResult result,
+                            @RequestParam("image") MultipartFile image,
                             Model model){
 
         if(result.hasErrors()){

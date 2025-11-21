@@ -20,9 +20,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -71,12 +73,17 @@ public class ImageController {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/createImage")
     public String createImage(@Valid @ModelAttribute ImageEntryDTO imageEntryDTO,
-                              @RequestParam("image") MultipartFile image,
                               BindingResult result,
+                              @RequestParam("image") MultipartFile image,
                               Model model){
 
         if(result.hasErrors() || imageEntryService.checkReservedChars(imageEntryDTO.getTitle())){
+            List<String> errors = new ArrayList<>();
+            for(ObjectError objectError : result.getAllErrors()){
+                errors.add(objectError.getDefaultMessage());
+            }
             model.addAttribute("ImageEntryDTO", imageEntryDTO);
+            model.addAttribute("Errors", errors);
             return "pages/uploadImage";
         }
 
