@@ -9,6 +9,6 @@ The website will act as an online repository for images to be used as reference 
 - profile section
 - image saving
 - reporting functionality
+- custom galleries
 
 **TODO:**
-- custom galleries
