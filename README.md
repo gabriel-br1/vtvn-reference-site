@@ -12,3 +12,5 @@ The website will act as an online repository for images to be used as reference 
 - custom galleries
 
 **TODO:**
+- comments
+- REST
