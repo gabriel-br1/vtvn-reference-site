@@ -30,6 +30,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<GalleryEntity> galleries;
 
+    @OneToMany(mappedBy = "user")
+    private List<CommentEntity> comments;
+
     public long getId() {
         return id;
     }
@@ -86,6 +89,14 @@ public class UserEntity {
         this.galleries = galleries;
     }
 
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -96,6 +107,7 @@ public class UserEntity {
                 ", images=" + images +
                 ", likedImages=" + likedImages +
                 ", galleries=" + galleries +
+                ", comments=" + comments +
                 '}';
     }
 }

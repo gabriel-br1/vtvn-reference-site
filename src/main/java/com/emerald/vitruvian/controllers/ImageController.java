@@ -3,6 +3,7 @@ package com.emerald.vitruvian.controllers;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
+import com.emerald.vitruvian.models.CommentDTO;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
@@ -130,12 +131,14 @@ public class ImageController {
             if (userEntity.getId() == imageEntryEntity.getUser().getId()){
                 model.addAttribute("ImageEntryEntity", imageEntryEntity);
                 model.addAttribute("imageEntry", imageEntryDTO);
+                model.addAttribute("CommentDTO", new CommentDTO());
                 return "pages/imagePrincipal";
             }
         }
 
         model.addAttribute("imageEntry", imageEntryDTO);
         model.addAttribute("ImageEntryEntity", imageEntryEntity);
+        model.addAttribute("CommentDTO", new CommentDTO());
 
         return "pages/image";
     }
