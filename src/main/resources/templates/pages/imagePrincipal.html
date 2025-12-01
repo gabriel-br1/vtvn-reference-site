@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="d-flex flex-column justify-content-start bg-light px-2 py-4 mx-2" style="border-radius:10px; width:30rem;height:100%">
-        <form method="post" th:object="${CommentDTO}" th:action="@{'/postComment/' + ${ImageEntryEntity.imageId}}">
+        <form method="post" sec:authorize="isAuthenticated()" th:object="${CommentDTO}" th:action="@{'/postComment/' + ${ImageEntryEntity.imageId}}">
             <input type="text" id="commentText" th:field="*{commentText}" class="form-control form-control-lg">
             <button type="submit" class="btn btn-lg col-12" style="background-color:#2bdb9d;font-size:20px;">Post comment</button>
         </form>

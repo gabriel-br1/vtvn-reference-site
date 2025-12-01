@@ -61,7 +61,7 @@ public class ImageEntryService {
     }
 
     public ImageEntryDTO getProfilePicture(UserEntity user){
-        return StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
+        return StreamSupport.stream(user.getImages().spliterator(), false)
                 .filter(n -> n.getIsProfile() == 1)
                 .findFirst()
                 .map(n -> imageEntryMapper.toDTO(n))

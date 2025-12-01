@@ -9,7 +9,7 @@
     <div class="d-flex flex-row justify-content-center my-2">
         <div class="bg-light mx-1 d-flex justify-content-center align-items-center" style="height:152px;width:152px;border-radius:10px;">
             <a th:href="@{/profile/upload}" class="test-info">
-                <img th:src="@{'images/' + ${imagePath}}" alt="upload image" style="height:150px;width:auto;border-radius:10px;object-fit:scale-down;">
+                <img th:src="@{'images/' + ${imagePath}}" style="height:150px;width:auto;border-radius:10px;object-fit:scale-down;">
             </a>
         </div>
         <div class="d-flex flex-column justify-content-center mx-1">
@@ -22,7 +22,7 @@
     <div id="liked" class="mx-2 my-2">
         <a th:href="@{/profile/liked}" class="card d-flex flex-column justify-content-end" style="width:16rem; height:24rem; ">
             <img class="card-img-top" style="object-fit: cover; height: 100%; width 100%;" th:src="@{'images/' + ${lastLikedImage}}">
-            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">LIked Images</p>
+            <p class="card-title h6 text-dark mx-2"style="text-decoration:none;">Liked Images</p>
         </a>
     </div>
     <div class="d-flex flex-row justify-content-start" th:each="gallery: ${Galleries}">

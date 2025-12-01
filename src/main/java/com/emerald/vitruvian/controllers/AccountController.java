@@ -125,11 +125,17 @@ public class AccountController {
     public String renderProfile(Model model){
         UserEntity user = userRepo.findById(userService.getPrincipalId());
         ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(user);
+        String pfpPath = "";
+        if(profilePicture.getTitle() == null){
+            pfpPath = "placeholder.jpg";
+        } else {
+            pfpPath = profilePicture.getFileName();
+        }
         UserDTO userdto = userMapper.toDTO(user);
         List<GalleryEntity> galleries = galleryService.lastImage(user);
         model.addAttribute("lastLikedImage", userService.lastLikedImage(user));
         model.addAttribute("user", userdto);
-        model.addAttribute("imagePath", profilePicture.getFileName());
+        model.addAttribute("imagePath", pfpPath);
         model.addAttribute("Galleries", galleries);
 
         return "pages/user";
@@ -174,7 +180,7 @@ public class AccountController {
 
             ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(user);
 
-            if(!profilePicture.getTitle().isEmpty()){
+            if(profilePicture.getTitle() != null){
                 imageController.deleteImage(profilePicture.getImageId(), model);
             }
 
