@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.Entities;
 
+import com.emerald.vitruvian.models.ImageEntryDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,8 +18,15 @@ public class CommentEntity {
     @JoinColumn(nullable = false)
     private UserEntity user;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "image_id")
     private ImageEntryEntity image;
+
+    @Transient
+    private String profileImagePath;
+
+    @Transient
+    private String profileName;
 
     public long getId() {
         return id;
@@ -52,6 +60,22 @@ public class CommentEntity {
         this.image = image;
     }
 
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
+
     @Override
     public String toString() {
         return "CommentEntity{" +
@@ -59,6 +83,8 @@ public class CommentEntity {
                 ", commentText='" + commentText + '\'' +
                 ", user=" + user +
                 ", image=" + image +
+                ", profileImage=" + profileImagePath +
+                ", profileName='" + profileName + '\'' +
                 '}';
     }
 }

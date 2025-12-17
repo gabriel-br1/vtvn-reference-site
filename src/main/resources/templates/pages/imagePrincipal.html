@@ -5,13 +5,13 @@
 <body class="bg-dark">
 <header th:replace="~{fragments/layout.html :: header}">
 </header>
-<div class="d-flex flex-row justify-content-center align-items-start" style="height:48rem;">
-    <div class="d-flex flex-column justify-content-start bg-light px-2 py-2" style="border-radius:10px;max-width:40%">
-        <div>
-            <img th:src="@{'/images/' + ${imageEntry.fileName}}" style="height:42rem;">
+<div class="d-flex flex-row justify-content-center align-items-start">
+    <div class="d-flex flex-column justify-content-start align-items-center bg-light px-2 py-2" style="border-radius:10px;max-height:48rem;width:48rem">
+        <div class="d-flex flex-column align-items-center">
+            <img th:src="@{'/images/' + ${imageEntry.fileName}}" style="max-height:44rem;max-width:90%;">
             <h4 class="text-dark px-2" th:text="${imageEntry.title}"></h4>
         </div>
-        <div class="d-flex justify-content-start">
+        <div class="d-flex justify-content-around">
             <div th:object="${ImageEntryEntity}">
                 <a class="btn btn-lg my-2 mx-1" style="background-color:#2bdb9d;font-size:20px;" th:href="@{'/updateImage/' + *{imageId}}">Edit</a>
             </div>
@@ -29,13 +29,22 @@
             </div>
         </div>
     </div>
-    <div class="d-flex flex-column justify-content-start bg-light px-2 py-4 mx-2" style="border-radius:10px; width:30rem;height:100%">
-        <form method="post" sec:authorize="isAuthenticated()" th:object="${CommentDTO}" th:action="@{'/postComment/' + ${ImageEntryEntity.imageId}}">
+    <div class="d-flex flex-column justify-content-start bg-light px-2 py-4 mx-2" style="border-radius:10px; width:30rem;max-height:48rem;overflow:scroll;">
+        <form method="post" sec:authorize="isAuthenticated()" th:object="${CommentDTO}" th:action="@{'/postComment/' + ${ImageEntryEntity.imageId}}" style="position:sticky;top:0;">
             <input type="text" id="commentText" th:field="*{commentText}" class="form-control form-control-lg">
             <button type="submit" class="btn btn-lg col-12" style="background-color:#2bdb9d;font-size:20px;">Post comment</button>
         </form>
+        <ul th:each="comment: ${Comments}" class="my-2" style="list-style-type:none;">
+            <li class="d-flex flex-column">
+                <a href="#" class="d-flex" style="text-decoration:none">
+                    <img th:src="@{'images/' + ${comment.profileImagePath}}">
+                    <p th:text="${comment.profileName}" class="mx-2" style="color:#2bdb9d"></p>
+                </a>
+                <p th:text="${comment.commentText}"></p>
+            </li>
+        </ul>
         <ul>
-            <li>test</li>
+            <li th:each="err : ${Errors}" th:text="${err}" class="error text-danger" />
         </ul>
     </div>
 </div>

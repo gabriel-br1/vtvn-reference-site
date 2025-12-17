@@ -40,6 +40,9 @@ public class ImageEntryEntity {
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private int isProfile;
 
+    @OneToMany(mappedBy = "image")
+    private List<CommentEntity> comments;
+
     public long getImageId() {
         return imageId;
     }
@@ -112,6 +115,14 @@ public class ImageEntryEntity {
         this.galleries = galleries;
     }
 
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryEntity{" +
@@ -124,6 +135,7 @@ public class ImageEntryEntity {
                 ", likedBy=" + likedBy +
                 ", galleries=" + galleries +
                 ", isProfile=" + isProfile +
+                ", comments=" + comments +
                 '}';
     }
 }

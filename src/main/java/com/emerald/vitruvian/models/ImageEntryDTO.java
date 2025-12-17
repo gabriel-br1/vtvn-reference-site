@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.models;
 
+import com.emerald.vitruvian.Entities.CommentEntity;
 import com.emerald.vitruvian.Entities.GalleryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,8 @@ public class ImageEntryDTO {
     private List<GalleryEntity> galleries;
 
     private int isProfile;
+
+    private List<CommentEntity> comments;
 
 
     public long getImageId() {
@@ -114,6 +117,14 @@ public class ImageEntryDTO {
         this.galleries = galleries;
     }
 
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "ImageEntryDTO{" +
@@ -127,6 +138,7 @@ public class ImageEntryDTO {
                 ", likedBy=" + likedBy +
                 ", galleries=" + galleries +
                 ", isProfile=" + isProfile +
+                ", comments=" + comments +
                 '}';
     }
 }

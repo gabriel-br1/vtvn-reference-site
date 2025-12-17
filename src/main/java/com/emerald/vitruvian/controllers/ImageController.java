@@ -1,5 +1,6 @@
 package com.emerald.vitruvian.controllers;
 
+import com.emerald.vitruvian.Entities.CommentEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
@@ -7,6 +8,7 @@ import com.emerald.vitruvian.models.CommentDTO;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
+import com.emerald.vitruvian.services.CommentService;
 import com.emerald.vitruvian.services.FileUploadService;
 import com.emerald.vitruvian.services.ImageEntryService;
 import com.emerald.vitruvian.services.UserService;
@@ -26,7 +28,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class ImageController {
@@ -45,6 +49,9 @@ public class ImageController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private CommentService commentService;
 
 //    @Autowired
 //    private UserMapper userMapper;
@@ -126,12 +133,28 @@ public class ImageController {
                 .orElse(new ImageEntryEntity());
         ImageEntryDTO imageEntryDTO = imageEntryMapper.toDTO(imageEntryEntity);
 
+        List<CommentEntity> comments = commentService.findImageComments(imageEntryEntity);
+        for(CommentEntity comment : comments){
+            ImageEntryDTO profilePicture = imageEntryService.getProfilePicture(comment.getUser());
+            if(profilePicture.getTitle() == null){
+                comment.setProfileImagePath("placeholder.jpg");
+            } else {
+                comment.setProfileImagePath(profilePicture.getFileName());
+            }
+            comment.setProfileName(comment.getUser().getEmail());
+        }
+
         UserEntity userEntity = userRepo.findById(userService.getPrincipalId());
         if (userEntity != null){
             if (userEntity.getId() == imageEntryEntity.getUser().getId()){
                 model.addAttribute("ImageEntryEntity", imageEntryEntity);
                 model.addAttribute("imageEntry", imageEntryDTO);
                 model.addAttribute("CommentDTO", new CommentDTO());
+                if(comments != null){
+                    model.addAttribute("Comments", comments);
+                } else {
+                    model.addAttribute("Comments", List.of(new CommentEntity()));
+                }
                 return "pages/imagePrincipal";
             }
         }
@@ -139,6 +162,11 @@ public class ImageController {
         model.addAttribute("imageEntry", imageEntryDTO);
         model.addAttribute("ImageEntryEntity", imageEntryEntity);
         model.addAttribute("CommentDTO", new CommentDTO());
+        if(comments != null){
+            model.addAttribute("Comments", comments);
+        } else {
+            model.addAttribute("Comments", List.of(new CommentEntity()));
+        }
 
         return "pages/image";
     }

@@ -17,6 +17,10 @@ public class CommentDTO {
 
     private long imageId;
 
+    private String profileImagePath;
+
+    private String profileName;
+
     public String getCommentText() {
         return commentText;
     }
@@ -49,6 +53,22 @@ public class CommentDTO {
         this.imageId = imageId;
     }
 
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
+
     @Override
     public String toString() {
         return "CommentDTO{" +
@@ -56,6 +76,8 @@ public class CommentDTO {
                 ", user=" + user +
                 ", image=" + image +
                 ", imageId=" + imageId +
+                ", profileImage=" + profileImagePath +
+                ", profileName='" + profileName + '\'' +
                 '}';
     }
 }
