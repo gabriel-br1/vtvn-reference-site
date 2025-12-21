@@ -2,7 +2,6 @@ package com.emerald.vitruvian.services;
 
 import com.emerald.vitruvian.Entities.CommentEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
-import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.CommentMapper;
 import com.emerald.vitruvian.models.CommentDTO;
 import com.emerald.vitruvian.repositories.CommentRepo;
@@ -29,6 +28,7 @@ public class CommentService {
         System.out.println(commentEntity.getUser().getEmail());
     }
 
+    // finds comment entities tied to an image through its id
     public List<CommentEntity> findImageComments(ImageEntryEntity image){
         return StreamSupport.stream(commentRepo.findAll().spliterator(), false)
                 .filter(n -> n.getImage().getImageId() == image.getImageId())

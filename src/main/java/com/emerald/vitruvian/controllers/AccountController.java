@@ -18,11 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class AccountController {
@@ -79,19 +77,6 @@ public class AccountController {
         String token = jwtService.generateToken(user.getEmail());
         return homeController.renderHome(model);
     }
-
-//    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-//    @GetMapping("/user/{id}")
-//    public String renderUserPage(@PathVariable long id,
-//            Model model){
-//        UserEntity user = userRepo.findById(userService.getPrincipalId());
-//        if(user.getId() == id){
-//            userMapper.toDTO(user);
-//            model.addAttribute("user", user);
-//            return "pages/user";
-//        }
-//        return "error";
-//    }
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute UserDTO userDTO,

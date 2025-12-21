@@ -4,10 +4,8 @@ import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
-import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.models.TagsDTO;
-import com.emerald.vitruvian.models.UserDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,7 @@ import java.util.stream.StreamSupport;
 @Service
 public class ImageEntryService {
 
+    // hash set of neutral words without specific meaning to exclude when parsing image description for tags
     private static HashSet<String> filterWords = new HashSet<>(Arrays.asList(
             "and", "for", "nor", "but", "or", "yet", "so",
             "both", "or", "whether", "only", "also", "either",
@@ -53,6 +52,7 @@ public class ImageEntryService {
         imageEntryRepo.save(newImage);
     }
 
+    // gets all images that were not uploaded as profile images and returns them as a list
     public List<ImageEntryDTO> getAllImages(){
         return StreamSupport.stream(imageEntryRepo.findAll().spliterator(), false)
                 .filter(n -> n.getIsProfile() == 0)
@@ -60,6 +60,7 @@ public class ImageEntryService {
                 .toList();
     }
 
+    // finds the profile picture of a user through the isProfile attribute and returns its DTO
     public ImageEntryDTO getProfilePicture(UserEntity user){
         return StreamSupport.stream(user.getImages().spliterator(), false)
                 .filter(n -> n.getIsProfile() == 1)
@@ -68,6 +69,7 @@ public class ImageEntryService {
                 .orElse(new ImageEntryDTO());
     }
 
+    // takes the search String as input and iterates over it as an array of Strings, the image tags and all images in the database by matching the image tags with the search tags
     public List<ImageEntryDTO> getByTags(String tagSearch){
         List<ImageEntryDTO> resultList = new ArrayList<>();
         String[] splitSearchTags = tagSearch.split(" ");
@@ -85,6 +87,7 @@ public class ImageEntryService {
         return resultList;
     }
 
+    // returns a space separated String of tags from the tags of an image DTO
     public String getImageTags(ImageEntryDTO imageEntryDTO){
         String[] tags = imageEntryDTO
                 .getTagsDTO()
@@ -93,6 +96,10 @@ public class ImageEntryService {
         return String.join(" ", tags);
     }
 
+    /* splits the image description and checks each String against Strings in the filterWords hash set, adding the new
+    tag from the split description to a Tags DTO, which it returns
+    the method contains a loop that increases a count variable each time the potential new tag word does not equal the
+    filter word, and adds the word if in the end the count equals the size of the filter words hash set */
     private TagsDTO parseTags(ImageEntryDTO imageEntryDTO){
         TagsDTO tags = new TagsDTO();
         String descriptionPlusTitle = imageEntryDTO.getDescription() + " " + imageEntryDTO.getTitle();
@@ -113,6 +120,7 @@ public class ImageEntryService {
         return tags;
     }
 
+    // updates the user's liked images list of image entities with a new entry
     public void likeImage(UserEntity user, ImageEntryEntity image) {
         List<ImageEntryEntity> likedImages = user.getLikedImages();
         likedImages.add(image);
@@ -124,6 +132,7 @@ public class ImageEntryService {
         edit(imageDTO, imageId);
     }
 
+    // checks for the '*' reserved character in the title of the image
     public boolean checkReservedChars(String title){
         for(int i = 0; i < title.length(); i++){
             if(title.charAt(i) == '*'){

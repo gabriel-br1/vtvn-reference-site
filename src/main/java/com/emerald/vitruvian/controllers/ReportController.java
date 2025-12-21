@@ -1,4 +1,5 @@
 package com.emerald.vitruvian.controllers;
+
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.models.ReportDTO;

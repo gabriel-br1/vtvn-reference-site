@@ -4,14 +4,12 @@ import com.emerald.vitruvian.Entities.GalleryEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.GalleryMapper;
-import com.emerald.vitruvian.mappers.ImageEntryMapper;
 import com.emerald.vitruvian.mappers.UserMapper;
 import com.emerald.vitruvian.models.GalleryDTO;
 import com.emerald.vitruvian.repositories.GalleryRepo;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -27,9 +25,6 @@ public class GalleryService {
 
     @Autowired
     private ImageEntryRepo imageEntryRepo;
-
-    @Autowired
-    private ImageEntryMapper imageEntryMapper;
 
     @Autowired
     private UserService userService;
@@ -50,13 +45,13 @@ public class GalleryService {
         GalleryEntity oldGallery = galleryRepo.findById(id).orElse(new GalleryEntity());
         oldGallery.setGalleryName(galleryDTO.getGalleryName());
         oldGallery.setDescription(galleryDTO.getDescription());
-//        oldGallery.setImages(galleryDTO.getImages());
         GalleryEntity newGallery = new GalleryEntity();
 
         galleryMapper.updateGalleryEntity(oldGallery, newGallery);
         galleryRepo.save(newGallery);
     }
 
+    // adds an image from the database to a user's galleries passed in as a list of gallery names separated by a special character in the String format
     public void addImage(ImageEntryEntity imageEntry, String galleryList){
         String[] galleryArray = parseGalleryList(galleryList);
         for(String gallery : galleryArray){
@@ -71,6 +66,7 @@ public class GalleryService {
         }
     }
 
+    // removes an image from the database from a user's gallery passed in as a list of image names separated by a special character in the String format
     public void removeImage(GalleryEntity galleryEntity, String imageNames){
         String[] imageArray = parseGalleryList(imageNames);
         List<ImageEntryEntity> imagesToRemove = new ArrayList<>();
@@ -102,11 +98,6 @@ public class GalleryService {
         boolean firstLoop = true;
 
         for(int i : ids){
-            for(ImageEntryEntity image : galleryEntity.getImages()){
-                System.out.println("before");
-                System.out.println(image.getTitle());
-                System.out.println();
-            }
 
             if(firstLoop){
                 imageEntryEntityList.remove(i);
@@ -115,16 +106,13 @@ public class GalleryService {
                 imageEntryEntityList.remove(i-1);
             }
 
-            for(ImageEntryEntity image : galleryEntity.getImages()){
-                System.out.println("after");
-                System.out.println(image.getTitle());
-            }
         }
 
         galleryEntity.setImages(imageEntryEntityList);
         edit(galleryMapper.toDTO(galleryEntity), galleryEntity.getId());
     }
 
+    // sets the last image for each of a user's galleries to show as their thumbnail and returns the list of the updated gallery entities
     public List<GalleryEntity> lastImage(UserEntity user){
         List<GalleryEntity> galleries = user.getGalleries();
 
@@ -143,6 +131,8 @@ public class GalleryService {
         return galleries;
     }
 
+    // splits the String of gallery names or image names by the '*' character and returns a new String array consisting of gallery names or image names
+    // in case of no '*' (no valid gallery names in the String), returns an empty String array
     private String[] parseGalleryList(String galleryList){
         for(int i = 0; i < galleryList.length(); i++){
             if(galleryList.charAt(i) != '*'){
@@ -159,6 +149,7 @@ public class GalleryService {
                 .toList();
     }
 
+    // checks for the '*' reserved character in the title of the gallery
     public boolean checkReservedChars(String title){
         for(int i = 0; i < title.length(); i++){
             if(title.charAt(i) == '*'){

@@ -27,6 +27,7 @@ public class ReportService {
         reportRepo.save(newReport);
     }
 
+    // checks the String report type and returns the equivalent enum
     public ReportType parseReportType(String type){
         return switch (type) {
             case "spam" -> ReportType.SPAM;

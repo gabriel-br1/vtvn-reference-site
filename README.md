@@ -10,7 +10,8 @@ The website will act as an online repository for images to be used as reference 
 - image saving
 - reporting functionality
 - custom galleries
+- comments
 
 **TODO:**
-- comments
 - REST
+- content algorithm

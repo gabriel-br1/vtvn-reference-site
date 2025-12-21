@@ -1,7 +1,5 @@
 package com.emerald.vitruvian.services;
 
-import com.emerald.vitruvian.Entities.GalleryEntity;
-import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.exceptions.DuplicateEmailException;
 import com.emerald.vitruvian.exceptions.EmailNotFoundException;
@@ -31,6 +29,7 @@ public class UserService implements UserDetailsService{
     @Autowired
     private UserMapper userMapper;
 
+    // adds user to the database after checking that the password matches the confirm password and that the email address is not a duplicate
     public void add(UserDTO userDTO) throws PasswordsDoNotMatchException, DuplicateEmailException{
         if(confirmPassword(userDTO)){
             if(confirmEmail(userDTO)){
@@ -88,6 +87,7 @@ public class UserService implements UserDetailsService{
         return -1;
     }
 
+    // returns the file name of the last image that was liked by the user to be used as the liked images gallery thumbnail
     public String lastLikedImage(UserEntity user){
         if(user.getLikedImages().isEmpty()){
             return "placeholder.jpg";

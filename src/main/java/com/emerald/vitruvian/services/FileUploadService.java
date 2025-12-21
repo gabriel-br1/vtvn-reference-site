@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileUploadService {
 
+    // uploads image Multipart file to a specified upload directory using the image's filename
     public void uploadFile(String uploadDir, String fileName, MultipartFile image  ) throws IOException {
 
         Path uploadPath = Paths.get(uploadDir);
