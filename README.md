@@ -15,3 +15,5 @@ The website will act as an online repository for images to be used as reference 
 **TODO:**
 - REST
 - content algorithm
+- duplicate image database
+- image owner requested image takedown system
