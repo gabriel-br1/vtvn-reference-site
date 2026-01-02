@@ -1,5 +1,7 @@
 package com.emerald.vitruvian.services;
 
+import com.emerald.vitruvian.Entities.CommentEntity;
+import com.emerald.vitruvian.Entities.GalleryEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.enums.*;
@@ -141,4 +143,57 @@ public class ImageEntryService {
         }
         return false;
     }
+
+    public List<ImageEntryEntity> formatImageEntityJSON(List<ImageEntryEntity> imageEntityList){
+        for(ImageEntryEntity image : imageEntityList){
+            UserEntity idUser = new UserEntity();
+            idUser.setId(image.getUser().getId());
+
+            if(image.getLikedBy() != null){
+                List<UserEntity> newIdLikedBy = new ArrayList<>();
+                int i = 0;
+                for(UserEntity user : image.getLikedBy()){
+                    UserEntity newUser = new UserEntity();
+                    newUser.setId(user.getId());
+                    newIdLikedBy.add(i, newUser);
+                    i++;
+                }
+                image.setLikedBy(newIdLikedBy);
+            } else {
+                image.setLikedBy(List.of(new UserEntity()));
+            }
+
+            if(image.getGalleries() != null){
+                List<GalleryEntity> newIdGalleries = new ArrayList<>();
+                int j = 0;
+                for(GalleryEntity gallery : image.getGalleries()){
+                    GalleryEntity newGallery = new GalleryEntity();
+                    newGallery.setId(gallery.getId());
+                    newIdGalleries.add(j, newGallery);
+                    j++;
+                }
+                image.setGalleries(newIdGalleries);
+            } else {
+                image.setGalleries(List.of(new GalleryEntity()));
+            }
+
+            if(image.getComments() != null){
+                List<CommentEntity> newIdComments = new ArrayList<>();
+                int k = 0;
+                for(CommentEntity comment : image.getComments()){
+                    CommentEntity newComment = new CommentEntity();
+                    newComment.setId(comment.getId());
+                    newIdComments.add(k, newComment);
+                    k++;
+                }
+                image.setComments(newIdComments);
+            } else {
+                image.setComments(List.of(new CommentEntity()));
+            }
+
+            image.setUser(idUser);
+        }
+        return imageEntityList;
+    }
+
 }

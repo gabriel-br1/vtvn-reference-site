@@ -159,4 +159,34 @@ public class GalleryService {
         return false;
     }
 
+    public List<GalleryEntity> formatGalleryEntityJSON(List<GalleryEntity> galleries) {
+        for(GalleryEntity gallery : galleries){
+            UserEntity idUser = new UserEntity();
+            idUser.setId(gallery.getUser().getId());
+            gallery.setUser(idUser);
+
+            if(gallery.getLastImage() != null){
+                ImageEntryEntity idLastImage = new ImageEntryEntity();
+                idLastImage.setImageId(gallery.getLastImage().getImageId());
+                gallery.setLastImage(idLastImage);
+            } else {
+                gallery.setLastImage(null);
+            }
+
+            if(gallery.getImages() != null){
+                List<ImageEntryEntity> newIdImages = new ArrayList<>();
+                int l = 0;
+                for(ImageEntryEntity image : gallery.getImages()){
+                    ImageEntryEntity newImage = new ImageEntryEntity();
+                    newImage.setImageId(image.getImageId());
+                    newIdImages.add(l, newImage);
+                    l++;
+                }
+                gallery.setImages(newIdImages);
+            } else {
+                gallery.setImages(List.of(new ImageEntryEntity()));
+            }
+        }
+        return galleries;
+    }
 }

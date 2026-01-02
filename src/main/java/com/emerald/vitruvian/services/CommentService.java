@@ -2,6 +2,7 @@ package com.emerald.vitruvian.services;
 
 import com.emerald.vitruvian.Entities.CommentEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
+import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.CommentMapper;
 import com.emerald.vitruvian.models.CommentDTO;
 import com.emerald.vitruvian.repositories.CommentRepo;
@@ -35,4 +36,16 @@ public class CommentService {
                 .toList();
     }
 
+    public List<CommentEntity> formatCommentEntityJSON(List<CommentEntity> comments) {
+        for(CommentEntity comment : comments){
+            UserEntity idUser = new UserEntity();
+            idUser.setId(comment.getUser().getId());
+            comment.setUser(idUser);
+
+            ImageEntryEntity idImage = new ImageEntryEntity();
+            idImage.setImageId(comment.getImage().getImageId());
+            comment.setImage(idImage);
+        }
+        return comments;
+    }
 }

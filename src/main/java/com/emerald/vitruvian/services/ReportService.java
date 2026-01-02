@@ -10,6 +10,9 @@ import com.emerald.vitruvian.repositories.ReportRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ReportService {
 
@@ -38,4 +41,17 @@ public class ReportService {
         };
     }
 
+    public List<ReportEntity> formatReportEntityJSON(List<ReportEntity> reports) {
+        for(ReportEntity report : reports){
+            UserEntity idUser = new UserEntity();
+            idUser.setId(report.getUser().getId());
+            report.setUser(idUser);
+
+            ImageEntryEntity idImage = new ImageEntryEntity();
+            idImage.setImageId(report.getImage().getImageId());
+            report.setImage(idImage);
+        }
+
+        return reports;
+    }
 }
