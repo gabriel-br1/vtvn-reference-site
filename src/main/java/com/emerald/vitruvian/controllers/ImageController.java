@@ -4,14 +4,12 @@ import com.emerald.vitruvian.Entities.CommentEntity;
 import com.emerald.vitruvian.Entities.ImageEntryEntity;
 import com.emerald.vitruvian.Entities.UserEntity;
 import com.emerald.vitruvian.mappers.ImageEntryMapper;
+import com.emerald.vitruvian.models.AlgorithmProfileDTO;
 import com.emerald.vitruvian.models.CommentDTO;
 import com.emerald.vitruvian.models.ImageEntryDTO;
 import com.emerald.vitruvian.repositories.ImageEntryRepo;
 import com.emerald.vitruvian.repositories.UserRepo;
-import com.emerald.vitruvian.services.CommentService;
-import com.emerald.vitruvian.services.FileUploadService;
-import com.emerald.vitruvian.services.ImageEntryService;
-import com.emerald.vitruvian.services.UserService;
+import com.emerald.vitruvian.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -51,8 +49,8 @@ public class ImageController {
     @Autowired
     private CommentService commentService;
 
-//    @Autowired
-//    private UserMapper userMapper;
+    @Autowired
+    private AlgorithmService algorithmService;
 
     @Autowired
     private FileUploadService uploadService;
@@ -148,12 +146,29 @@ public class ImageController {
                 model.addAttribute("ImageEntryEntity", imageEntryEntity);
                 model.addAttribute("imageEntry", imageEntryDTO);
                 model.addAttribute("CommentDTO", new CommentDTO());
+                if(userEntity.getAlgorithmProfile() != null){
+                    algorithmService.updateAlgorithmProfile(userEntity, imageEntryEntity);
+                } else {
+                    AlgorithmProfileDTO profile = new AlgorithmProfileDTO();
+                    profile.setUser(userEntity);
+                    algorithmService.add(profile);
+                }
                 if(comments != null){
                     model.addAttribute("Comments", comments);
                 } else {
                     model.addAttribute("Comments", List.of(new CommentEntity()));
                 }
                 return "pages/imagePrincipal";
+            }
+            else {
+                //tags are getting in from different images??
+                if(userEntity.getAlgorithmProfile() != null){
+                    algorithmService.updateAlgorithmProfile(userEntity, imageEntryEntity);
+                } else {
+                    AlgorithmProfileDTO profile = new AlgorithmProfileDTO();
+                    profile.setUser(userEntity);
+                    algorithmService.add(profile);
+                }
             }
         }
 

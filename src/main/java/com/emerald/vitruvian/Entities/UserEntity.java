@@ -33,6 +33,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<CommentEntity> comments;
 
+    @OneToOne(mappedBy = "user")
+    private AlgorithmProfileEntity algorithmProfile;
+
     public long getId() {
         return id;
     }
@@ -97,6 +100,14 @@ public class UserEntity {
         this.comments = comments;
     }
 
+    public AlgorithmProfileEntity getAlgorithmProfile() {
+        return algorithmProfile;
+    }
+
+    public void setAlgorithmProfile(AlgorithmProfileEntity algorithmProfile) {
+        this.algorithmProfile = algorithmProfile;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -108,6 +119,7 @@ public class UserEntity {
                 ", likedImages=" + likedImages +
                 ", galleries=" + galleries +
                 ", comments=" + comments +
+                ", algorithmProfile=" + algorithmProfile +
                 '}';
     }
 }
