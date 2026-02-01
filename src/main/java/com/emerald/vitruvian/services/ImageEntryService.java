@@ -25,7 +25,7 @@ public class ImageEntryService {
             "and", "for", "nor", "but", "or", "yet", "so",
             "both", "or", "whether", "only", "also", "either",
             "neither", "just", "the", "a", "as", "if", "then", "rather",
-            "such", "that", "even", "is", "are"));
+            "such", "that", "even", "is", "are", "of", "with", "at"));
 
     @Autowired
     private ImageEntryRepo imageEntryRepo;

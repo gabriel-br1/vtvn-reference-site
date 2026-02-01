@@ -1,8 +1,6 @@
 package com.emerald.vitruvian.Entities;
 
 import jakarta.persistence.*;
-
-import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -17,6 +15,9 @@ public class AlgorithmProfileEntity {
 
     @Column(columnDefinition = "LONGTEXT")
     private String tagsByFrequency;
+
+    @Column
+    private List<Long> imagesInAlgorithm;
 
     public long getId() {
         return id;
@@ -42,12 +43,21 @@ public class AlgorithmProfileEntity {
         this.tagsByFrequency = tagsByFrequency;
     }
 
+    public List<Long> getImagesInAlgorithm() {
+        return imagesInAlgorithm;
+    }
+
+    public void setImagesInAlgorithm(List<Long> imagesInAlgorithm) {
+        this.imagesInAlgorithm = imagesInAlgorithm;
+    }
+
     @Override
     public String toString() {
-        return "AlgorithmEntity{" +
+        return "AlgorithmProfileEntity{" +
                 "id=" + id +
                 ", user=" + user +
-                ", tagsByFrequency=" + tagsByFrequency +
+                ", tagsByFrequency='" + tagsByFrequency + '\'' +
+                ", imagesInAlgorithm=" + imagesInAlgorithm +
                 '}';
     }
 }
